@@ -48,8 +48,10 @@ public class ContactsPerHourReport extends Report implements ConnectionListener 
 	}
 
 	public void done() {
+		this.hostsConnected(null, null);
 		Iterator<Integer> iterator = contactCounts.iterator();
 		int hour = 0;
+		write("hour\tcontacts");
 		while (iterator.hasNext()) {
 			Integer count = (Integer)iterator.next();
 			write(hour + "\t" + count);
