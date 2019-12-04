@@ -55,6 +55,9 @@ doc/package-list
 # *.iml
 # *.ipr
 
+# Perl support in IntelliJ
+.idea/perl*
+
 # CMake
 cmake-build-*/
 
@@ -87,3 +90,4 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+/_Deparsed_XSubs.pm
