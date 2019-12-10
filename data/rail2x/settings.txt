@@ -45,7 +45,7 @@ Scenario.nrofHostGroups = 2
 
 
 # Common settings for all groups
-Group.movementModel = MapRouteMovement
+Group.movementModel = MapBasedMovement
 Group.router = EpidemicRouter
 Group.bufferSize = 5G
 Group.waitTime = 0, 120
@@ -82,12 +82,13 @@ Events1.filePath = data/rail2x/message_queue.txt
 MovementModel.rngSeed = 1
 # World's size for Movement Models without implicit size (width, height; meters)
 MovementModel.worldSize = 4500, 3400
+#                         426117, 219246
 # How long time to move hosts in the world before real simulation
 MovementModel.warmup = 1000
 
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 1
-MapBasedMovement.mapFile1 = data/rail2x/rails.wkt
+MapBasedMovement.mapFile1 = data/rail2x/scaled295-ICE-germany.osm.wkt
 
 
 ## Reports - all report names have to be valid report classes

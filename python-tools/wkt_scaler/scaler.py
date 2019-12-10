@@ -1,7 +1,7 @@
 max_x = 0.0
 max_y = 0.0
 
-with open('ice-karlsruhe.osm.wkt', 'r') as source_file:
+with open('ICE-germany.osm.wkt', 'r') as source_file:
     for line in source_file:
         coordinate_list = line[len('LINESTRING ('):-2]
         coordinates = coordinate_list.split(',')
@@ -23,7 +23,7 @@ scaling_factor_x = int(max_x / 4500) + 1
 scaling_factor_y = int(max_y / 3400) + 1
 scaling_factor = max(scaling_factor_x, scaling_factor_y)
 
-with open('ice-karlsruhe.osm.wkt', 'r') as source_file, open('scaled' + str(scaling_factor) + '-ice-karlsruhe.osm.wkt', 'w') as dst_file:
+with open('ICE-germany.osm.wkt', 'r') as source_file, open('scaled' + str(scaling_factor) + '-ICE-germany.osm.wkt', 'w') as dst_file:
     for line in source_file:
         coordinate_list = line[len('LINESTRING ('):-2]
         coordinates = coordinate_list.split(',')
