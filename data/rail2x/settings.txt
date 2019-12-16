@@ -92,15 +92,16 @@ MapBasedMovement.mapFile1 = data/rail2x/scaled295-ICE-germany.osm.wkt
 ## Reports - all report names have to be valid report classes
 
 # how many reports to load
-Report.nrofReports = 2
+Report.nrofReports = 3
 # length of the warm up period (simulated seconds)
 Report.warmup = 0
 # default directory of reports (can be overridden per Report with output setting)
 Report.reportDir = reports/
 # Report classes to load
-Report.report1 = MessageStatsReport
+Report.report1 = MessageCopyCountReport
 Report.report2 = ContactTimesReport
-Report.report3 = AdjacencyGraphvizReport
+Report.report3 = DeliveredMessagesReport
+MessageCopyCountReport.granularity = 100
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
