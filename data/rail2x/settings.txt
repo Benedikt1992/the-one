@@ -6,7 +6,7 @@
 Scenario.name = rail2x
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
-Scenario.endTime = 6000
+Scenario.endTime = 43200
 
 ## Interface-specific settings:
 # type : which interface class the interface belongs to
@@ -19,10 +19,11 @@ Scenario.endTime = 6000
 btInterface.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 btInterface.transmitSpeed = 250k
-btInterface.transmitRange = 10
+# ~1500m
+btInterface.transmitRange = 5
 
 # Define 6 different node groups
-Scenario.nrofHostGroups = 2
+Scenario.nrofHostGroups = 1
 
 ## Group-specific settings:
 # groupID : Group's identifier. Used as the prefix of host names
@@ -45,7 +46,7 @@ Scenario.nrofHostGroups = 2
 
 
 # Common settings for all groups
-Group.movementModel = MapBasedMovement
+Group.movementModel = MapRouteMovement
 Group.router = EpidemicRouter
 Group.bufferSize = 5G
 Group.waitTime = 0, 120
@@ -53,18 +54,16 @@ Group.waitTime = 0, 120
 Group.nrofInterfaces = 1
 Group.interface1 = btInterface
 # Walking speeds
-Group.speed = 0.5, 1.5
+# ~120-200km/h
+Group.speed = 0.11, 0.19
 # Message TTL of 300 minutes (5 hours)
 Group.msgTtl = 43200
 Group.groupID = p
 
-Group1.nrofHosts = 2
-Group1.routeFile = data/rail2x/routes_circular.wkt
-Group1.routeType = 1
+Group1.nrofHosts = 7
+Group1.routeFile = data/rail2x/routes_scaled295-ice-germany.wkt
+Group1.routeType = 2
 
-Group2.nrofHosts = 5
-Group2.routeFile = data/rail2x/routes_pingpong.wkt
-Group2.routeType = 2
 
 ## Message creation parameters
 # How many event generators
@@ -89,7 +88,6 @@ MovementModel.warmup = 1000
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 1
 MapBasedMovement.mapFile1 = data/rail2x/scaled295-ICE-germany.osm.wkt
-
 
 ## Reports - all report names have to be valid report classes
 
