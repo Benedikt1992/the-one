@@ -1,7 +1,9 @@
+from decimal import *
+getcontext()
 max_x = 0.0
 max_y = 0.0
 
-with open('ICE-germany.osm.wkt', 'r') as source_file:
+with open('ice-karlsruhe.osm.wkt', 'r') as source_file:
     for line in source_file:
         coordinate_list = line[len('LINESTRING ('):-2]
         coordinates = coordinate_list.split(',')
@@ -21,9 +23,10 @@ with open('ICE-germany.osm.wkt', 'r') as source_file:
 
 scaling_factor_x = int(max_x / 4500) + 1
 scaling_factor_y = int(max_y / 3400) + 1
-scaling_factor = max(scaling_factor_x, scaling_factor_y)
+scaling_factor = Decimal(max(scaling_factor_x, scaling_factor_y))
+# scaling_factor = Decimal(100)
 
-with open('ICE-germany.osm.wkt', 'r') as source_file, open('scaled' + str(scaling_factor) + '-ICE-germany.osm.wkt', 'w') as dst_file:
+with open('ice-karlsruhe.osm.wkt', 'r') as source_file, open('scaled' + str(scaling_factor) + '-ice-karlsruhe.osm.wkt', 'w') as dst_file:
     for line in source_file:
         coordinate_list = line[len('LINESTRING ('):-2]
         coordinates = coordinate_list.split(',')
@@ -32,8 +35,8 @@ with open('ICE-germany.osm.wkt', 'r') as source_file, open('scaled' + str(scalin
             coordinate = coordinate.strip()
             try:
                 x, y = coordinate.split(' ')
-                x = float(x) / scaling_factor
-                y = float(y) / scaling_factor
+                x = Decimal(x) / scaling_factor
+                y = Decimal(y) / scaling_factor
                 scaled_coordinates.append(str(x) + ' ' + str(y))
             except ValueError as e:
                 print("Unexpected coordinates: '" + coordinate + "'")
