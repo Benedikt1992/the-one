@@ -27,6 +27,8 @@ class OSMParser:
                     query = "tag[@k='{}'][@v='{}']".format(k, v)
                     if item.find(query) is not None:
                         nodes[int(item.get('id'))] = (Decimal(item.get('lat')), Decimal(item.get('lon')))
+                        break
+        # TODO test if results are correct
         return nodes
 
     def add_node(self):
