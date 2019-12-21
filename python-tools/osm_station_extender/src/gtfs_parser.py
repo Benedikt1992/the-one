@@ -12,6 +12,10 @@ class GTFSParser:
         self.schedule = pygtfs.Schedule(gtfs_path)
 
     def get_stops(self):
+        """
+        This function returns stop elements from the gtfs data.
+        :return: dict {id: (lat, lon)}
+        """
         stops = {}
         precision = Decimal('1.000000')
         for stop in self.schedule.stops:
