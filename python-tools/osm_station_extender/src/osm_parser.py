@@ -15,7 +15,7 @@ class OSMParser:
         """
         This function returns node elements from the osm data. Optionally with specific tags.
         If there are several tags it is sufficient that the element contains one of the tags.
-        :param tags: dict with entries {key: value}. Several entries means are connected with logical or.
+        :param tags: Array of tuples (key: value). Several entries are connected with logical or.
         :return: dict {id: (lat, lon)}
         """
         nodes = {}
@@ -23,7 +23,7 @@ class OSMParser:
             if tags is None:
                 nodes[int(item.get('id'))] = (Decimal(item.get('lat')), Decimal(item.get('lon')))
             else:
-                for k, v in tags.items():
+                for k, v in tags:
                     query = "tag[@k='{}'][@v='{}']".format(k, v)
                     if item.find(query) is not None:
                         nodes[int(item.get('id'))] = (Decimal(item.get('lat')), Decimal(item.get('lon')))
