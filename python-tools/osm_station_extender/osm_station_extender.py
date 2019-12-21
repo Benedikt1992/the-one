@@ -6,8 +6,10 @@ from src.gtfs_parser import GTFSParser
 
 class OSMStationExtender:
     def __init__(self):
-        self.nodes = OSMParser("data/example.osm").get_nodes([('railway', 'stop'), ('railway', 'halt'), ('railway', 'station')])
-        self.stops = GTFSParser("data/gtfs.sqlite").get_stops()
+        self.osm_parser = OSMParser("data/example.osm")
+        self.gtfs_parser = GTFSParser("data/gtfs.sqlite")
+        self.nodes = self.osm_parser.get_nodes([('railway', 'stop'), ('railway', 'halt'), ('railway', 'station')])
+        self.stops = self.gtfs_parser.get_stops()
 
     def find_correlations(self):
         stop_node_correlations = {}
@@ -24,7 +26,11 @@ class OSMStationExtender:
                 node_distance = distance.distance(self.stops[stop], self.nodes[node]).meters
                 if node_distance < average_distance:
                     stop_node_correlations[stop] = [node]
-            #TODO delete assigned nodes from the global list
+            # TODO uncomment node deletion
+            for node in stop_node_correlations[stop]:
+                self.nodes.pop(node, None)
+            if not self.nodes:
+                raise RuntimeError("Not enough nodes in osm data.")
         return stop_node_correlations
 
     def _distance_average(self, stop, node_list):
@@ -33,6 +39,28 @@ class OSMStationExtender:
             sum += distance.distance(self.stops[stop], self.nodes[node]).meters
         return sum / len(node_list)
 
+    def store_stops_as_nodes(self, correlations):
+        new_correlations = {}
+        for stop in correlations:
+            new_id = self.osm_parser.add_node(self.stops[stop])
+            content = self.stops.pop(stop, None)
+            self.stops[new_id] = content
+            new_correlations[new_id] = correlations[stop]
+        return new_correlations
+
+    def store_ways(self, correlations):
+        for stop in correlations:
+            for node in correlations[stop]:
+                self.osm_parser.add_way([stop, node])
+
+    def store_osm(self):
+        self.osm_parser.store("data/example-extended.osm")
+
 
 if __name__ == "__main__":
-    OSMStationExtender().find_correlations()
+    extender = OSMStationExtender()
+    correlations = extender.find_correlations()
+    correlations = extender.store_stops_as_nodes(correlations)
+    extender.store_ways(correlations)
+    extender.store_osm()
+

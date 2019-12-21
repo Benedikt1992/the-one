@@ -9,7 +9,7 @@ class OSMParser:
             raise ValueError("{} is not a file".format(osm_path))
         self.tree = ET.parse(osm_path)
         self.root = self.tree.getroot()
-        self.next_id, self.minlat, self.minlon, self.maxlat, self.maxlon = self.find_next_id()
+        self.last_id, self.minlat, self.minlon, self.maxlat, self.maxlon = self.find_next_id()
 
     def get_nodes(self, tags=None):
         """
@@ -30,18 +30,32 @@ class OSMParser:
                         break
         return nodes
 
-    def add_node(self):
-        raise NotImplementedError
-        # TODO
-        ET.SubElement(self.root, 'node', attrib={"id": "298884269", "lat": "54.0901746", "lon": "12.2482632"})
+    def add_node(self, coordinates):
+        self.last_id += 1
+        #TODO add more attributes?
+        node = ET.SubElement(self.root, 'node', attrib={"id": str(self.last_id), "lat": str(coordinates[0]), "lon": str(coordinates[1]), "visible": "true"})
+        ET.SubElement(node, 'tag', attrib={"k": "type", "v": "station"})
+        return self.last_id
 
-    def save_to_file(self):
-        raise NotImplementedError
+    def add_way(self, waypoints):
+        self.last_id += 1
+        #TODO add more attributes?
+        way = ET.SubElement(self.root, 'way', attrib={"id": str(self.last_id)})
+        for point in waypoints:
+            ET.SubElement(way, 'nd', attrib={"ref": str(point)})
+        ET.SubElement(way, 'tag', attrib={"k": "type", "v": "connector"})
+        return self.last_id
+
+
+    def store(self, path):
         # TODO Sort output according to https://wiki.openstreetmap.org/wiki/OSM_XML
-        ET.tostring(self.root)
+        with open(path, "w", encoding='utf-8') as file:
+            stringg= ET.tostring(self.root, encoding='unicode')
+            file.write(stringg)
+
 
     def find_next_id(self):
-        next_id = 0
+        last_id = 0
         minlat = 0
         minlon = 0
         maxlat = 0
@@ -49,8 +63,8 @@ class OSMParser:
 
         for item in self.root:
             if 'id' in item.attrib:
-                if int(item.attrib['id']) > next_id:
-                    next_id = int(item.attrib['id'])
+                if int(item.attrib['id']) > last_id:
+                    last_id = int(item.attrib['id'])
             if 'lat' in item.attrib:
                 if Decimal(item.attrib['lat']) > maxlat:
                     maxlat = Decimal(item.attrib['lat'])
@@ -62,4 +76,4 @@ class OSMParser:
                 elif Decimal(item.attrib['lon']) < minlon or minlon == 0:
                     minlon = Decimal(item.attrib['lon'])
 
-        return next_id, minlat, minlon, maxlat, maxlon
+        return last_id, minlat, minlon, maxlat, maxlon
