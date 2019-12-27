@@ -8,7 +8,11 @@ class OSMStationExtender:
     def __init__(self):
         self.osm_parser = OSMParser("data/example.osm")
         self.gtfs_parser = GTFSParser("data/gtfs.sqlite")
-        self.nodes = self.osm_parser.get_nodes([('railway', 'stop'), ('railway', 'halt'), ('railway', 'station')])
+        self.nodes = self.osm_parser.get_nodes([
+            ('railway', 'stop'),
+            ('railway', 'halt'),
+            ('railway', 'station'),
+            ('public_transport', 'stop_position')])
         self.stops = self.gtfs_parser.get_stops()
 
     def find_correlations(self):
