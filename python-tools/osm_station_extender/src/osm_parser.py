@@ -32,27 +32,29 @@ class OSMParser:
 
     def add_node(self, coordinates):
         self.last_id += 1
-        #TODO add more attributes?
         node = ET.SubElement(self.root, 'node', attrib={"id": str(self.last_id), "lat": str(coordinates[0]), "lon": str(coordinates[1]), "visible": "true"})
         ET.SubElement(node, 'tag', attrib={"k": "type", "v": "station"})
         return self.last_id
 
     def add_way(self, waypoints):
         self.last_id += 1
-        #TODO add more attributes?
         way = ET.SubElement(self.root, 'way', attrib={"id": str(self.last_id)})
         for point in waypoints:
             ET.SubElement(way, 'nd', attrib={"ref": str(point)})
         ET.SubElement(way, 'tag', attrib={"k": "type", "v": "connector"})
         return self.last_id
 
-
     def store(self, path):
-        # TODO Sort output according to https://wiki.openstreetmap.org/wiki/OSM_XML
         with open(path, "w", encoding='utf-8') as file:
-            stringg= ET.tostring(self.root, encoding='unicode')
-            file.write(stringg)
-
+            sort_order = {
+                'bounds': 0,
+                'node': 1,
+                'way': 2,
+                'relation': 3
+            }
+            self.root[:] = sorted(self.root, key=lambda elem: sort_order[elem.tag])
+            string = ET.tostring(self.root, encoding='unicode')
+            file.write(string)
 
     def find_next_id(self):
         last_id = 0
