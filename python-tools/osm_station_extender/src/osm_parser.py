@@ -39,6 +39,17 @@ class OSMParser:
         self.last_id += 1
         node = ET.SubElement(self.root, 'node', attrib={"id": str(self.last_id), "lat": str(coordinates[0]), "lon": str(coordinates[1]), "visible": "true"})
         ET.SubElement(node, 'tag', attrib={"k": "type", "v": "station"})
+        
+        if coordinates[0] < self.minlat:
+            self.minlat = coordinates[0]
+        elif coordinates[0] > self.maxlat:
+            self.maxlat = coordinates[0]
+            
+        if coordinates[1] < self.minlon:
+            self.minlon = coordinates[1]
+        elif coordinates[1] > self.maxlon:
+            self.maxlon = coordinates[1]
+
         return self.last_id
 
     def add_way(self, waypoints):
@@ -59,9 +70,13 @@ class OSMParser:
 
     def store(self, path):
         """
-        Store the data as OSM XML
+        Store the data as OSM XML. Add bounds of the file if missing.
         :param path: File path
         """
+        if self.root.find("bounds") is None:
+            ET.SubElement(self.root, 'bounds',
+                          attrib={"minlat": str(self.minlat), "minlon": str(self.minlon), "maxlat": str(self.maxlat), "maxlon": str(self.maxlon)})
+
         with open(path, "w", encoding='utf-8') as file:
             sort_order = {
                 'note': 0,
