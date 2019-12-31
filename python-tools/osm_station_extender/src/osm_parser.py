@@ -47,7 +47,9 @@ class OSMParser:
         :param waypoints: list of IDs of OSM nodes
         :return: ID of the way element
         """
-        #TODO test if the way point actually exist
+        for point in waypoints:
+            if self.root.find("node[@id='{}']".format(point)) is None:
+                raise AttributeError("Waypoint is not part of the OSM data")
         self.last_id += 1
         way = ET.SubElement(self.root, 'way', attrib={"id": str(self.last_id)})
         for point in waypoints:
