@@ -28,6 +28,11 @@ class OSMStationExtender:
         self.output = os.path.splitext(args.osm)[0] + '-extended' + os.path.splitext(args.osm)[1]
 
     def find_correlations(self):
+        """
+        Find correlating OSM nodes for each GTFS station based on a distance threshold.
+        The threshold defines the maximum plausible distance between a GTFS station an correlating OSM stops
+        :return: {<GTFS station id>: [<OSM Node IDs>]}
+        """
         stop_node_correlations = {}
         for stop in self.stops:
             for node in self.nodes:
@@ -54,6 +59,11 @@ class OSMStationExtender:
         return sum / len(node_list)
 
     def store_stops_as_nodes(self, correlations):
+        """
+        Store GTFS stations within the OSM XML data.
+        :param correlations: {<GTFS station id>: [<OSM Node IDs>]}
+        :return: updated correlations with the new OSM ID for stations
+        """
         new_correlations = {}
         for stop in correlations:
             new_id = self.osm_parser.add_node(self.stops[stop])
@@ -63,11 +73,19 @@ class OSMStationExtender:
         return new_correlations
 
     def store_ways(self, correlations):
+        """
+        The the connections between GTFS station and each stop as straight lines.
+        :param correlations: {<GTFS station id>: [<OSM Node IDs>]}
+        """
         for stop in correlations:
             for node in correlations[stop]:
                 self.osm_parser.add_way([stop, node])
 
     def store_osm(self):
+        """
+        Store the OSM data as OSM XML.
+        :return:
+        """
         self.osm_parser.store(self.output)
 
 

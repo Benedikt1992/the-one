@@ -9,7 +9,7 @@ class OSMParser:
             raise ValueError("{} is not a file".format(osm_path))
         self.tree = ET.parse(osm_path)
         self.root = self.tree.getroot()
-        self.last_id, self.minlat, self.minlon, self.maxlat, self.maxlon = self.find_next_id()
+        self.last_id, self.minlat, self.minlon, self.maxlat, self.maxlon = self._find_next_id()
 
     def get_nodes(self, tags=None):
         """
@@ -31,12 +31,23 @@ class OSMParser:
         return nodes
 
     def add_node(self, coordinates):
+        """
+        Add a node to the OSM data. The function will provide a unique ID.
+        :param coordinates: GPS coordinates in decimal form in a tuple '(lat, lon)'
+        :return: OSM ID of the node element
+        """
         self.last_id += 1
         node = ET.SubElement(self.root, 'node', attrib={"id": str(self.last_id), "lat": str(coordinates[0]), "lon": str(coordinates[1]), "visible": "true"})
         ET.SubElement(node, 'tag', attrib={"k": "type", "v": "station"})
         return self.last_id
 
     def add_way(self, waypoints):
+        """
+        Add a way to the osm data.
+        :param waypoints: list of IDs of OSM nodes
+        :return: ID of the way element
+        """
+        #TODO test if the way point actually exist
         self.last_id += 1
         way = ET.SubElement(self.root, 'way', attrib={"id": str(self.last_id)})
         for point in waypoints:
@@ -45,6 +56,10 @@ class OSMParser:
         return self.last_id
 
     def store(self, path):
+        """
+        Store the data as OSM XML
+        :param path: File path
+        """
         with open(path, "w", encoding='utf-8') as file:
             sort_order = {
                 'bounds': 0,
@@ -56,7 +71,7 @@ class OSMParser:
             string = ET.tostring(self.root, encoding='unicode')
             file.write(string)
 
-    def find_next_id(self):
+    def _find_next_id(self):
         last_id = 0
         minlat = 0
         minlon = 0
