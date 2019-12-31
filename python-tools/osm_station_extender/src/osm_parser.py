@@ -64,10 +64,12 @@ class OSMParser:
         """
         with open(path, "w", encoding='utf-8') as file:
             sort_order = {
-                'bounds': 0,
-                'node': 1,
-                'way': 2,
-                'relation': 3
+                'note': 0,
+                'meta': 1,
+                'bounds': 2,
+                'node': 3,
+                'way': 4,
+                'relation': 5
             }
             self.root[:] = sorted(self.root, key=lambda elem: sort_order[elem.tag])
             string = ET.tostring(self.root, encoding='unicode')
