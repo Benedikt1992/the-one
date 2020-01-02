@@ -104,12 +104,12 @@ class OSMParser:
             if 'lat' in item.attrib:
                 if Decimal(item.attrib['lat']) > maxlat:
                     maxlat = Decimal(item.attrib['lat'])
-                elif Decimal(item.attrib['lat']) < minlat or minlat == 0:
+                if Decimal(item.attrib['lat']) < minlat or minlat == 0:
                     minlat = Decimal(item.attrib['lat'])
             if 'lon' in item.attrib:
                 if Decimal(item.attrib['lon']) > maxlon:
                     maxlon = Decimal(item.attrib['lon'])
-                elif Decimal(item.attrib['lon']) < minlon or minlon == 0:
+                if Decimal(item.attrib['lon']) < minlon or minlon == 0:
                     minlon = Decimal(item.attrib['lon'])
 
         return last_id, minlat, minlon, maxlat, maxlon
