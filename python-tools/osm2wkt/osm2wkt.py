@@ -36,6 +36,8 @@ else:
 # nodes = {id: (lat,lon,x,y)}
 nodes = {}
 for node in root.findall('node'):
+    if nodes.get(node.get('id'), None) is not None:
+        raise ArithmeticError("Duplicate ID")
     nodes[node.get('id')] = (Decimal(node.get('lat')), Decimal(node.get('lon')), None, None)
 
 with open('export.wkt', 'w') as output:
@@ -50,6 +52,8 @@ with open('export.wkt', 'w') as output:
                 y = distance.distance((node[0], node[1]),
                                       (minlat, node[1])).meters
                 nodes[point.get('ref')] = (node[0], node[1], x, y)
-            waypoints.append("{} {}".format(x, y))
+                node = nodes[point.get('ref')]
+            waypoints.append("{} {}".format(node[2], node[3]))
+
         output.write(", ".join(waypoints))
         output.write(")\n")
