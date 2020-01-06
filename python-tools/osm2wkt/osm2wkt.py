@@ -8,23 +8,29 @@ root = tree.getroot()
 
 # latitude is horizontal from -90 -- 0 -- 90
 # longitude is vertical from -180 -- 0 -- 180
-# TODO use bounds element if available
 minlat = Decimal('90')
 minlon = Decimal('180')
 maxlat = Decimal('-90')
 maxlon = Decimal('-180')
 
-for item in root.findall('node'):
-    if 'lat' in item.attrib:
-        if Decimal(item.attrib['lat']) > maxlat:
-            maxlat = Decimal(item.attrib['lat'])
-        if Decimal(item.attrib['lat']) < minlat:
-            minlat = Decimal(item.attrib['lat'])
-    if 'lon' in item.attrib:
-        if Decimal(item.attrib['lon']) > maxlon:
-            maxlon = Decimal(item.attrib['lon'])
-        if Decimal(item.attrib['lon']) < minlon:
-            minlon = Decimal(item.attrib['lon'])
+bounds = root.find('bounds')
+if bounds is not None:
+    minlat = Decimal(bounds.get('minlat'))
+    minlon = Decimal(bounds.get('minlon'))
+    maxlat = Decimal(bounds.get('maxlat'))
+    maxlon = Decimal(bounds.get('maxlon'))
+else:
+    for item in root.findall('node'):
+        if 'lat' in item.attrib:
+            if Decimal(item.attrib['lat']) > maxlat:
+                maxlat = Decimal(item.attrib['lat'])
+            if Decimal(item.attrib['lat']) < minlat:
+                minlat = Decimal(item.attrib['lat'])
+        if 'lon' in item.attrib:
+            if Decimal(item.attrib['lon']) > maxlon:
+                maxlon = Decimal(item.attrib['lon'])
+            if Decimal(item.attrib['lon']) < minlon:
+                minlon = Decimal(item.attrib['lon'])
 
 with open('test.wkt', 'w') as output:
     node_cache = {}
