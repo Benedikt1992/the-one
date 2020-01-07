@@ -1,9 +1,10 @@
 import xml.etree.ElementTree as ET
 from decimal import *
 from geopy import distance
+import networkx as nx
+# TODO include libs as requirements in setup.py
 
-
-tree = ET.parse("export.osm")
+tree = ET.parse("ICE-germany-extended.osm")
 root = tree.getroot()
 
 # latitude is horizontal from -90 -- 0 -- 90
@@ -38,21 +39,62 @@ nodes = {}
 for node in root.findall('node'):
     if nodes.get(node.get('id'), None) is not None:
         raise ArithmeticError("Duplicate ID")
-    nodes[node.get('id')] = (Decimal(node.get('lat')), Decimal(node.get('lon')), None, None)
+    lat = Decimal(node.get('lat'))
+    lon = Decimal(node.get('lon'))
+    x = distance.distance((lat, lon),
+                          (lat, minlon)).meters
+    y = distance.distance((lat, lon),
+                          (minlat, lon)).meters
+    nodes[node.get('id')] = (lat, lon, x, y)
 
-with open('export.wkt', 'w') as output:
-    for way in root.findall('way'):
+ways = []
+for way in root.findall('way'):
+    waypoints = []
+    for point in way.findall('nd'):
+        waypoints.append(point.get('ref'))
+    ways.append(waypoints)
+
+graph = nx.Graph()
+for way in ways:
+    for i in range(len(way)):
+        if i == 0:
+            continue
+        graph.add_edge(way[i-1], way[i])
+
+connected_sets = list(nx.connected_components(graph))
+largest_set = max(connected_sets, key=len)
+connected_sets.remove(largest_set)
+for partition in connected_sets:
+    r = largest_set.intersection(partition)
+    if r:
+        raise ArithmeticError("Partitions are not disjoint")
+
+for partition in connected_sets:
+    for way in ways:
+        if partition.intersection(way):
+            ways.remove(way)
+
+print("Removed {} unconnected nodes from {} nodes in total.".format(graph.number_of_nodes()-len(largest_set), graph.number_of_nodes()))
+
+graph = nx.Graph()
+for way in ways:
+    for i in range(len(way)):
+        if i == 0:
+            continue
+        graph.add_edge(way[i-1], way[i])
+connected_sets = list(nx.connected_components(graph))
+if len(connected_sets) > 1:
+    print("Couldn't remove all partitions.")
+
+# TODO test if gtfs stations are still part of the graph
+# todo have a look into some partitions. Why are they not connected?
+
+with open('ICE-germany-extended.wkt', 'w') as output:
+    for way in ways:
         output.write("LINESTRING (")
         waypoints = []
-        for point in way.findall('nd'):
-            node = nodes[point.get('ref')]
-            if node[2] is None and node[3] is None:
-                x = distance.distance((node[0], node[1]),
-                                      (node[0], minlon)).meters
-                y = distance.distance((node[0], node[1]),
-                                      (minlat, node[1])).meters
-                nodes[point.get('ref')] = (node[0], node[1], x, y)
-                node = nodes[point.get('ref')]
+        for point in way:
+            node = nodes[point]
             waypoints.append("{} {}".format(node[2], node[3]))
 
         output.write(", ".join(waypoints))
