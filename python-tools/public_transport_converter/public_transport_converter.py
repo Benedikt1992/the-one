@@ -8,7 +8,7 @@ from src.gtfs_parser import GTFSParser
 from src.util.store_key_pair import StoreKeyPair
 
 
-class OSMStationExtender:
+class PublicTransportConverter:
     def __init__(self):
         parser = ArgumentParser(description='Extend osm xml data by gtfs stations and connect them to their stop points')
         parser.add_argument('-osm', '--osm', required=True, help="Input OSM XML file")
@@ -90,9 +90,9 @@ class OSMStationExtender:
 
 
 if __name__ == "__main__":
-    extender = OSMStationExtender()
-    correlations = extender.find_correlations()
-    correlations = extender.store_stops_as_nodes(correlations)
-    extender.store_ways(correlations)
-    extender.store_osm()
+    converter = PublicTransportConverter()
+    correlations = converter.find_correlations()
+    correlations = converter.store_stops_as_nodes(correlations)
+    converter.store_ways(correlations)
+    converter.store_osm()
 

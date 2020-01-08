@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 setup(
-    name="OSM Station Extender",
+    name="Public Transport Converter",
     version="0.1",
     packages=find_packages(),
-    scripts=['osm_station_extender.py'],
+    scripts=['public_transport_converter.py'],
 
-    description="This package takes osm rail data and gtfs stops and combines them in one map.",
+    description="This package takes osm rail data and gtfs schedule and generates a map and schedules for the ONE simulator",
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine
