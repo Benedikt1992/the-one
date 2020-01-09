@@ -5,6 +5,7 @@ from src.parser.osm_parser import OSMParser
 from src.parser.gtfs_parser import GTFSParser
 from src.util.store_key_pair import StoreKeyPair
 from src.osm_extender import OSMExtender
+from src.gps2wkt import GPS2WKT
 
 
 class PublicTransportConverter:
@@ -29,6 +30,7 @@ class PublicTransportConverter:
     def run(self):
         OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
         self._store_osm()
+        GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '.wkt').osm2wkt()
 
     def _store_osm(self):
         """

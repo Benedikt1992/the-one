@@ -30,6 +30,19 @@ class OSMParser:
                         break
         return nodes
 
+    def get_ways(self):
+        """
+        Filter always of osm data.
+        :return: list of waypoint lists.
+        """
+        ways = []
+        for way in self.root.findall('way'):
+            waypoints = []
+            for point in way.findall('nd'):
+                waypoints.append(Decimal(point.get('ref')))
+            ways.append(waypoints)
+        return ways
+
     def add_node(self, coordinates):
         """
         Add a node to the OSM data. The function will provide a unique ID.
@@ -92,10 +105,12 @@ class OSMParser:
 
     def _find_next_id(self):
         last_id = 0
-        minlat = 0
-        minlon = 0
-        maxlat = 0
-        maxlon = 0
+        # latitude is horizontal from -90 -- 0 -- 90
+        # longitude is vertical from -180 -- 0 -- 180
+        minlat = Decimal('90')
+        minlon = Decimal('180')
+        maxlat = Decimal('-90')
+        maxlon = Decimal('-180')
 
         for item in self.root:
             if 'id' in item.attrib:
@@ -104,12 +119,15 @@ class OSMParser:
             if 'lat' in item.attrib:
                 if Decimal(item.attrib['lat']) > maxlat:
                     maxlat = Decimal(item.attrib['lat'])
-                if Decimal(item.attrib['lat']) < minlat or minlat == 0:
+                if Decimal(item.attrib['lat']) < minlat:
                     minlat = Decimal(item.attrib['lat'])
             if 'lon' in item.attrib:
                 if Decimal(item.attrib['lon']) > maxlon:
                     maxlon = Decimal(item.attrib['lon'])
-                if Decimal(item.attrib['lon']) < minlon or minlon == 0:
+                if Decimal(item.attrib['lon']) < minlon:
                     minlon = Decimal(item.attrib['lon'])
 
         return last_id, minlat, minlon, maxlat, maxlon
+
+    def get_bounds(self):
+        return self.minlat, self.minlon, self.maxlat, self.maxlon
