@@ -32,7 +32,6 @@ else:
                 maxlon = Decimal(item.attrib['lon'])
             if Decimal(item.attrib['lon']) < minlon:
                 minlon = Decimal(item.attrib['lon'])
-# todo use multiprocessing
 
 # nodes = {id: (lat,lon,x,y)}
 nodes = {}
