@@ -7,11 +7,11 @@ class OSMExtender:
 
     def extend_with_gtfs_station(self, gtfs_parser, osm_filter, distance_threshold):
         """
-        # todo
-        :param gtfs_parser:
-        :param osm_filter:
-        :param distance_threshold:
-        :return:
+        Extend existing OSM data with nodes for stations of a gtfs schedule.
+        Each station is connected with the corresponding stop positions of each platform.
+        :param gtfs_parser: gtfs parser object
+        :param osm_filter: key value pairs used to filter stop positions from the osm data
+        :param distance_threshold: maximum distance allowed between station and its stops in meters
         """
         nodes, stops = self._filter_data(osm_filter, gtfs_parser)
         stop_node_correlations = self._correlate_points(nodes, stops, distance_threshold)
