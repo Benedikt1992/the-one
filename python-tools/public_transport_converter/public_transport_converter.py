@@ -31,9 +31,11 @@ class PublicTransportConverter:
             self.output = os.path.join(self.args.output, os.path.basename(self.args.osm))
 
     def run(self):
-        station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
-        self._store_osm()
-        GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '-extended' + '.wkt', self.args.no_scale, self.args.max_x, self.args.max_y).osm2wkt(station_ids)
+        # station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
+        # self._store_osm()
+        # GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '-extended' + '.wkt', self.args.no_scale, self.args.max_x, self.args.max_y).osm2wkt(station_ids)
+        GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '-extended' + '.wkt',
+                self.args.no_scale, self.args.max_x, self.args.max_y).gtfs2wkt()
 
     def _store_osm(self):
         """

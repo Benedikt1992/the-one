@@ -1,5 +1,6 @@
 from geopy import distance
 import networkx as nx
+from decimal import *
 
 from src.parser.osm_parser import OSMParser
 
@@ -15,17 +16,7 @@ class GPS2WKT:
         self.max_scaled_y = max_y
 
     def osm2wkt(self, station_ids):
-        if self.no_scaling:
-            scaling_factor = int(1)
-        else:
-            max_x = distance.distance((self.maxlat, self.maxlon),
-                                      (self.maxlat, self.minlon)).meters
-            max_y = distance.distance((self.maxlat, self.maxlon),
-                                      (self.minlat, self.maxlon)).meters
-            scaling_factor_x = int(max_x / self.max_scaled_x) + 1
-            scaling_factor_y = int(max_y / self.max_scaled_y) + 1
-            scaling_factor = max(scaling_factor_x, scaling_factor_y)
-            print("Scale down with factor 1:{} to meet destination size of {}x{}".format(scaling_factor, self.max_scaled_x, self.max_scaled_y))
+        scaling_factor = self.scaling_factor()
 
         nodes = self.osm_parser.get_nodes()
 
@@ -80,9 +71,33 @@ class GPS2WKT:
 
         self._write_wkt(nodes, ways)
 
+    def scaling_factor(self):
+        if self.no_scaling:
+            scaling_factor = int(1)
+        else:
+            max_x = distance.distance((self.maxlat, self.maxlon),
+                                      (self.maxlat, self.minlon)).meters
+            max_y = distance.distance((self.maxlat, self.maxlon),
+                                      (self.minlat, self.maxlon)).meters
+            scaling_factor_x = int(max_x / self.max_scaled_x) + 1
+            scaling_factor_y = int(max_y / self.max_scaled_y) + 1
+            scaling_factor = max(scaling_factor_x, scaling_factor_y)
+            print("Scale down with factor 1:{} to meet destination size of {}x{}".format(scaling_factor,
+                                                                                         self.max_scaled_x,
+                                                                                         self.max_scaled_y))
+        return scaling_factor
+
     def gtfs2wkt(self):
-        # TODO transform coordinates within gtfs schedule
-        raise NotImplementedError
+        scaling_factor = self.scaling_factor()
+        stops = self.gtfs_parser.get_stops()
+        for k, v in stops.items():
+            x = distance.distance((v[0], v[1]),
+                                  (v[0], self.minlon)).meters / scaling_factor
+            y = distance.distance((v[0], v[1]),
+                                  (self.minlat, v[1])).meters / scaling_factor
+            stops[k] = (Decimal("{:.6f}".format(x)), Decimal("{:.6f}".format(y)))
+
+        self.gtfs_parser.update_stop_positions(stops)
 
     def _write_wkt(self, nodes, ways):
         with open(self.output, 'w') as output:
