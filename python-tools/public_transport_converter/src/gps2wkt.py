@@ -14,7 +14,7 @@ class GPS2WKT:
         self.max_scaled_x = max_x
         self.max_scaled_y = max_y
 
-    def osm2wkt(self):
+    def osm2wkt(self, station_ids):
         if self.no_scaling:
             scaling_factor = int(1)
         else:
@@ -74,7 +74,9 @@ class GPS2WKT:
         connected_sets = list(nx.connected_components(graph))
         if len(connected_sets) > 1:
             print("Couldn't remove all partitions.")
-        # TODO test if gtfs stations are still part of the graph
+
+        if not set(station_ids).issubset(graph.nodes):
+            raise RuntimeError("Some GTFS stations are not part of the graph.")
 
         self._write_wkt(nodes, ways)
 

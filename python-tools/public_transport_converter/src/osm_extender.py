@@ -12,12 +12,13 @@ class OSMExtender:
         :param gtfs_parser: gtfs parser object
         :param osm_filter: key value pairs used to filter stop positions from the osm data
         :param distance_threshold: maximum distance allowed between station and its stops in meters
+        :return [new ids of gtfs stations]
         """
         nodes, stops = self._filter_data(osm_filter, gtfs_parser)
         stop_node_correlations = self._correlate_points(nodes, stops, distance_threshold)
         stop_node_correlations = self._store_stops_as_nodes(stop_node_correlations, stops)
         self._store_ways(stop_node_correlations)
-        return True
+        return stop_node_correlations.keys()
 
     def _filter_data(self, filter, gtfs_parser):
         nodes = self.osm_parser.get_nodes(filter)
