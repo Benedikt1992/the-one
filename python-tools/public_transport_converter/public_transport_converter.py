@@ -18,6 +18,10 @@ class PublicTransportConverter:
                             help="Add filter to search for nodes. Use list in form of KEY1=VAL1,KEY2=VAL2. Each entry is connected with logical or.")
         parser.add_argument('-d', '--distance', nargs='?', type=int, default=1000, help="Maximum distance between gtfs station and osm stop positions.")
         parser.add_argument('-o', '--output', nargs='?', default='', help="Output file. The source OSM File is extended with '-extended' by default.")
+        parser.add_argument('-s', '--no-scale', action='store_true', default=False, help="Disable scaling of the map for simulation.")
+        parser.add_argument('-x', '--max_x', nargs="?", default='4500', type=int, help="Maximum size of x dimension within simulation.")
+        parser.add_argument('-y', '--max_y', nargs="?", default='3400', type=int, help="Maximum size of y dimension within simulation.")
+        # TODO redefine output parameter for all outputs
         self.args = parser.parse_args()
 
         self.osm_parser = OSMParser(self.args.osm)
@@ -30,7 +34,7 @@ class PublicTransportConverter:
     def run(self):
         OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
         self._store_osm()
-        GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '.wkt').osm2wkt()
+        GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '.wkt', self.args.no_scale, self.args.max_x, self.args.max_y).osm2wkt()
 
     def _store_osm(self):
         """

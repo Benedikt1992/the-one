@@ -5,13 +5,28 @@ from src.parser.osm_parser import OSMParser
 
 
 class GPS2WKT:
-    def __init__(self, osm_parser: OSMParser, gtfs_parser, file):
+    def __init__(self, osm_parser: OSMParser, gtfs_parser, file,  no_scale, max_x, max_y):
         self.output = file
         self.osm_parser = osm_parser
         self.gtfs_parser = gtfs_parser
         self.minlat, self.minlon, self.maxlat, self.maxlon = osm_parser.get_bounds()
+        self.no_scaling = no_scale
+        self.max_scaled_x = max_x
+        self.max_scaled_y = max_y
 
     def osm2wkt(self):
+        if self.no_scaling:
+            scaling_factor = int(1)
+        else:
+            max_x = distance.distance((self.maxlat, self.maxlon),
+                                      (self.maxlat, self.minlon)).meters
+            max_y = distance.distance((self.maxlat, self.maxlon),
+                                      (self.minlat, self.maxlon)).meters
+            scaling_factor_x = int(max_x / self.max_scaled_x) + 1
+            scaling_factor_y = int(max_y / self.max_scaled_y) + 1
+            scaling_factor = max(scaling_factor_x, scaling_factor_y)
+            print("Scale down with factor 1:{} to meet destination size of {}x{}".format(scaling_factor, self.max_scaled_x, self.max_scaled_y))
+
         nodes = self.osm_parser.get_nodes()
 
         # calculate wkt coordinates
@@ -19,9 +34,9 @@ class GPS2WKT:
             lat = nodes[node][0]
             lon = nodes[node][1]
             x = distance.distance((lat, lon),
-                                  (lat, self.minlon)).meters
+                                  (lat, self.minlon)).meters / scaling_factor
             y = distance.distance((lat, lon),
-                                  (self.minlat, lon)).meters
+                                  (self.minlat, lon)).meters / scaling_factor
             nodes[node] = (lat, lon, x, y)
 
         ways = self.osm_parser.get_ways()
@@ -74,7 +89,8 @@ class GPS2WKT:
                 waypoints = []
                 for point in way:
                     node = nodes[point]
-                    waypoints.append("{} {}".format(node[2], node[3]))
+                    # Limit precision to 6 digits
+                    waypoints.append("{:.6f} {:.6f}".format(node[2], node[3]))
 
                 output.write(", ".join(waypoints))
                 output.write(")\n")
