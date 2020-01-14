@@ -7,10 +7,7 @@ package movement;
 import core.Coord;
 import core.Settings;
 import core.SettingsError;
-import movement.map.DijkstraPathFinder;
-import movement.map.MapNode;
-import movement.map.MapRoute;
-import movement.map.MapScheduledRoute;
+import movement.map.*;
 
 import java.util.List;
 
@@ -107,9 +104,9 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	@Override
 	public Path getPath() {
 		Path p = new Path(generateSpeed());
-		MapNode to = route.nextStop();
+		MapScheduledNode to = route.nextStop();
 
-		List<MapNode> nodePath = pathFinder.getShortestPath(lastMapNode, to);
+		List<MapNode> nodePath = pathFinder.getShortestPath(lastMapNode, to.getNode());
 
 		// this assertion should never fire if the map is checked in read phase
 		assert nodePath.size() > 0 : "No path from " + lastMapNode + " to " +
@@ -119,7 +116,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
 			p.addWaypoint(node.getLocation());
 		}
 
-		lastMapNode = to;
+		lastMapNode = to.getNode();
 
 		return p;
 	}
@@ -130,7 +127,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	@Override
 	public Coord getInitialLocation() {
 		if (lastMapNode == null) {
-			lastMapNode = route.nextStop();
+			lastMapNode = route.nextStop().getNode();
 		}
 
 		return lastMapNode.getLocation().clone();
@@ -155,7 +152,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	 * Returns the list of stops on the route
 	 * @return The list of stops
 	 */
-	public List<MapNode> getStops() {
+	public List<MapScheduledNode> getStops() {
 		return route.getStops();
 	}
 }

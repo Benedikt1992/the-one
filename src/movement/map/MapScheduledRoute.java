@@ -29,7 +29,7 @@ public class MapScheduledRoute {
 	public static final int PINGPONG = 2;
 
 
-	private List<MapNode> stops;
+	private List<MapScheduledNode> stops;
 	private int type; // type of the route
 	private int index; // index of the previous returned map node
 	private boolean comingBack;
@@ -39,7 +39,7 @@ public class MapScheduledRoute {
 	 * @param stops The stops of this route in a list
 	 * @param type Type of the route (e.g. CIRCULAR or PINGPONG)
 	 */
-	public MapScheduledRoute(int type, List<MapNode> stops) {
+	public MapScheduledRoute(int type, List<MapScheduledNode> stops) {
 		assert stops.size() > 0 : "Route needs stops";
 		this.type = type;
 		this.stops = stops;
@@ -67,7 +67,7 @@ public class MapScheduledRoute {
 		return stops.size();
 	}
 
-	public List<MapNode> getStops() {
+	public List<MapScheduledNode> getStops() {
 		return this.stops;
 	}
 
@@ -75,8 +75,8 @@ public class MapScheduledRoute {
 	 * Returns the next stop on the route (depending on the route mode)
 	 * @return the next stop on the route
 	 */
-	public MapNode nextStop() {
-		MapNode next = stops.get(index);
+	public MapScheduledNode nextStop() {
+		MapScheduledNode next = stops.get(index);
 
 		if (comingBack) {
 			index--; // ping-pong coming back
@@ -147,7 +147,7 @@ public class MapScheduledRoute {
 		}
 
 		for (List<Tuple<Double, Coord>> l : coords) {
-			List<MapNode> nodes = new ArrayList<MapNode>();
+			List<MapScheduledNode> nodes = new ArrayList<MapScheduledNode>();
 			for (Tuple<Double, Coord> c : l) {
 				// make coordinates match sim map data
 				if (mirror) {
@@ -162,10 +162,11 @@ public class MapScheduledRoute {
 					orig.setLocation(orig.getX(), -orig.getY());
 
 					throw new SettingsError("MapRoute in file " + routeFile +
-							" contained invalid coordinate " + c + " orig: " +
+							" contained invalid coordinate " + c.getValue() + " orig: " +
 							orig);
 				}
-				nodes.add(node);
+				MapScheduledNode scheduledNode = new MapScheduledNode(c.getKey(), node);
+				nodes.add(scheduledNode);
 			}
 
 			routes.add(new MapScheduledRoute(type, nodes));
