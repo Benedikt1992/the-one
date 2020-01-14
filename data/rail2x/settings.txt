@@ -46,7 +46,7 @@ Scenario.nrofHostGroups = 1
 
 
 # Common settings for all groups
-Group.movementModel = MapRouteMovement
+Group.movementModel = MapScheduledMovement
 Group.router = EpidemicRouter
 Group.bufferSize = 5G
 Group.waitTime = 0, 120
@@ -60,9 +60,9 @@ Group.speed = 0.11, 0.19
 Group.msgTtl = 43200
 Group.groupID = p
 
-Group1.nrofHosts = 7
-Group1.routeFile = data/rail2x/routes_scaled295-ice-germany.wkt
-Group1.routeType = 2
+Group1.nrofHosts = 2
+Group1.routeFile = data/rail2x/schedule.txt
+Group1.routeType = 1
 
 
 ## Message creation parameters
@@ -87,7 +87,7 @@ MovementModel.warmup = 1000
 
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 1
-MapBasedMovement.mapFile1 = data/rail2x/scaled295-ICE-germany.osm.wkt
+MapBasedMovement.mapFile1 = data/rail2x/rails.wkt
 
 ## Reports - all report names have to be valid report classes
 
