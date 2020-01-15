@@ -7,6 +7,7 @@ package movement;
 import core.Coord;
 import core.Settings;
 import core.SettingsError;
+import core.SimClock;
 import movement.map.*;
 
 import java.util.List;
@@ -29,12 +30,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	 */
 	public static final String ROUTE_TYPE_S = "routeType";
 
-	/**
-	 * Per node group setting for selecting which stop (counting from 0 from
-	 * the start of the route) should be the first one. By default, or if a
-	 * negative value is given, a random stop is selected.
-	 */
-	public static final String ROUTE_FIRST_STOP_S = "routeFirstStop";
+	/** node where the last path ended or node next to initial placement */
+	protected MapScheduledNode lastMapNode;
 
 	/** the Dijkstra shortest path finder */
 	private DijkstraPathFinder pathFinder;
@@ -44,10 +41,11 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	/** next route's index to give by prototype */
 	private Integer nextRouteIndex = null;
 	/** Index of the first stop for a group of nodes (or -1 for random) */
-	private int firstStopIndex = -1;
+	private int firstStopIndex = 0;
 
 	/** Route of the movement model's instance */
 	private MapScheduledRoute route;
+
 
 	/**
 	 * Creates a new movement model based on a Settings object's settings.
@@ -64,15 +62,6 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		if (this.nextRouteIndex >= this.allRoutes.size()) {
 			this.nextRouteIndex = 0;
 		}
-
-		if (settings.contains(ROUTE_FIRST_STOP_S)) {
-			this.firstStopIndex = settings.getInt(ROUTE_FIRST_STOP_S);
-			if (this.firstStopIndex >= this.route.getNrofStops()) {
-				throw new SettingsError("Too high first stop's index (" +
-						this.firstStopIndex + ") for route with only " +
-						this.route.getNrofStops() + " stops");
-			}
-		}
 	}
 
 	/**
@@ -85,13 +74,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		this.route = proto.allRoutes.get(proto.nextRouteIndex).replicate();
 		this.firstStopIndex = proto.firstStopIndex;
 
-		if (firstStopIndex < 0) {
-			/* set a random starting position on the route */
-			this.route.setNextIndex(rng.nextInt(route.getNrofStops()-1));
-		} else {
-			/* use the one defined in the config file */
-			this.route.setNextIndex(this.firstStopIndex);
-		}
+		/* use the one defined in the config file */
+		this.route.setNextIndex(this.firstStopIndex);
 
 		this.pathFinder = proto.pathFinder;
 
@@ -103,22 +87,43 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	@Override
 	public Path getPath() {
+
+		if (lastMapNode.getTime() > SimClock.getTime()) {return null;}
+
 		Path p = new Path(generateSpeed());
 		MapScheduledNode to = route.nextStop();
+		if (to.getNode() == lastMapNode.getNode()) {
+			lastMapNode = to;
+			return null;
+		}
 
-		List<MapNode> nodePath = pathFinder.getShortestPath(lastMapNode, to.getNode());
+		List<MapNode> nodePath = pathFinder.getShortestPath(lastMapNode.getNode(), to.getNode());
 
 		// this assertion should never fire if the map is checked in read phase
-		assert nodePath.size() > 0 : "No path from " + lastMapNode + " to " +
-			to + ". The simulation map isn't fully connected";
+		assert nodePath.size() > 0 : "No path from " + lastMapNode.getNode() + " to " +
+			to.getNode() + ". The simulation map isn't fully connected";
+
+		double distance = 0;
+		for (int i = 0; i < nodePath.size() - 1; i++) {
+			MapNode n1 = nodePath.get(i);
+			MapNode n2 = nodePath.get(i + 1);
+			distance += n1.getLocation().distance(n2.getLocation());
+		}
+		double duration = to.getTime() - SimClock.getTime();
 
 		for (MapNode node : nodePath) { // create a Path from the shortest path
 			p.addWaypoint(node.getLocation());
 		}
+		p.setSpeed(distance / duration);
 
-		lastMapNode = to.getNode();
+		lastMapNode = to;
 
 		return p;
+	}
+
+	@Override
+	public double nextPathAvailable() {
+		return lastMapNode.getTime();
 	}
 
 	/**
@@ -127,16 +132,16 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	@Override
 	public Coord getInitialLocation() {
 		if (lastMapNode == null) {
-			lastMapNode = route.nextStop().getNode();
+			lastMapNode = route.nextStop();
 		}
 
-		return lastMapNode.getLocation().clone();
+		return lastMapNode.getNode().getLocation().clone();
 	}
 
 	@Override
 	public Coord getLastLocation() {
 		if (lastMapNode != null) {
-			return lastMapNode.getLocation().clone();
+			return lastMapNode.getNode().getLocation().clone();
 		} else {
 			return null;
 		}
