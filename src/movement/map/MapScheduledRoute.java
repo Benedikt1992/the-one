@@ -17,34 +17,22 @@ import java.util.List;
 /**
  * TODO adapt this class
  * A route that consists of map nodes. There can be different kind of routes
- * and the type is determined by the type parameter ({@value #CIRCULAR}
- * or {@value #PINGPONG}).
+ * and the type is determined by the type parameter.
  */
 public class MapScheduledRoute {
-	/** Type of the route ID: circular ({@value}).
-	 * After reaching the last node on path, the next node is the first node */
-	public static final int CIRCULAR = 1;
-	/** Type of the route ID: ping-pong ({@value}).
-	 * After last node on path, the direction on path is reversed */
-	public static final int PINGPONG = 2;
-
 
 	private List<MapScheduledNode> stops;
-	private int type; // type of the route
 	private int index; // index of the previous returned map node
-	private boolean comingBack;
+	private boolean arrived = false;
 
 	/**
 	 * Creates a new map route
 	 * @param stops The stops of this route in a list
-	 * @param type Type of the route (e.g. CIRCULAR or PINGPONG)
 	 */
-	public MapScheduledRoute(int type, List<MapScheduledNode> stops) {
+	public MapScheduledRoute(List<MapScheduledNode> stops) {
 		assert stops.size() > 0 : "Route needs stops";
-		this.type = type;
 		this.stops = stops;
 		this.index = 0;
-		this.comingBack = false;
 	}
 
 	/**
@@ -76,28 +64,11 @@ public class MapScheduledRoute {
 	 * @return the next stop on the route
 	 */
 	public MapScheduledNode nextStop() {
+		if (arrived) { return null; }
 		MapScheduledNode next = stops.get(index);
-
-		if (comingBack) {
-			index--; // ping-pong coming back
-		}
-		else {
-			index++;
-		}
-
-		if (index < 0) { // returned to beginning in ping-pong
-			comingBack = false; // start next round
-			index = 1;
-		}
-
+		index++;
 		if (index >= stops.size()) { // reached last stop
-			if (type == PINGPONG) {
-				comingBack = true;
-				index = stops.size() - 1; // go next to prev to last stop
-			}
-			else {
-				index = 0; // circular goes back to square one
-			}
+			arrived = true;
 		}
 
 		return next;
@@ -108,22 +79,21 @@ public class MapScheduledRoute {
 	 * @return a replicate of this route
 	 */
 	public MapScheduledRoute replicate() {
-		return new MapScheduledRoute(type, stops);
+		return new MapScheduledRoute(stops);
 	}
 
 	public String toString() {
-		return ((type == CIRCULAR) ? "Circular" : "Ping-pong") + " route with "+
-			getNrofStops() + " stops";
+		return ("Route with "+ getNrofStops() + " stops starting at " + stops.get(0).getNode().getLocation() +
+				"@" +  stops.get(0).getTime() + "s");
 	}
 
 	/**
 	 * Reads routes from files defined in Settings
 	 * @param fileName name of the file where to read routes
-	 * @param type Type of the route
 	 * @param map SimMap where corresponding map nodes are found
 	 * @return A list of MapRoutes that were read
 	 */
-	public static List<MapScheduledRoute> readRoutes(String fileName, int type,
+	public static List<MapScheduledRoute> readRoutes(String fileName,
                                                      SimMap map) {
 		List<MapScheduledRoute> routes = new ArrayList<MapScheduledRoute>();
 		ScheduleReader reader = new ScheduleReader();
@@ -132,10 +102,6 @@ public class MapScheduledRoute {
 		boolean mirror = map.isMirrored();
 		double xOffset = map.getOffset().getX();
 		double yOffset = map.getOffset().getY();
-
-		if (type != CIRCULAR && type != PINGPONG) {
-			throw new SettingsError("Invalid route type (" + type + ")");
-		}
 
 		try {
 			routeFile = new File(fileName);
@@ -169,7 +135,7 @@ public class MapScheduledRoute {
 				nodes.add(scheduledNode);
 			}
 
-			routes.add(new MapScheduledRoute(type, nodes));
+			routes.add(new MapScheduledRoute(nodes));
 		}
 
 		return routes;

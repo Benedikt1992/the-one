@@ -17,18 +17,13 @@ import java.util.List;
  * Map based movement model that uses predetermined paths within the map area.
  * Nodes using this model (can) stop on every route waypoint and find their
  * way to next waypoint using {@link DijkstraPathFinder}. There can be
- * different type of routes; see {@link #ROUTE_TYPE_S}.
+ * different type of routes.
  */
 public class MapScheduledMovement extends MapBasedMovement implements
 	SwitchableMovement {
 
 	/** Per node group setting used for selecting a route file ({@value}) */
 	public static final String ROUTE_FILE_S = "routeFile";
-	/**
-	 * Per node group setting used for selecting a route's type ({@value}).
-	 * Integer value from {@link MapRoute} class.
-	 */
-	public static final String ROUTE_TYPE_S = "routeType";
 
 	/** node where the last path ended or node next to initial placement */
 	protected MapScheduledNode lastMapNode;
@@ -45,7 +40,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	/** Route of the movement model's instance */
 	private MapScheduledRoute route;
-
+	/** If the model is active */
+	private boolean isActive = true;
 
 	/**
 	 * Creates a new movement model based on a Settings object's settings.
@@ -54,8 +50,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	public MapScheduledMovement(Settings settings) {
 		super(settings);
 		String fileName = settings.getSetting(ROUTE_FILE_S);
-		int type = settings.getInt(ROUTE_TYPE_S);
-		allRoutes = MapScheduledRoute.readRoutes(fileName, type, getMap());
+		allRoutes = MapScheduledRoute.readRoutes(fileName, getMap());
 		nextRouteIndex = 0;
 		pathFinder = new DijkstraPathFinder(getOkMapNodeTypes());
 		this.route = this.allRoutes.get(this.nextRouteIndex).replicate();
@@ -92,6 +87,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 		Path p = new Path(generateSpeed());
 		MapScheduledNode to = route.nextStop();
+		if (to == null) {
+			isActive = false;
+			return null;
+		}
 		if (to.getNode() == lastMapNode.getNode()) {
 			lastMapNode = to;
 			return null;
@@ -159,5 +158,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	 */
 	public List<MapScheduledNode> getStops() {
 		return route.getStops();
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
 	}
 }
