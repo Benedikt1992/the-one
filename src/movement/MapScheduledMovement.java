@@ -41,7 +41,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	/** Route of the movement model's instance */
 	private MapScheduledRoute route;
 	/** If the model is active */
-	private boolean isActive = true;
+	private boolean started = false;
+	private boolean stopped = false;
+	/** First time when the node becomes active */
+	private double inactiveUntil = 0;
 
 	/**
 	 * Creates a new movement model based on a Settings object's settings.
@@ -82,13 +85,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	@Override
 	public Path getPath() {
-
-		if (lastMapNode.getTime() > SimClock.getTime()) {return null;}
-
 		Path p = new Path(generateSpeed());
 		MapScheduledNode to = route.nextStop();
 		if (to == null) {
-			isActive = false;
+			stopped = true;
 			return null;
 		}
 		if (to.getNode() == lastMapNode.getNode()) {
@@ -134,6 +134,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 			lastMapNode = route.nextStop();
 		}
 
+		inactiveUntil = lastMapNode.getTime();
+
 		return lastMapNode.getNode().getLocation().clone();
 	}
 
@@ -162,6 +164,9 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	@Override
 	public boolean isActive() {
-		return isActive;
+		if ( SimClock.getTime() >= inactiveUntil ) {
+			started = true;
+		}
+		return started ^ stopped;
 	}
 }
