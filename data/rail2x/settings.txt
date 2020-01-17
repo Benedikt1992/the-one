@@ -23,7 +23,7 @@ btInterface.transmitSpeed = 250k
 btInterface.transmitRange = 5
 
 # Define 6 different node groups
-Scenario.nrofHostGroups = 1
+Scenario.nrofHostGroups = 2
 
 ## Group-specific settings:
 # groupID : Group's identifier. Used as the prefix of host names
@@ -46,7 +46,6 @@ Scenario.nrofHostGroups = 1
 
 
 # Common settings for all groups
-Group.movementModel = MapScheduledMovement
 Group.router = EpidemicRouter
 Group.bufferSize = 5G
 Group.waitTime = 0, 120
@@ -58,11 +57,18 @@ Group.interface1 = btInterface
 Group.speed = 0.11, 0.19
 # Message TTL of 300 minutes (5 hours)
 Group.msgTtl = 43200
-Group.groupID = p
+
 
 Group1.nrofHosts = 2
+Group1.movementModel = MapScheduledMovement
 Group1.routeFile = data/rail2x/schedule.txt
 Group1.routeType = 1
+Group1.groupID = p
+
+Group2.nrofHosts = 4
+Group2.movementModel = StationaryListMovement
+Group2.nodeLocationsFile = data/rail2x/stations.wkt
+Group2.groupID = s
 
 
 ## Message creation parameters
