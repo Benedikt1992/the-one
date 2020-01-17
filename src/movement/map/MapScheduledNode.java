@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * TODO adapt this class
- * A node in a SimMap. Node has a location, 0-n neighbors that it is
- * connected to and possibly a type identifier.
+ * A node which works as stop point in the {@link movement.MapScheduledMovement} model.
+ * It contains the corresponding node in a SimMap and the scheduled time.
+ * Time can be arrival or departure time.
  */
 public class MapScheduledNode {
 	/** The time the nodes is mentioned in the schedule */

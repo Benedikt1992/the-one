@@ -13,11 +13,10 @@ import movement.map.*;
 import java.util.List;
 
 /**
- * TODO: Change this class
- * Map based movement model that uses predetermined paths within the map area.
- * Nodes using this model (can) stop on every route waypoint and find their
- * way to next waypoint using {@link DijkstraPathFinder}. There can be
- * different type of routes.
+ * Map based movement model that uses predetermined scheduled paths within the map area.
+ * Nodes using this model will follow the predetermined schedule and stop moving once the schedule ends.
+ * See {@link input.ScheduleReader} for details.
+ * The path between 2 stops in the schedule is calculated using {@link DijkstraPathFinder}.
  */
 public class MapScheduledMovement extends MapBasedMovement implements
 	SwitchableMovement {
@@ -35,8 +34,6 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	private List<MapScheduledRoute> allRoutes = null;
 	/** next route's index to give by prototype */
 	private Integer nextRouteIndex = null;
-	/** Index of the first stop for a group of nodes (or -1 for random) */
-	private int firstStopIndex = 0;
 
 	/** Route of the movement model's instance */
 	private MapScheduledRoute route;
@@ -64,16 +61,15 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	/**
 	 * Copyconstructor. Gives a route to the new movement model from the
-	 * list of routes and randomizes the starting position.
+	 * list of routes.
 	 * @param proto The MapRouteMovement prototype
 	 */
 	protected MapScheduledMovement(MapScheduledMovement proto) {
 		super(proto);
 		this.route = proto.allRoutes.get(proto.nextRouteIndex).replicate();
-		this.firstStopIndex = proto.firstStopIndex;
 
-		/* use the one defined in the config file */
-		this.route.setNextIndex(this.firstStopIndex);
+		/* use the first stop as starting point */
+		this.route.setNextIndex(0);
 
 		this.pathFinder = proto.pathFinder;
 

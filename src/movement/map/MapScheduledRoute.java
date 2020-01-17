@@ -15,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO adapt this class
- * A route that consists of map nodes. There can be different kind of routes
- * and the type is determined by the type parameter.
+ * A route that consists of map nodes and timestamps when a host should a arrive at or leave the given point.
+ * See {@link ScheduleReader}.
  */
 public class MapScheduledRoute {
 
@@ -60,7 +59,7 @@ public class MapScheduledRoute {
 	}
 
 	/**
-	 * Returns the next stop on the route (depending on the route mode)
+	 * Returns the next stop on the route
 	 * @return the next stop on the route
 	 */
 	public MapScheduledNode nextStop() {
