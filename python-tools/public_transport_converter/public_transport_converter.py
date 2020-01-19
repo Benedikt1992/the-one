@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 
 from src.parser.osm_parser import OSMParser
 from src.parser.gtfs_parser import GTFSParser
+from src.schedule_converter import ScheduleConverter
 from src.util.store_key_pair import StoreKeyPair
 from src.osm_extender import OSMExtender
 from src.gps2wkt import GPS2WKT
@@ -31,11 +32,13 @@ class PublicTransportConverter:
             self.output = os.path.join(self.args.output, os.path.basename(self.args.osm))
 
     def run(self):
-        # station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
-        # self._store_osm()
-        # GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '-extended' + '.wkt', self.args.no_scale, self.args.max_x, self.args.max_y).osm2wkt(station_ids)
-        GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '-extended' + '.wkt',
-                self.args.no_scale, self.args.max_x, self.args.max_y).gtfs2wkt()
+        # todo use cache-like behavior like the BP
+        station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
+        self._store_osm()
+        wkt_converter = GPS2WKT(self.osm_parser, self.gtfs_parser, os.path.splitext(self.output)[0] + '-extended' + '.wkt', self.args.no_scale, self.args.max_x, self.args.max_y)
+        wkt_converter.osm2wkt(station_ids)
+        wkt_converter.gtfs2wkt()
+        ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
 
     def _store_osm(self):
         """
