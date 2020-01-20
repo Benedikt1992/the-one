@@ -11,6 +11,7 @@ setup(
     # installed or upgraded on the target machine
     install_requires=['pygtfs',
                       'geopy',
-                      'networkx'
+                      'networkx',
+                      'simplejson>=2.1'
                       ],
 )

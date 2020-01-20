@@ -4,6 +4,8 @@
 # Simulation report files
 *reports*
 
+.converter_cache
+
 # Javadocs
 *.html
 doc/stylesheet.css
