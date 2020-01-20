@@ -30,7 +30,7 @@ class GTFSParser:
         return stops
 
     def reload(self):
-        self.schedule = pygtfs.Schedule(self.gtfs_path)
+        self.schedule = pygtfs.Schedule(self.path)
 
     def update_stop_positions(self, stops):
         self.wkt_stops = stops
