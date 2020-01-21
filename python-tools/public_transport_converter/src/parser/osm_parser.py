@@ -49,7 +49,7 @@ class OSMParser:
         for way in self.root.findall('way'):
             waypoints = []
             for point in way.findall('nd'):
-                waypoints.append(Decimal(point.get('ref')))
+                waypoints.append(int(point.get('ref')))
             ways.append(waypoints)
         return ways
 

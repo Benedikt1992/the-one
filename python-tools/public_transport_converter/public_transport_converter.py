@@ -2,6 +2,7 @@ import os
 from argparse import ArgumentParser
 import simplejson as json
 
+from src.elements.node_list import NodeList
 from src.parser.osm_parser import OSMParser
 from src.parser.gtfs_parser import GTFSParser
 from src.schedule_converter import ScheduleConverter
@@ -61,8 +62,8 @@ class PublicTransportConverter:
     def run(self):
         if self.cached:
             print("Use cached data.")
-            self._load_gtfs_cache()
-            ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
+            # self._load_gtfs_cache()
+            # ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
         else:
             station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
             self._store_extended_osm()
@@ -71,7 +72,7 @@ class PublicTransportConverter:
             wkt_converter.osm2wkt(station_ids)
             ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
             self._write_date_cache()
-            self._writ_gtfs_cache()
+            self._write_gtfs_cache()
 
     def _store_extended_osm(self):
         """
@@ -101,9 +102,9 @@ class PublicTransportConverter:
             stops = json.load(file)
         self.gtfs_parser.update_stop_positions(stops)
 
-    def _writ_gtfs_cache(self):
+    def _write_gtfs_cache(self):
         osm_file = os.path.basename(self.args.osm)
-        stops = self.gtfs_parser.get_stops('wkt')
+        stops = self.gtfs_parser.get_stops()
         with open(os.path.join(self.cache_dir, osm_file + '_node-cache.json'), 'w') as file:
             json.dump(stops, file)
 

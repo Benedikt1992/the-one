@@ -19,6 +19,9 @@ class GPS2WKT:
     def transform(self):
         scaling_factor = self.scaling_factor()
 
+        # make sure to have all nodes in the node list
+        self.osm_parser.get_nodes()
+
         for node in NodeList():
             lat = node.lat
             lon = node.lon
@@ -95,6 +98,8 @@ class GPS2WKT:
                 waypoints = []
                 for point in way:
                     node = nodelist.find_by_osm_id(point)
+                    if node is None:
+                        print(point)
                     # Limit precision to 6 digits
                     waypoints.append("{:.6f} {:.6f}".format(node.x, node.y))
 
