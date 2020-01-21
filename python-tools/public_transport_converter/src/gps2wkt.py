@@ -2,6 +2,7 @@ from geopy import distance
 import networkx as nx
 from decimal import *
 
+from src.elements.node_list import NodeList
 from src.parser.osm_parser import OSMParser
 
 
@@ -15,20 +16,19 @@ class GPS2WKT:
         self.max_scaled_x = max_x
         self.max_scaled_y = max_y
 
-    def osm2wkt(self, station_ids):
+    def transform(self):
         scaling_factor = self.scaling_factor()
 
-        nodes = self.osm_parser.get_nodes()
-
-        # calculate wkt coordinates
-        for node in nodes:
-            lat = nodes[node][0]
-            lon = nodes[node][1]
+        for node in NodeList():
+            lat = node.lat
+            lon = node.lon
             x = distance.distance((lat, lon),
                                   (lat, self.minlon)).meters / scaling_factor
             y = distance.distance((lat, lon),
                                   (self.minlat, lon)).meters / scaling_factor
-            nodes[node] = (lat, lon, x, y)
+            node.update_wkt(x, y)
+
+    def osm2wkt(self, station_ids):
 
         ways = self.osm_parser.get_ways()
 
@@ -69,7 +69,7 @@ class GPS2WKT:
         if not set(station_ids).issubset(graph.nodes):
             raise RuntimeError("Some GTFS stations are not part of the graph.")
 
-        self._write_wkt(nodes, ways)
+        self._write_wkt(ways)
 
     def scaling_factor(self):
         if self.no_scaling:
@@ -87,27 +87,16 @@ class GPS2WKT:
                                                                                          self.max_scaled_y))
         return scaling_factor
 
-    def gtfs2wkt(self):
-        scaling_factor = self.scaling_factor()
-        stops = self.gtfs_parser.get_stops()
-        for k, v in stops.items():
-            x = distance.distance((v[0], v[1]),
-                                  (v[0], self.minlon)).meters / scaling_factor
-            y = distance.distance((v[0], v[1]),
-                                  (self.minlat, v[1])).meters / scaling_factor
-            stops[k] = (Decimal("{:.6f}".format(x)), Decimal("{:.6f}".format(y)))
-
-        self.gtfs_parser.update_stop_positions(stops)
-
-    def _write_wkt(self, nodes, ways):
+    def _write_wkt(self, ways):
+        nodelist = NodeList()
         with open(self.output, 'w') as output:
             for way in ways:
                 output.write("LINESTRING (")
                 waypoints = []
                 for point in way:
-                    node = nodes[point]
+                    node = nodelist.find_by_osm_id(point)
                     # Limit precision to 6 digits
-                    waypoints.append("{:.6f} {:.6f}".format(node[2], node[3]))
+                    waypoints.append("{:.6f} {:.6f}".format(node.x, node.y))
 
                 output.write(", ".join(waypoints))
                 output.write(")\n")

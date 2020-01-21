@@ -38,12 +38,12 @@ class OSMExtender:
                 if stop not in stop_node_correlations:
                     stop_node_correlations[stop] = [node]
                     continue
-                if distance.distance(nodes[node],
-                                     nodes[stop_node_correlations[stop][0]]).meters < distance_threshold:
+                if distance.distance(nodes[node].get_gps(),
+                                     nodes[stop_node_correlations[stop][0]].get_gps()).meters < distance_threshold:
                     stop_node_correlations[stop].append(node)
                     continue
                 average_distance = self._distance_average(stops[stop], stop_node_correlations[stop], nodes)
-                node_distance = distance.distance(stops[stop], nodes[node]).meters
+                node_distance = distance.distance(stops[stop].get_gps(), nodes[node].get_gps()).meters
                 if node_distance < average_distance:
                     stop_node_correlations[stop] = [node]
             for node in stop_node_correlations[stop]:
@@ -55,7 +55,7 @@ class OSMExtender:
     def _distance_average(self, stop, node_list, nodes):
         sum = 0
         for node in node_list:
-            sum += distance.distance(stop, nodes[node]).meters
+            sum += distance.distance(stop.get_gps(), nodes[node].get_gps()).meters
         return sum / len(node_list)
 
     def _store_stops_as_nodes(self, correlations, stops):

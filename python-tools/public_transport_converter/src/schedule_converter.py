@@ -11,7 +11,9 @@ class ScheduleConverter:
 
     def extract_stations(self):
         # TODO start with an already converted map and gtfs
-        stations = self.gtfs_parser.get_stops('wkt')
+        stations = self.gtfs_parser.get_stops()
         with open(os.path.join(self.output_dir, self.project_name + "-stations.wkt"), 'w') as file:
             for station in stations.values():
-                file.write("POINT ({} {})\n".format(str(station[0]), str(station[1])))
+                if (not station.x) or (not station.y):
+                    raise ValueError("No wkt coordinates available: {}".format(str(station)))
+                file.write("POINT ({} {})\n".format(str(station.x), str(station.y)))

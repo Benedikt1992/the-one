@@ -2,6 +2,9 @@ import os
 import xml.etree.ElementTree as ET
 from decimal import *
 
+from src.elements.node import Node
+from src.elements.node_list import NodeList
+
 
 class OSMParser:
     def __init__(self, osm_path):
@@ -15,18 +18,25 @@ class OSMParser:
         """
         This function returns node elements from the osm data. Optionally with specific tags.
         If there are several tags it is sufficient that the element contains one of the tags.
+        Each node is added to the global node list.
         :param tags: Array of tuples (key: value). Several entries are connected with logical or.
-        :return: dict {id: (lat, lon)}
+        :return: dict {id: Node()}
+        # todo just return list of Node
         """
+        nodelist = NodeList()
         nodes = {}
         for item in self.root.findall('node'):
             if tags is None:
-                nodes[int(item.get('id'))] = (Decimal(item.get('lat')), Decimal(item.get('lon')))
+                node = Node.from_osm(int(item.get('id')), Decimal(item.get('lat')), Decimal(item.get('lon')))
+                node = nodelist.add_node(node)
+                nodes[int(item.get('id'))] = node
             else:
                 for k, v in tags:
                     query = "tag[@k='{}'][@v='{}']".format(k, v)
                     if item.find(query) is not None:
-                        nodes[int(item.get('id'))] = (Decimal(item.get('lat')), Decimal(item.get('lon')))
+                        node = Node.from_osm(int(item.get('id')), Decimal(item.get('lat')), Decimal(item.get('lon')))
+                        node = nodelist.add_node(node)
+                        nodes[int(item.get('id'))] = node
                         break
         return nodes
 
@@ -43,26 +53,31 @@ class OSMParser:
             ways.append(waypoints)
         return ways
 
-    def add_node(self, coordinates):
+    def add_node(self, node: Node):
         """
         Add a node to the OSM data. The function will provide a unique ID.
-        :param coordinates: GPS coordinates in decimal form in a tuple '(lat, lon)'
+        :param node: Node object
         :return: OSM ID of the node element
         """
-        self.last_id += 1
-        node = ET.SubElement(self.root, 'node', attrib={"id": str(self.last_id), "lat": str(coordinates[0]), "lon": str(coordinates[1]), "visible": "true"})
-        ET.SubElement(node, 'tag', attrib={"k": "type", "v": "station"})
-        
-        if coordinates[0] < self.minlat:
-            self.minlat = coordinates[0]
-        elif coordinates[0] > self.maxlat:
-            self.maxlat = coordinates[0]
-            
-        if coordinates[1] < self.minlon:
-            self.minlon = coordinates[1]
-        elif coordinates[1] > self.maxlon:
-            self.maxlon = coordinates[1]
 
+        if node.osm_id:
+            return node.osm_id
+
+        self.last_id += 1
+        node_element = ET.SubElement(self.root, 'node', attrib={"id": str(self.last_id), "lat": str(node.lat), "lon": str(node.lon), "visible": "true"})
+        ET.SubElement(node_element, 'tag', attrib={"k": "type", "v": "station"})
+        
+        if node.lat < self.minlat:
+            self.minlat = node.lat
+        elif node.lat > self.maxlat:
+            self.maxlat = node.lat
+            
+        if node.lon < self.minlon:
+            self.minlon = node.lon
+        elif node.lon > self.maxlon:
+            self.maxlon = node.lon
+
+        node.osm_id = self.last_id
         return self.last_id
 
     def add_way(self, waypoints):

@@ -2,6 +2,9 @@ import os
 import pygtfs
 from decimal import *
 
+from src.elements.node import Node
+from src.elements.node_list import NodeList
+
 
 class GTFSParser:
     #TODO extend with filter stuff from BP and reading from gtfs raw files
@@ -13,24 +16,21 @@ class GTFSParser:
         self.schedule = pygtfs.Schedule(gtfs_path)
         self.wkt_stops = {}
 
-    def get_stops(self, coord='gps'):
+    def get_stops(self):
         """
         This function returns stop elements from the gtfs data. Optionally with wkt coordinates.
-        :return: dict {id: (lat, lon)}
+        :return: dict {id: Node()}
+        # todo just return a list of Nodes
         """
         stops = {}
-        if coord == 'gps':
-            precision = Decimal('1.000000')
-            for stop in self.schedule.stops:
-                stops[stop.stop_id] = (Decimal(stop.stop_lat).quantize(precision), Decimal(stop.stop_lon).quantize(precision))
-        else:
-            if not self.wkt_stops:
-                raise ValueError("No wkt coordinates available.")
-            stops = self.wkt_stops
+
+        precision = Decimal('1.000000')
+        for stop in self.schedule.stops:
+            node = Node.from_gtfs(stop.stop_id, Decimal(stop.stop_lat).quantize(precision), Decimal(stop.stop_lon).quantize(precision))
+            node = NodeList().add_node(node)
+            stops[stop.stop_id] = node
+
         return stops
 
     def reload(self):
         self.schedule = pygtfs.Schedule(self.path)
-
-    def update_stop_positions(self, stops):
-        self.wkt_stops = stops
