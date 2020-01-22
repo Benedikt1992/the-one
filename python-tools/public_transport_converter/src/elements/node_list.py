@@ -1,4 +1,7 @@
-from src.elements.node import Node
+import os
+import simplejson as json
+
+from src.elements.node import Node, NodeSerializer, node_from_json
 
 
 class NodeList:
@@ -11,6 +14,24 @@ class NodeList:
         if not NodeList.__instance:
             NodeList.__instance = object.__new__(cls)
         return NodeList.__instance
+
+    @classmethod
+    def store_to_cache(cls, cache_dir, project_name):
+        if not cls.__instance:
+            return
+        with open(os.path.join(cache_dir, project_name + '_nodelist.json'), 'w') as file:
+            json.dump(cls.nodes, file, cls=NodeSerializer)
+
+    @classmethod
+    def load_from_cache(cls, cache_dir, project_name):
+        with open(os.path.join(cache_dir, project_name + '_nodelist.json'), 'r') as file:
+            nodes = json.load(file, object_hook=node_from_json, use_decimal=True)
+        cls.nodes = nodes
+        for node in nodes:
+            if node.osm_id:
+                cls.osm_index[node.osm_id] = node
+            if node.gtfs_id:
+                cls.gtfs_index[node.gtfs_id] = node
 
     def add_node(self, node: Node):
         """

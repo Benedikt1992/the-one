@@ -54,16 +54,17 @@ class PublicTransportConverter:
             if not os.path.isdir(self.cache_dir):
                 os.makedirs(self.cache_dir)
         if self.cached:
-            self.osm_parser = OSMParser(self.args.osm)
-        else:
             self._load_extended_osm()
+        else:
+            self.osm_parser = OSMParser(self.args.osm)
+
         self.gtfs_parser = GTFSParser(self.args.gtfs)
 
     def run(self):
         if self.cached:
             print("Use cached data.")
-            # self._load_gtfs_cache()
-            # ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
+            self._load_node_cache()
+            ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
         else:
             station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
             self._store_extended_osm()
@@ -72,17 +73,24 @@ class PublicTransportConverter:
             wkt_converter.osm2wkt(station_ids)
             ScheduleConverter(self.output, self.gtfs_parser).extract_stations()
             self._write_date_cache()
-            self._write_gtfs_cache()
+            self._write_node_cache()
 
     def _store_extended_osm(self):
         """
-        Store the OSM data as OSM XML.
+        Store the OSM data as OSM XML for cache purposes.
         :return:
         """
-        self.osm_parser.store(os.path.splitext(self.output)[0] + '-extended' + os.path.splitext(self.output)[1])
+
+        self.osm_parser.store(self._get_extended_osm_path())
+
+    def _get_extended_osm_path(self):
+        osm_file = os.path.basename(self.output)
+        osm_name, osm_ext = os.path.splitext(osm_file)
+        filename = osm_name + '-extended' + osm_ext
+        return os.path.join(self.cache_dir, filename)
 
     def _load_extended_osm(self):
-        self.osm_parser = OSMParser(os.path.splitext(self.output)[0] + '-extended' + os.path.splitext(self.output)[1])
+        self.osm_parser = OSMParser(self._get_extended_osm_path())
 
     def _write_date_cache(self):
         print("Write Cache...")
@@ -96,17 +104,14 @@ class PublicTransportConverter:
         with open(date_file_path, 'w') as f:
             json.dump(self.file_dates, f)
 
-    def _load_gtfs_cache(self):
-        osm_file = os.path.basename(self.args.osm)
-        with open(os.path.join(self.cache_dir, osm_file + '_node-cache.json'), 'r') as file:
-            stops = json.load(file)
-        self.gtfs_parser.update_stop_positions(stops)
+    def _load_node_cache(self):
+        project = os.path.splitext(os.path.basename(self.args.osm))[0]
+        NodeList.load_from_cache(self.cache_dir, project)
 
-    def _write_gtfs_cache(self):
-        osm_file = os.path.basename(self.args.osm)
-        stops = self.gtfs_parser.get_stops()
-        with open(os.path.join(self.cache_dir, osm_file + '_node-cache.json'), 'w') as file:
-            json.dump(stops, file)
+    def _write_node_cache(self):
+        project = os.path.splitext(os.path.basename(self.args.osm))[0]
+        NodeList.store_to_cache(self.cache_dir, project)
+
 
 if __name__ == "__main__":
     converter = PublicTransportConverter()

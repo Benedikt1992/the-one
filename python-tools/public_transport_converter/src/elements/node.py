@@ -1,3 +1,6 @@
+import simplejson as json
+
+
 class Node:
     def __init__(self, osm_id=None, gtfs_id=None, lat=None, lon=None, x=None, y=None):
         self.osm_id = osm_id
@@ -32,3 +35,14 @@ class Node:
                 (self.x == other.x and self.y == other.y)
             )
         )
+
+
+class NodeSerializer(json.JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+
+def node_from_json(obj):
+    node = Node()
+    node.__dict__ = obj
+    return node
