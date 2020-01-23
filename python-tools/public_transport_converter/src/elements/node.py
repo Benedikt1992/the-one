@@ -36,6 +36,14 @@ class Node:
             )
         )
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        if not self.osm_id:
+            raise RuntimeError("Node not yet hashable. Node has no OSM ID.")
+        return hash(self.osm_id)
+
 
 class NodeSerializer(json.JSONEncoder):
     def default(self, o):
