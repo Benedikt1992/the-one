@@ -6,6 +6,7 @@ from decimal import *
 from src.elements.node import Node
 from src.elements.node_list import NodeList
 from src.elements.section import Section
+from src.elements.trip import Trip
 
 
 class GTFSParser:
@@ -79,3 +80,32 @@ class GTFSParser:
                 second_stop = stops[i+1][1]
                 sections.add(Section(first_stop, second_stop))
         return sections
+
+    def get_trips(self):
+        """
+        Return a list of all Trips within the simulation time window sorted by their first departure
+        :return:
+        """
+
+        current_date = self.start_date
+        all_trips = []
+        while current_date <= self.end_date:
+            active_services_ids = {service.id for service in self.schedule.service_exceptions if current_date == service.date}
+            trips = [x for x in self.schedule.trips if x.service_id in active_services_ids]
+            trips_on_day = []
+            for trip in trips:
+                stop_times = sorted(trip.stop_times, key=lambda x: x.stop_sequence)
+                event_list = []
+                for stop in stop_times:
+                    date_time = datetime.datetime(current_date.year, current_date.month, current_date.day)
+                    arrival = date_time + stop.arrival_time
+                    departure = date_time + stop.departure_time
+                    event_list.append((arrival, stop.stop_id))
+                    event_list.append((departure, stop.stop_id))
+                trips_on_day.append(Trip(event_list))
+            trips_on_day = sorted(trips_on_day)
+
+            all_trips += trips_on_day
+            current_date += datetime.timedelta(days=1)
+
+        return all_trips
