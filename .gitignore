@@ -4,7 +4,11 @@
 # Simulation report files
 *reports*
 
+# Public Transport Converter results
 .converter_cache
+*-stations.wkt
+*-switches.wkt
+*-extended.osm
 
 # Javadocs
 *.html
