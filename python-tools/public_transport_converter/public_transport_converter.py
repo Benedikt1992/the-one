@@ -24,6 +24,14 @@ class PublicTransportConverter:
         parser.add_argument('-s', '--no-scale', action='store_true', default=False, help="Disable scaling of the map for simulation.")
         parser.add_argument('-x', '--max_x', nargs="?", default='4500', type=int, help="Maximum size of x dimension within simulation.")
         parser.add_argument('-y', '--max_y', nargs="?", default='3400', type=int, help="Maximum size of y dimension within simulation.")
+        parser.add_argument('-b', '--begin', nargs="?", default='',
+                            help="Set the date where the simulation should begin in the gtfs schedule. %%d.%%m.%%Y (e.g. 1.1.2018) "
+                                 "Defaults to the first monday in the schedule. "
+                                 "If set --end has to be set as well.")
+        parser.add_argument('-e', '--end', nargs="?", default='',
+                            help="Set the date where the simulation should end in thegtfs schedule. %%d.%%m.%%Y (e.g. 31.1.2018) "
+                                 "Defaults to the first sunday after the first monday. "
+                                 "If set --begin has to be set as well.")
         self.args = parser.parse_args()
 
         if not self.args.output:
@@ -58,7 +66,7 @@ class PublicTransportConverter:
         else:
             self.osm_parser = OSMParser(self.args.osm)
 
-        self.gtfs_parser = GTFSParser(self.args.gtfs)
+        self.gtfs_parser = GTFSParser(self.args.gtfs, self.args.begin, self.args.end)
 
     def run(self):
         if self.cached:

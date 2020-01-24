@@ -1,3 +1,4 @@
+import datetime
 import os
 import pygtfs
 from decimal import *
@@ -9,13 +10,36 @@ from src.elements.section import Section
 
 class GTFSParser:
     #TODO extend with filter stuff from BP and reading from gtfs raw files
-    def __init__(self, gtfs_path):
+    def __init__(self, gtfs_path, begin, end):
         os.path.isfile(gtfs_path)
         self.path = gtfs_path
         if not os.path.isfile(gtfs_path) or os.path.splitext(gtfs_path)[1] != '.sqlite':
             raise ValueError("{} is not a file".format(gtfs_path))
         self.schedule = pygtfs.Schedule(gtfs_path)
-        self.wkt_stops = {}
+
+        first_date = self.schedule.feed_infos[0].feed_start_date
+        last_date = self.schedule.feed_infos[0].feed_end_date
+        if begin and end:
+            self.start_date = datetime.datetime.strptime(begin, '%d.%m.%Y').date()
+            if self.start_date < first_date:
+                self.start_date = first_date
+            self.end_date = datetime.datetime.strptime(end, '%d.%m.%Y').date()
+            if self.end_date > last_date:
+                self.end_date = last_date
+        else:
+            self.start_date = first_date + datetime.timedelta(
+                days=(-first_date.weekday()) % 7)  # first monday after first_date
+            self.end_date = self.start_date + datetime.timedelta(days=6)  # 1 week simulation
+
+        print("Simulating from {} to {}. (Simulatable timeframe: {}-{})".format(
+            self.start_date.strftime('%d.%m.%Y'),
+            self.end_date.strftime('%d.%m.%Y'),
+            self.schedule.feed_infos[0].feed_start_date.strftime('%d.%m.%Y'),
+            self.schedule.feed_infos[0].feed_end_date.strftime('%d.%m.%Y')
+        ))
+
+        self.active_services_ids = {service.id for service in self.schedule.service_exceptions if
+                                    self.start_date <= service.date <= self.end_date}
 
     def get_stops(self):
         """
@@ -40,11 +64,11 @@ class GTFSParser:
         """
         Return a set of all pairs of consecutive stops.
         The order of stops doesn't matter (a->b == b->a).
-        TODO Make the included trips dependent on the simulated period of time
         :return: Set of Section() elements
         """
         sections = set()
-        for trip in self.schedule.trips:
+        active_trips = [x for x in self.schedule.trips if x.service_id in self.active_services_ids]
+        for trip in active_trips:
             stops = []
             for stop_time in trip.stop_times:
                 stop_id = stop_time.stop_id
