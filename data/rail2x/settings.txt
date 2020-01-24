@@ -59,16 +59,15 @@ Group.speed = 0.11, 0.19
 Group.msgTtl = 43200
 
 
-Group1.nrofHosts = 2
-Group1.movementModel = MapScheduledMovement
-Group1.routeFile = data/rail2x/schedule.txt
-Group1.routeType = 1
-Group1.groupID = p
+Group1.nrofHosts = 171
+Group1.movementModel = StationaryListMovement
+Group1.nodeLocationsFile = data/rail2x/ICE-germany-stations.wkt
+Group1.groupID = s
 
-Group2.nrofHosts = 4
+Group2.nrofHosts = 454
 Group2.movementModel = StationaryListMovement
-Group2.nodeLocationsFile = data/rail2x/stations.wkt
-Group2.groupID = s
+Group2.nodeLocationsFile = data/rail2x/ICE-germany-switches.wkt
+Group2.groupID = sw
 
 
 ## Message creation parameters
@@ -93,7 +92,7 @@ MovementModel.warmup = 1000
 
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 1
-MapBasedMovement.mapFile1 = data/rail2x/rails.wkt
+MapBasedMovement.mapFile1 = data/rail2x/ICE-germany-extended.wkt
 
 ## Reports - all report names have to be valid report classes
 
