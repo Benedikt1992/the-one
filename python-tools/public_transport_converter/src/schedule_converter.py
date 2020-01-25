@@ -3,6 +3,7 @@ import networkx as nx
 import math
 
 from src.elements.node_list import NodeList
+from src.elements.route import Route
 from src.parser.gtfs_parser import GTFSParser
 from src.parser.osm_parser import OSMParser
 
@@ -59,3 +60,25 @@ class ScheduleConverter:
         dy = node1.y - node2.y
 
         return math.sqrt(dx*dx + dy*dy)
+
+    def extract_routes(self):
+        trips = self.gtfs_parser.get_trips()
+        routes = {}
+        for trip in trips:
+            waiting_routes = routes.get(trip.first_stop(), [])
+            found = False
+            for route in waiting_routes:
+                if route < trip:
+                    route += trip
+                    routes[trip.first_stop()].remove(route)
+                    route_list = routes.get(trip.last_stop(), [])
+                    route_list.append(route)
+                    routes[trip.last_stop()] = route_list
+                    found = True
+                    break
+            if not found:
+                route_list = routes.get(trip.last_stop(), [])
+                route_list.append(Route().append(trip))
+                routes[trip.last_stop()] = route_list
+
+

@@ -73,8 +73,9 @@ class PublicTransportConverter:
             print("Use cached data.")
             self._load_node_cache()
             schedule_converter = ScheduleConverter(self.output, self.gtfs_parser, self.osm_parser)
-            schedule_converter.extract_stations()
-            schedule_converter.extract_switches()
+            # schedule_converter.extract_stations()
+            # schedule_converter.extract_switches()
+            schedule_converter.extract_routes()
         else:
             station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
             self._store_extended_osm()
@@ -82,8 +83,8 @@ class PublicTransportConverter:
             wkt_converter.transform()
             wkt_converter.osm2wkt(station_ids)
             schedule_converter = ScheduleConverter(self.output, self.gtfs_parser, self.osm_parser)
-            schedule_converter.extract_stations()
-            schedule_converter.extract_switches()
+            # schedule_converter.extract_stations()
+            # schedule_converter.extract_switches()
             self._write_date_cache()
             self._write_node_cache()
 
