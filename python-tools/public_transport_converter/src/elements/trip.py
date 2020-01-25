@@ -32,6 +32,6 @@ class Trip:
         for event in self.event_list:
             timestamp = (event[0] - self.zero_time).total_seconds() / 60  # User Minutes as simulation step
             node = nodes.find_by_gtfs_id(event[1])
-            string_elements.append("{} {} {}".format(str(int(timestamp)), str(node.x), str(node.y)))
+            string_elements.append("{} {:.6f} {:.6f}".format(str(int(timestamp)), node.x, node.y))
         return ", ".join(string_elements)
 

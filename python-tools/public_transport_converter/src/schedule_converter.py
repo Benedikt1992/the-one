@@ -49,7 +49,7 @@ class ScheduleConverter:
             for node in nodes:
                 if (not node.x) or (not node.y):
                     raise ValueError("No wkt coordinates available: {}".format(str(node)))
-                file.write("POINT ({} {})\n".format(str(node.x), str(node.y)))
+                file.write("POINT ({:.6f} {:.6f})\n".format(node.x, node.y))
 
     @staticmethod
     def distance(node1, node2, attributes):
