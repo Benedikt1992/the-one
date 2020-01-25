@@ -20,7 +20,6 @@ class Route:
         return self.__add__(other)
 
     def __gt__(self, other):
-        print("gt")
         if not self.trips:
             raise ValueError("Can't compare emtpy route.")
         if isinstance(other, Trip):
@@ -28,9 +27,14 @@ class Route:
         raise ValueError("'>' operator not implemented for type {}".format(type(other)))
 
     def __lt__(self, other):
-        print("lt")
         if not self.trips:
             raise ValueError("Can't compare emtpy route.")
         if isinstance(other, Trip):
             return self.trips[-1].end() + self.pause_between_trips < other.start()
         raise ValueError("'<' operator not implemented for type {}".format(type(other)))
+
+    def __str__(self):
+        trip_elements = []
+        for trip in self.trips:
+            trip_elements.append(str(trip))
+        return "ROUTE ({})".format(", ".join(trip_elements))

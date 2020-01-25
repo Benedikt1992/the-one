@@ -102,7 +102,7 @@ class GTFSParser:
                     departure = date_time + stop.departure_time
                     event_list.append((arrival, stop.stop_id))
                     event_list.append((departure, stop.stop_id))
-                trips_on_day.append(Trip(event_list))
+                trips_on_day.append(Trip(event_list, self.start_date))
             trips_on_day = sorted(trips_on_day)
 
             all_trips += trips_on_day

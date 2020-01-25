@@ -81,4 +81,9 @@ class ScheduleConverter:
                 route_list.append(Route().append(trip))
                 routes[trip.last_stop()] = route_list
 
+        with open(os.path.join(self.output_dir, self.project_name + "-routes.txt"), 'w') as file:
+            for route_list in routes.values():
+                for route in route_list:
+                    file.write("{}\n".format(str(route)))
+
 
