@@ -6,7 +6,7 @@
 Scenario.name = rail2x
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
-Scenario.endTime = 43200
+Scenario.endTime = 8640
 
 ## Interface-specific settings:
 # type : which interface class the interface belongs to
@@ -23,7 +23,7 @@ btInterface.transmitSpeed = 250k
 btInterface.transmitRange = 5
 
 # Define 6 different node groups
-Scenario.nrofHostGroups = 2
+Scenario.nrofHostGroups = 3
 
 ## Group-specific settings:
 # groupID : Group's identifier. Used as the prefix of host names
@@ -58,16 +58,20 @@ Group.speed = 0.11, 0.19
 # Message TTL of 300 minutes (5 hours)
 Group.msgTtl = 43200
 
+Group1.nrofHosts = 295
+Group1.movementModel = MapScheduledMovement
+Group1.routeFile = data/rail2x/ICE-germany-routes.txt
+Group1.groupID = p
 
-Group1.nrofHosts = 171
-Group1.movementModel = StationaryListMovement
-Group1.nodeLocationsFile = data/rail2x/ICE-germany-stations.wkt
-Group1.groupID = s
-
-Group2.nrofHosts = 454
+Group2.nrofHosts = 171
 Group2.movementModel = StationaryListMovement
-Group2.nodeLocationsFile = data/rail2x/ICE-germany-switches.wkt
-Group2.groupID = sw
+Group2.nodeLocationsFile = data/rail2x/ICE-germany-stations.wkt
+Group2.groupID = s
+
+Group3.nrofHosts = 280
+Group3.movementModel = StationaryListMovement
+Group3.nodeLocationsFile = data/rail2x/ICE-germany-switches.wkt
+Group3.groupID = sw
 
 
 ## Message creation parameters
