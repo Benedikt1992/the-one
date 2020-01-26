@@ -12,6 +12,7 @@ import util.Tuple;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -98,6 +99,7 @@ public class MapScheduledRoute {
 		ScheduleReader reader = new ScheduleReader();
 		List<List<Tuple<Double, Coord>>> coords;
 		File routeFile = null;
+		HashMap<Coord, MapNode> nodeCache = new HashMap<Coord, MapNode>();
 		boolean mirror = map.isMirrored();
 		double xOffset = map.getOffset().getX();
 		double yOffset = map.getOffset().getY();
@@ -120,7 +122,11 @@ public class MapScheduledRoute {
 				}
 				c.getValue().translate(xOffset, yOffset);
 
-				MapNode node = map.getNodeByCoord(c.getValue());
+				MapNode node = nodeCache.get(c.getValue());
+				if (node == null) {
+					node = map.getNodeByCoord(c.getValue());
+					nodeCache.put(c.getValue(), node);
+				}
 				if (node == null) {
 					Coord orig = c.getValue().clone();
 					orig.translate(-xOffset, -yOffset);
