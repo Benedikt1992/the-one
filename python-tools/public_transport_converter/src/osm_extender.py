@@ -29,7 +29,7 @@ class OSMExtender:
     def _correlate_points(self, nodes, stops, distance_threshold):
         """
         Find correlating OSM nodes for each GTFS station based on a distance threshold.
-        The threshold defines the maximum plausible distance between a GTFS station an correlating OSM stops
+        The threshold defines the maximum plausible distance between a GTFS station and correlating OSM stops
         :return: {<GTFS station id>: [<OSM Node ID>]}
         """
         stop_node_correlations = {}
@@ -46,7 +46,10 @@ class OSMExtender:
                 node_distance = distance.distance(stops[stop].get_gps(), nodes[node].get_gps()).meters
                 if node_distance < average_distance:
                     stop_node_correlations[stop] = [node]
+
             for node in stop_node_correlations[stop]:
+                stops[stop].add_stop_position(node)
+                nodes[node].add_station(stop)
                 nodes.pop(node, None)
             if not nodes:
                 raise RuntimeError("Not enough nodes in osm data.")

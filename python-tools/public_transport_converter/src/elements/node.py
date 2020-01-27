@@ -9,8 +9,8 @@ class Node:
         self.lon = lon
         self.x = x
         self.y = y
-        self.stop_positions = []
-        self.station = None
+        self.stop_positions = [] # osm ids
+        self.station = None # gtfs id
 
     @classmethod
     def from_osm(cls, osm_id, lat, lon):
