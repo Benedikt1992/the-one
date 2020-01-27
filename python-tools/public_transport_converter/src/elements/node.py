@@ -9,6 +9,8 @@ class Node:
         self.lon = lon
         self.x = x
         self.y = y
+        self.stop_positions = []
+        self.station = None
 
     @classmethod
     def from_osm(cls, osm_id, lat, lon):
@@ -24,6 +26,26 @@ class Node:
 
     def get_gps(self):
         return self.lat, self.lon
+
+    def add_stop_position(self, stop_id):
+        self.stop_positions.append(stop_id)
+
+    def add_station(self, station_id):
+        if self.station:
+            if self.station != station_id:
+                raise ValueError("The station of a stop cannot be replaced. Old station: {}, New station: {}".format(str(self.station), str(station_id)))
+        else:
+            self.station = station_id
+
+    def is_station(self):
+        if self.stop_positions:
+            return True
+        return False
+
+    def is_stop_position(self):
+        if self.station:
+            return True
+        return False
 
     def __eq__(self, other):
         return (
