@@ -1,9 +1,12 @@
 import os
+import sys
+
 import networkx as nx
 import math
 
 from src.elements.node_list import NodeList
 from src.elements.route import Route
+from src.elements.section import Section
 from src.parser.gtfs_parser import GTFSParser
 from src.parser.osm_parser import OSMParser
 
@@ -22,7 +25,6 @@ class ScheduleConverter:
     def extract_switches(self):
         ways = self.osm_parser.get_ways()
 
-        # check if graph is completely connected
         graph = nx.Graph()
         for way in ways:
             for i in range(len(way)):
@@ -30,10 +32,22 @@ class ScheduleConverter:
                     continue
                 graph.add_edge(way[i - 1], way[i])
 
-        sections = self.gtfs_parser.get_sections()
+        # find sections
+        stops = self.gtfs_parser.get_stops().values()
         nodes = NodeList()
-        switches = set()
+        sections = set()
+        print("Will do recusrion up to {}".format(sys.getrecursionlimit()))
+        sys.setrecursionlimit(2 * sys.getrecursionlimit())
+        for stop in stops:
+            for stop_position in stop.stop_positions:
+                neighbors = self._find_neighbor_stops(graph, stop_position, graph[stop_position].keys(), nodes, stop_position)
+                for neighbor in neighbors:
+                    # todo check if found itself (no section)
+                    station_id = nodes.find_by_osm_id(neighbor).station
+                    sections.add(Section(station_id, stop.gtfs_id))
 
+        # find switch positions
+        switches = set()
         for section in sections:
             node1 = nodes.find_by_gtfs_id(section[0])
             node2 = nodes.find_by_gtfs_id(section[1])
@@ -91,5 +105,27 @@ class ScheduleConverter:
             for route_list in routes.values():
                 for route in route_list:
                     file.write("{}\n".format(str(route)))
+
+    def _find_neighbor_stops(self, graph, stop_position, neighbors, nodes, origin):
+        # todo: are there loops in the graph? Store visited nodes to circumvent livelock
+        # todo check functionality
+        # todo do it iteratively
+        stops = set()
+        for neighbor in neighbors:
+            if nodes.find_by_osm_id(neighbor).is_stop_position():
+                stops.add(neighbor)
+            else:
+                graph_neighbors = graph[neighbor].keys()
+                new_neighbors = []
+                for g_neighbor in graph_neighbors:
+                    if g_neighbor != stop_position:
+                        new_neighbors.append(g_neighbor)
+                if new_neighbors:
+                    try:
+                        stops = stops.union(self._find_neighbor_stops(graph, neighbor, new_neighbors, nodes, origin))
+                    except RecursionError as e:
+                        print("Recursion error at node {}. Source was: {}".format(neighbor, origin))
+                        raise e
+        return stops
 
 
