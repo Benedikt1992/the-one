@@ -58,6 +58,9 @@ class GTFSParser:
 
         return stops
 
+    def get_start_date(self):
+        return datetime.datetime(self.start_date.year, self.start_date.month, self.start_date.day)
+
     def reload(self):
         self.schedule = pygtfs.Schedule(self.path)
 

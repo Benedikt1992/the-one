@@ -63,9 +63,12 @@ class ScheduleConverter:
 
     def extract_routes(self):
         trips = self.gtfs_parser.get_trips()
+        max_time = trips[-1].end()
         routes = {}
         for trip in trips:
             waiting_routes = routes.get(trip.first_stop(), [])
+            if trip.end() > max_time:
+                max_time = trip.end()
             found = False
             for route in waiting_routes:
                 if route < trip:
@@ -80,6 +83,9 @@ class ScheduleConverter:
                 route_list = routes.get(trip.last_stop(), [])
                 route_list.append(Route().append(trip))
                 routes[trip.last_stop()] = route_list
+
+        simulation_duration = (max_time - self.gtfs_parser.get_start_date()).total_seconds() / 60
+        print("The simulation end time for this schedule is {}".format(round(0.5 + simulation_duration))) # round up
 
         with open(os.path.join(self.output_dir, self.project_name + "-routes.txt"), 'w') as file:
             for route_list in routes.values():
