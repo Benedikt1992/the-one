@@ -32,29 +32,11 @@ class ScheduleConverter:
                     continue
                 graph.add_edge(way[i - 1], way[i])
 
-        # find sections
-        stops = self.gtfs_parser.get_stops().values()
-        nodes = NodeList()
-        sections = set()
-        print("Will do recusrion up to {}".format(sys.getrecursionlimit()))
-        sys.setrecursionlimit(2 * sys.getrecursionlimit())
-        for stop in stops:
-            for stop_position in stop.stop_positions:
-                neighbors = self._find_neighbor_stops(graph, stop_position, graph[stop_position].keys(), nodes, stop_position)
-                for neighbor in neighbors:
-                    # todo check if found itself (no section)
-                    station_id = nodes.find_by_osm_id(neighbor).station
-                    sections.add(Section(station_id, stop.gtfs_id))
-
-        # find switch positions
+        osm_switches = self.osm_parser.get_nodes([('railway', 'switch')]).keys()
         switches = set()
-        for section in sections:
-            node1 = nodes.find_by_gtfs_id(section[0])
-            node2 = nodes.find_by_gtfs_id(section[1])
-            path = nx.dijkstra_path(graph, node1.osm_id, node2.osm_id, self.distance)
-            switch_id = path[int(len(path) / 2)]
-            switch = nodes.find_by_osm_id(switch_id)
-            switches.add(switch)
+        for node in osm_switches:
+            if len(graph[node]) > 2:  # switch nodes with <2 neighbors are not used as switches
+                switches.add(NodeList().find_by_osm_id(node))
 
         self.write_stationary_nodes(switches, "switches")
 
@@ -105,27 +87,3 @@ class ScheduleConverter:
             for route_list in routes.values():
                 for route in route_list:
                     file.write("{}\n".format(str(route)))
-
-    def _find_neighbor_stops(self, graph, stop_position, neighbors, nodes, origin):
-        # todo: are there loops in the graph? Store visited nodes to circumvent livelock
-        # todo check functionality
-        # todo do it iteratively
-        stops = set()
-        for neighbor in neighbors:
-            if nodes.find_by_osm_id(neighbor).is_stop_position():
-                stops.add(neighbor)
-            else:
-                graph_neighbors = graph[neighbor].keys()
-                new_neighbors = []
-                for g_neighbor in graph_neighbors:
-                    if g_neighbor != stop_position:
-                        new_neighbors.append(g_neighbor)
-                if new_neighbors:
-                    try:
-                        stops = stops.union(self._find_neighbor_stops(graph, neighbor, new_neighbors, nodes, origin))
-                    except RecursionError as e:
-                        print("Recursion error at node {}. Source was: {}".format(neighbor, origin))
-                        raise e
-        return stops
-
-
