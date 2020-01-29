@@ -6,6 +6,7 @@ from src.elements.node_list import NodeList
 from src.parser.osm_parser import OSMParser
 from src.parser.gtfs_parser import GTFSParser
 from src.schedule_converter import ScheduleConverter
+from src.switch_analyzer import SwitchAnalyzer
 from src.util.store_key_pair import StoreKeyPair
 from src.osm_extender import OSMExtender
 from src.gps2wkt import GPS2WKT
@@ -32,6 +33,7 @@ class PublicTransportConverter:
                             help="Set the date where the simulation should end in thegtfs schedule. %%d.%%m.%%Y (e.g. 31.1.2018) "
                                  "Defaults to the first sunday after the first monday. "
                                  "If set --begin has to be set as well.")
+        parser.add_argument('-a', '--analyze', action='store_true', default=False, help="Enable analyze module for the data.")
         self.args = parser.parse_args()
 
         if not self.args.output:
@@ -69,10 +71,14 @@ class PublicTransportConverter:
         self.gtfs_parser = GTFSParser(self.args.gtfs, self.args.begin, self.args.end)
 
     def run(self):
+        if self.args.analyze:
+            analyzer = SwitchAnalyzer(self.output, self.osm_parser)
+            analyzer.analyze_switch_degrees()
         if self.cached:
             print("Use cached data.")
             self._load_node_cache()
             schedule_converter = ScheduleConverter(self.output, self.gtfs_parser, self.osm_parser)
+            # todo: do we really need the extraction of switches and stations every time?
             schedule_converter.extract_stations()
             schedule_converter.extract_switches()
             schedule_converter.extract_routes()
