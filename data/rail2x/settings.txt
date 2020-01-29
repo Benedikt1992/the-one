@@ -6,7 +6,8 @@
 Scenario.name = rail2x
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
-Scenario.endTime = 8640
+# 1 simulated second will be 1 minute in the schedule
+Scenario.endTime = 10558
 
 ## Interface-specific settings:
 # type : which interface class the interface belongs to
@@ -15,12 +16,19 @@ Scenario.endTime = 8640
 # transmitSpeed : transmit speed of the interface (bytes per second)
 # transmitRange : range of the interface (meters)
 
-# "Bluetooth" interface for all nodes
-btInterface.type = SimpleBroadcastInterface
+# "Long Range" interface for trains and stations
+longRange.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
-btInterface.transmitSpeed = 250k
+longRange.transmitSpeed = 250k
 # ~1500m
-btInterface.transmitRange = 5
+longRange.transmitRange = 5
+
+# "Short Range" interface for switches
+shortRange.type = SimpleBroadcastInterface
+# Transmit speed of 2 Mbps = 250kBps
+shortRange.transmitSpeed = 250k
+# ~100m
+shortRange.transmitRange = 0.39
 
 # Define 6 different node groups
 Scenario.nrofHostGroups = 3
@@ -47,31 +55,31 @@ Scenario.nrofHostGroups = 3
 
 # Common settings for all groups
 Group.router = EpidemicRouter
+# make sure to not loose messages in trains and stations
 Group.bufferSize = 5G
-Group.waitTime = 0, 120
 # All nodes have the bluetooth interface
 Group.nrofInterfaces = 1
-Group.interface1 = btInterface
-# Walking speeds
-# ~120-200km/h
-Group.speed = 0.11, 0.19
-# Message TTL of 300 minutes (5 hours)
-Group.msgTtl = 43200
+Group.interface1 = longRange
+# Message TTL same as simulation time to not lose any packages
+Group.msgTtl = 10558
 
+Group1.groupID = train
 Group1.nrofHosts = 295
 Group1.movementModel = MapScheduledMovement
 Group1.routeFile = data/rail2x/ICE-germany-routes.txt
-Group1.groupID = p
 
+Group2.groupID = station
 Group2.nrofHosts = 171
 Group2.movementModel = StationaryListMovement
 Group2.nodeLocationsFile = data/rail2x/ICE-germany-stations.wkt
-Group2.groupID = s
 
-Group3.nrofHosts = 280
+Group3.groupID = switch
+Group3.nrofHosts = 446
 Group3.movementModel = StationaryListMovement
 Group3.nodeLocationsFile = data/rail2x/ICE-germany-switches.wkt
-Group3.groupID = sw
+# switches are more limited (shorter range and smaller buffer)
+Group3.interface1 = shortRange
+Group3.bufferSize = 100M
 
 
 ## Message creation parameters
@@ -90,12 +98,12 @@ Events1.filePath = data/rail2x/message_queue.txt
 MovementModel.rngSeed = 1
 # World's size for Movement Models without implicit size (width, height; meters)
 MovementModel.worldSize = 4500, 3400
-#                         426117, 219246
 # How long time to move hosts in the world before real simulation
-MovementModel.warmup = 1000
+MovementModel.warmup = 10
 
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 1
+# this map is scaled down to 1:257 (meters)
 MapBasedMovement.mapFile1 = data/rail2x/ICE-germany-extended.wkt
 
 ## Reports - all report names have to be valid report classes
@@ -119,12 +127,13 @@ SprayAndWaitRouter.binaryMode = true
 
 ## Optimization settings -- these affect the speed of the simulation
 ## see World class for details.
+# cellSizeMult lower values speed up simulation on cost of memory and startup time (lowest is 1)
 Optimization.cellSizeMult = 5
 Optimization.randomizeUpdateOrder = true
 
 
 ## GUI settings
 # how many events to show in the log panel (default = 30)
-GUI.EventLogPanel.nrofEvents = 100
+GUI.EventLogPanel.nrofEvents = 30
 # Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
 #GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
