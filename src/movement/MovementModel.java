@@ -51,8 +51,6 @@ public abstract class MovementModel {
 	/** DTNHost to which this movement model is attached */
 	protected DTNHost host;
 
-	private ActivenessHandler ah;
-
 	protected double minSpeed;
 	protected double maxSpeed;
 	protected double minWaitTime;
@@ -103,8 +101,6 @@ public abstract class MovementModel {
 		double[] speeds;
 		double[] times;
 
-		ah = new ActivenessHandler(settings);
-
 		if (settings.contains(SPEED)) {
 			speeds = settings.getCsvDoubles(SPEED, 2);
 		}
@@ -147,7 +143,6 @@ public abstract class MovementModel {
 		this.minWaitTime = mm.minWaitTime;
 		this.maxX = mm.maxX;
 		this.maxY = mm.maxY;
-		this.ah = mm.ah;
 		this.comBus = null;
 	}
 
@@ -229,7 +224,7 @@ public abstract class MovementModel {
 	 */
 	public boolean isActive() {
 		/* TODO: add offset support */
-		return ah.isActive();
+		return host.isHostActive();
 	}
 
 	/**

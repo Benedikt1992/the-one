@@ -397,7 +397,7 @@ public class SimScenario implements Serializable {
 				// new instances of movement model and message router
 				DTNHost host = new DTNHost(this.messageListeners,
 						this.movementListeners,	gid, interfaces, comBus,
-						mmProto, mRouterProto);
+						mmProto, mRouterProto, s);
 				hosts.add(host);
 			}
 		}

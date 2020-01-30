@@ -64,8 +64,6 @@ abstract public class NetworkInterface implements ModuleCommunicationListener {
 	private double scanInterval;
 	private double lastScanTime;
 
-	/** activeness handler for the node group */
-	private ActivenessHandler ah;
 	/** maximum activeness jitter value for the node group */
 	private int activenessJitterMax;
 	/** this interface's activeness jitter value */
@@ -115,7 +113,6 @@ abstract public class NetworkInterface implements ModuleCommunicationListener {
 		this.transmitRange = ni.transmitRange;
 		this.transmitSpeed = ni.transmitSpeed;
 		this.scanInterval = ni.scanInterval;
-		this.ah = ni.ah;
 
 		if (ni.activenessJitterMax > 0) {
 			this.activenessJitterValue = rng.nextInt(ni.activenessJitterMax);
@@ -169,7 +166,6 @@ abstract public class NetworkInterface implements ModuleCommunicationListener {
 	 */
 	public void setGroupSettings(Settings s) {
 		s.setSubNameSpace(NET_SUB_NS);
-		ah = new ActivenessHandler(s);
 
 		if (s.contains(SCAN_INTERVAL_S)) {
 			this.scanInterval =  s.getDouble(SCAN_INTERVAL_S);
@@ -231,11 +227,7 @@ abstract public class NetworkInterface implements ModuleCommunicationListener {
 	public boolean isActive() {
 		boolean active;
 
-		if (ah == null) {
-			return true; /* no handler: always active */
-		}
-
-		active = ah.isActive(this.activenessJitterValue);
+		active = host.isHostActive(this.activenessJitterValue);
 
 		if (active && host.getComBus().getDouble(EnergyModel.ENERGY_VALUE_ID,
 					1) <= 0) {

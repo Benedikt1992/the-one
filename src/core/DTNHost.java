@@ -12,6 +12,7 @@ import movement.MovementModel;
 import movement.Path;
 import routing.MessageRouter;
 import routing.util.RoutingInfo;
+import util.ActivenessHandler;
 
 import static core.Constants.DEBUG;
 
@@ -35,6 +36,7 @@ public class DTNHost implements Comparable<DTNHost> {
 	private List<MovementListener> movListeners;
 	private List<NetworkInterface> net;
 	private ModuleCommunicationBus comBus;
+    private ActivenessHandler ah;
 
 	static {
 		DTNSim.registerForReset(DTNHost.class.getCanonicalName());
@@ -54,12 +56,13 @@ public class DTNHost implements Comparable<DTNHost> {
 			List<MovementListener> movLs,
 			String groupId, List<NetworkInterface> interf,
 			ModuleCommunicationBus comBus,
-			MovementModel mmProto, MessageRouter mRouterProto) {
+			MovementModel mmProto, MessageRouter mRouterProto, Settings settings) {
 		this.comBus = comBus;
 		this.location = new Coord(0,0);
 		this.address = getNextAddress();
 		this.name = groupId+address;
 		this.net = new ArrayList<NetworkInterface>();
+        this.ah = new ActivenessHandler(settings);
 
 		for (NetworkInterface i : interf) {
 			NetworkInterface ni = i.replicate();
@@ -127,7 +130,19 @@ public class DTNHost implements Comparable<DTNHost> {
 		return false;
 	}
 
-	/**
+    /**
+     * Returns true if this node is active (false if not)
+     * @return true if this node is active (false if not)
+     */
+    public boolean isHostActive() {
+        return ah.isActive();
+    }
+
+    public boolean isHostActive(int offset) {
+        return ah.isActive(offset);
+    }
+
+    /**
 	 * Set a router for this host
 	 * @param router The router to set
 	 */
