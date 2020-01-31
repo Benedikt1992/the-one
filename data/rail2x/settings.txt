@@ -86,10 +86,16 @@ Group3.bufferSize = 100M
 # How many event generators
 Events.nrof = 1
 # Class of the first event generator
-Events1.class = ExternalEventsQueue
+Events1.class = MessageBurstGenerator
 # (following settings are specific for the MessageEventGenerator class)
 # Creation interval in seconds (one new message every 25 to 35 seconds)
-Events1.filePath = data/rail2x/message_queue.txt
+Events1.size = 100
+Events1.interval = 1
+Events1.hosts = 466, 912
+#Events1.tohosts = 295, 466
+Events1.tohosts = 295, 296
+Events1.time = 0,1
+Events1.prefix = M
 
 
 
