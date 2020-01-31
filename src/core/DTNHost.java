@@ -142,6 +142,9 @@ public class DTNHost implements Comparable<DTNHost> {
         return ah.isActive(offset);
     }
 
+    public void updateActiveness(double[] times) {
+    	ah.updateActiveTimes(times);
+	}
     /**
 	 * Set a router for this host
 	 * @param router The router to set

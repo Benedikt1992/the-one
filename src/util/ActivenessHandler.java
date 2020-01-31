@@ -83,6 +83,10 @@ public class ActivenessHandler {
 			return null; // no setting -> always active
 		}
 
+		return getTimeRanges(times);
+	}
+
+	private Queue<TimeRange> getTimeRanges(double[] times) {
 		Queue<TimeRange> timesList = new LinkedList<TimeRange>();
 
 		for (int i=0; i<times.length; i+= 2) {
@@ -91,14 +95,25 @@ public class ActivenessHandler {
 
 			if (start > end) {
 				throw new SettingsError("Start time (" + start + ") is " +
-						" bigger than end time (" + end + ") in setting " +
-						sName);
+						" bigger than end time (" + end + ") in setting");
 			}
 
 			timesList.add(new TimeRange(start, end));
 		}
 
 		return timesList;
+	}
+
+	public void updateActiveTimes(double[] times) {
+		if (times.length % 2 != 0) {
+			throw new SettingsError("Invalid amount of values (" +
+					times.length + ") for active times. Must be divisable by 2");
+		}
+		Queue<TimeRange> timeList= getTimeRanges(times);
+
+		activeTimes = timeList;
+		this.curRange = activeTimes.poll();
+		if (activePeriods != null) { activePeriods = null; }
 	}
 
 	/**

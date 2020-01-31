@@ -40,8 +40,10 @@ public class MapScheduledRoute {
 	 * @param index The index to set
 	 */
 	public void setNextIndex(int index) {
+		arrived = false;
 		if (index > stops.size()) {
 			index = stops.size();
+			arrived = true;
 		}
 
 		this.index = index;

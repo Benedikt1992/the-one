@@ -37,11 +37,9 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	/** Route of the movement model's instance */
 	private MapScheduledRoute route;
-	/** If the model is active */
-	private boolean started = false;
-	private boolean stopped = false;
-	/** First time when the node becomes active */
-	private double inactiveUntil = 0;
+
+	/** activeTimes tha need to be updated in the ActivenessHandler of the host */
+	private double[] updatedActiveTimes = null;
 
 	/**
 	 * Creates a new movement model based on a Settings object's settings.
@@ -68,6 +66,11 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		super(proto);
 		this.route = proto.allRoutes.get(proto.nextRouteIndex).replicate();
 
+        List<MapScheduledNode> stops = this.route.getStops();
+        this.updatedActiveTimes = new double[2];
+        this.updatedActiveTimes[0] = stops.get(0).getTime();
+        this.updatedActiveTimes[1] = stops.get(stops.size() - 1).getTime();
+
 		/* use the first stop as starting point */
 		this.route.setNextIndex(0);
 
@@ -84,7 +87,6 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		Path p = new Path(generateSpeed());
 		MapScheduledNode to = route.nextStop();
 		if (to == null) {
-			stopped = true;
 			return null;
 		}
 		if (to.getNode() == lastMapNode.getNode()) {
@@ -126,11 +128,13 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	 */
 	@Override
 	public Coord getInitialLocation() {
+        if (updatedActiveTimes != null) {
+            this.host.updateActiveness(updatedActiveTimes);
+            updatedActiveTimes = null;
+        }
 		if (lastMapNode == null) {
 			lastMapNode = route.nextStop();
 		}
-
-		inactiveUntil = lastMapNode.getTime();
 
 		return lastMapNode.getNode().getLocation().clone();
 	}
@@ -156,13 +160,5 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	 */
 	public List<MapScheduledNode> getStops() {
 		return route.getStops();
-	}
-
-	@Override
-	public boolean isActive() {
-		if ( SimClock.getTime() >= inactiveUntil ) {
-			started = true;
-		}
-		return started ^ stopped;
 	}
 }
