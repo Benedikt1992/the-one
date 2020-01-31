@@ -69,7 +69,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
         List<MapScheduledNode> stops = this.route.getStops();
         this.updatedActiveTimes = new double[2];
         this.updatedActiveTimes[0] = stops.get(0).getTime();
-        this.updatedActiveTimes[1] = stops.get(stops.size() - 1).getTime();
+		this.updatedActiveTimes[1] = stops.get(stops.size() - 1).getTime();
 
 		/* use the first stop as starting point */
 		this.route.setNextIndex(0);
@@ -129,6 +129,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	@Override
 	public Coord getInitialLocation() {
         if (updatedActiveTimes != null) {
+        	// TODO update activeTimes with delay model
             this.host.updateActiveness(updatedActiveTimes);
             updatedActiveTimes = null;
         }
