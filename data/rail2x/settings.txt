@@ -21,14 +21,14 @@ longRange.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 longRange.transmitSpeed = 250k
 # ~1500m
-longRange.transmitRange = 5
+longRange.transmitRange = 750
 
 # "Short Range" interface for switches
 shortRange.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 shortRange.transmitSpeed = 250k
 # ~100m
-shortRange.transmitRange = 0.39
+shortRange.transmitRange = 50
 
 # Define 6 different node groups
 Scenario.nrofHostGroups = 3
@@ -103,7 +103,7 @@ Events1.prefix = M
 # seed for movement models' pseudo random number generator (default = 0)
 MovementModel.rngSeed = 1
 # World's size for Movement Models without implicit size (width, height; meters)
-MovementModel.worldSize = 4500, 3400
+MovementModel.worldSize = 900000, 680000
 # How long time to move hosts in the world before real simulation
 MovementModel.warmup = 10
 
@@ -134,7 +134,7 @@ SprayAndWaitRouter.binaryMode = true
 ## Optimization settings -- these affect the speed of the simulation
 ## see World class for details.
 # cellSizeMult lower values speed up simulation on cost of memory and startup time (lowest is 1)
-Optimization.cellSizeMult = 5
+Optimization.cellSizeMult = 10
 Optimization.randomizeUpdateOrder = true
 
 
