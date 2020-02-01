@@ -9,7 +9,9 @@
 *-stations.wkt
 *-switches.wkt
 *-extended.osm
+*-extended.wkt
 *-routes.txt
+*-switch-degrees.csv
 
 # Javadocs
 *.html
