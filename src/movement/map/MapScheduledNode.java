@@ -38,12 +38,8 @@ public class MapScheduledNode {
 		return node;
 	}
 
-	public void setNode(MapNode node) {
-		this.node = node;
-	}
-
-	public void setTime(double time) {
-		this.time = time;
+	public MapScheduledNode updateTime(double time) {
+		return new MapScheduledNode(time, node);
 	}
 
 
