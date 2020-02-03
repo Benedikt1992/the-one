@@ -9,6 +9,7 @@ import core.Settings;
 import core.SettingsError;
 import core.SimClock;
 import movement.map.*;
+import movement.map.delay.DelayModel;
 
 import java.util.List;
 
@@ -24,6 +25,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	/** Per node group setting used for selecting a route file ({@value}) */
 	public static final String ROUTE_FILE_S = "routeFile";
 
+	/** Per node group setting used for selecting the {@link movement.map.delay.DelayModel} to use */
+	public static final String DELAY_MODEL_S = "delayModel";
+	public static final String DM_PACKAGE = "movement.map.delay.";
+
 	/** node where the last path ended or node next to initial placement */
 	protected MapScheduledNode lastMapNode;
 
@@ -34,6 +39,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	private List<MapScheduledRoute> allRoutes = null;
 	/** next route's index to give by prototype */
 	private Integer nextRouteIndex = null;
+	/** The DelayModel used to calculate delays on the route */
+	private DelayModel delayModel;
 
 	/** Route of the movement model's instance */
 	private MapScheduledRoute route;
@@ -51,6 +58,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		allRoutes = MapScheduledRoute.readRoutes(fileName, getMap());
 		nextRouteIndex = 0;
 		pathFinder = new DijkstraPathFinder(getOkMapNodeTypes());
+		delayModel = (DelayModel)settings.createIntializedObject(DM_PACKAGE +
+				settings.getSetting(DELAY_MODEL_S));
 		this.route = this.allRoutes.get(this.nextRouteIndex).replicate();
 		if (this.nextRouteIndex >= this.allRoutes.size()) {
 			this.nextRouteIndex = 0;
@@ -64,7 +73,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 	 */
 	protected MapScheduledMovement(MapScheduledMovement proto) {
 		super(proto);
-		this.route = proto.allRoutes.get(proto.nextRouteIndex).replicate();
+		MapScheduledRoute route = proto.allRoutes.get(proto.nextRouteIndex).replicate();
+		this.route = proto.delayModel.calculateDelay(route);
 
         List<MapScheduledNode> stops = this.route.getStops();
         this.updatedActiveTimes = new double[2];

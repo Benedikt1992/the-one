@@ -66,6 +66,7 @@ Group.msgTtl = 10558
 Group1.groupID = train
 Group1.nrofHosts = 295
 Group1.movementModel = MapScheduledMovement
+Group1.delayModel = NoDelay
 Group1.routeFile = data/rail2x/ICE-germany-routes.txt
 
 Group2.groupID = station
@@ -109,7 +110,7 @@ MovementModel.warmup = 10
 
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 1
-# this map is scaled down to 1:257 (meters)
+# this map is scaled down to 1:2 (meters)
 MapBasedMovement.mapFile1 = data/rail2x/ICE-germany-extended.wkt
 
 ## Reports - all report names have to be valid report classes
