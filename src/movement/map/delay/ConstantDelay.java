@@ -29,11 +29,11 @@ public class ConstantDelay extends DelayModel {
     @Override
     public MapScheduledRoute calculateDelay(MapScheduledRoute route) {
         List<MapScheduledNode> nodes = route.getStops();
-        List<MapScheduledNode> new_nodes = new ArrayList<>();
+        List<MapScheduledNode> newNodes = new ArrayList<>();
         for (MapScheduledNode node :
                 nodes) {
-            new_nodes.add(node.updateTime(node.getTime() + this.delay));
+            newNodes.add(node.updateTime(node.getTime() + this.delay));
         }
-        return new MapScheduledRoute(new_nodes);
+        return new MapScheduledRoute(newNodes);
     }
 }
