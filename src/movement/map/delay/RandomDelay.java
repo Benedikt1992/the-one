@@ -23,9 +23,9 @@ public class RandomDelay extends DelayModel {
     /** Default value for delay probability */
     public static final double DEF_DELAY_PROBABILITY = 1;
 
-    private double probability;
-    private double minDelay;
-    private double maxDelay;
+    protected double probability;
+    protected double minDelay;
+    protected double maxDelay;
 
     /**
      * Creates a new DelayModel based on a Settings object's settings.
