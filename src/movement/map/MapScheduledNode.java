@@ -42,5 +42,11 @@ public class MapScheduledNode {
 		return new MapScheduledNode(time, node);
 	}
 
-
+	/**
+	 * Returns a String representation of the map node
+	 * @return a String representation of the map node
+	 */
+	public String toString() {
+		return "Node" + this.node.getLocation().toString() + "@"+this.time;
+	}
 }
