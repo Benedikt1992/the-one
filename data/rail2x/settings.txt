@@ -66,7 +66,10 @@ Group.msgTtl = 10558
 Group1.groupID = train
 Group1.nrofHosts = 295
 Group1.movementModel = MapScheduledMovement
-Group1.delayModel = NoDelay
+Group1.delayModel = FollowUpDelay
+Group1.delayRange = -10,10
+# average delayProbability of 2019 of DB
+Group1.delayProbability = 0.201
 Group1.routeFile = data/rail2x/ICE-germany-routes.txt
 
 Group2.groupID = station
