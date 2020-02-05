@@ -3,7 +3,7 @@
 #
 
 ## Scenario settings
-Scenario.name = rail2x
+Scenario.name = rail2x-M_%%Group1.movementModel%%-D_%%Group1.delayModel%%
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 1 simulated second will be 1 minute in the schedule
