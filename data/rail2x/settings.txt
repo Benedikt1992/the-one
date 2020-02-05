@@ -153,3 +153,5 @@ Optimization.randomizeUpdateOrder = true
 GUI.EventLogPanel.nrofEvents = 30
 # Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
 #GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
+
+Settings.output = reports/settings.txt
