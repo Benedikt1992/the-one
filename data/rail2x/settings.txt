@@ -28,7 +28,7 @@ shortRange.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 shortRange.transmitSpeed = 250k
 # ~100m
-shortRange.transmitRange = 50
+shortRange.transmitRange = 750
 
 # Define 6 different node groups
 Scenario.nrofHostGroups = 3
@@ -65,6 +65,8 @@ Group.msgTtl = 10558
 
 Group1.groupID = train
 Group1.nrofHosts = 295
+Group1.nrofInterfaces = 2
+Group1.interface2 = shortRange
 Group1.movementModel = MapScheduledMovement
 Group1.delayModel = FollowUpDelay
 Group1.delayRange = -10,10
