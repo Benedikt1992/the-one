@@ -68,6 +68,14 @@ public class Range {
 		return (value >= min && value <= max);
 	}
 
+	public double getStart() {
+		return min;
+	}
+
+	public double getEnd() {
+		return max;
+	}
+
 	@Override
 	public String toString() {
 		return "Range [" + min + ", " + max + "]";

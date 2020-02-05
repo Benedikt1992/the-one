@@ -121,7 +121,7 @@ MapBasedMovement.mapFile1 = data/rail2x/ICE-germany-extended.wkt
 ## Reports - all report names have to be valid report classes
 
 # how many reports to load
-Report.nrofReports = 3
+Report.nrofReports = 4
 # length of the warm up period (simulated seconds)
 Report.warmup = 0
 # default directory of reports (can be overridden per Report with output setting)
@@ -131,6 +131,10 @@ Report.report1 = MessageCopyCountReport
 Report.report2 = ContactTimesReport
 Report.report3 = DeliveredMessagesReport
 MessageCopyCountReport.granularity = 100
+Report.report4 = MessageSnapshotReport
+# all trains
+MessageSnapshotReport.nodeRanges = 0-294
+MessageSnapshotReport.granularity = 100
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
