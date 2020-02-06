@@ -5,7 +5,7 @@
 ## Scenario settings
 Scenario.name = rail2x-M_%%Group1.movementModel%%-D_%%Group1.delayModel%%
 Scenario.simulateConnections = true
-Scenario.updateInterval = 0.1
+Scenario.updateInterval = 0.5
 # 1 simulated second will be 1 minute in the schedule
 Scenario.endTime = 10558
 
@@ -20,15 +20,15 @@ Scenario.endTime = 10558
 longRange.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 longRange.transmitSpeed = 250k
-# ~1500m
-longRange.transmitRange = 750
+# ~200m
+longRange.transmitRange = 100
 
 # "Short Range" interface for switches
 shortRange.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 shortRange.transmitSpeed = 250k
 # ~100m
-shortRange.transmitRange = 750
+shortRange.transmitRange = 50
 
 # Define 6 different node groups
 Scenario.nrofHostGroups = 3
@@ -86,6 +86,7 @@ Group3.nodeLocationsFile = data/rail2x/ICE-germany-switches.wkt
 # switches are more limited (shorter range and smaller buffer)
 Group3.interface1 = shortRange
 Group3.bufferSize = 100M
+Group3.mtaPolicy = SendOnlyPolicy
 
 
 ## Message creation parameters
@@ -93,9 +94,8 @@ Group3.bufferSize = 100M
 Events.nrof = 1
 # Class of the first event generator
 Events1.class = MessageBurstGenerator
-# (following settings are specific for the MessageEventGenerator class)
-# Creation interval in seconds (one new message every 25 to 35 seconds)
-Events1.size = 100
+# minimal message size. for faster simulation (long message queues). But reduces accuracy of simulation
+Events1.size = 1
 Events1.interval = 1
 Events1.hosts = 466, 912
 #Events1.tohosts = 295, 466
@@ -103,7 +103,8 @@ Events1.tohosts = 295, 296
 Events1.time = 0,1
 Events1.prefix = M
 
-
+# only receive messages which belong to this node itself
+SendOnlyPolicy.toReceivePolicy = -1
 
 ## Movement model settings
 # seed for movement models' pseudo random number generator (default = 0)
@@ -144,7 +145,7 @@ SprayAndWaitRouter.binaryMode = true
 ## Optimization settings -- these affect the speed of the simulation
 ## see World class for details.
 # cellSizeMult lower values speed up simulation on cost of memory and startup time (lowest is 1)
-Optimization.cellSizeMult = 10
+Optimization.cellSizeMult = 60
 Optimization.randomizeUpdateOrder = true
 
 
