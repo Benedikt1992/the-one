@@ -13,6 +13,7 @@ import java.util.*;
  * Report to show how many Messages were processed by each node.
  * Processed means the node had to decide if the Message should be transferred.
  * (e.g. if e a node tries to send a Message which is already in the buffer of the node it is counted)
+ * This report can have a big impact on the simulation speed.
  */
 public class MessageProcessingReport extends Report implements ConnectionListener, MessageListener {
 	/** Optional reported node ranges (comma separated list of ranges, e.g. 3-6,34-56 */
@@ -77,7 +78,8 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
 		String conKey = getConnectionKey(from, to);
 		String transferKey = m.getId() + from.toString() + toString();
-		if (!connections.get(conKey).contains(transferKey)) {
+
+		if (connections.containsKey(conKey) && !connections.get(conKey).contains(transferKey)) {
 			connections.get(conKey).add(transferKey);
 
 			boolean allNodes = reportedNodes == null;
