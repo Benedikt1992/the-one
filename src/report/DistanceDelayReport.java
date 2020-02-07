@@ -55,6 +55,11 @@ public class DistanceDelayReport extends Report implements MessageListener {
 				getSimTime() - info.getTime(), m.getHops().size()-1);
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 	/**
 	 * This is called when a new message is created
 	 */

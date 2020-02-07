@@ -111,6 +111,11 @@ public class MessageStatsReport extends Report implements MessageListener {
 		}
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 
 	public void newMessage(Message m) {
 		if (isWarmup()) {

@@ -53,4 +53,13 @@ public interface MessageListener {
 	 */
 	public void messageTransferred(Message m, DTNHost from, DTNHost to,
 			boolean firstDelivery);
+
+	/**
+	 * Method is called when a message's transfer was requested.
+	 * Note: This method is called multiple times for each message during one connection.
+	 * @param m The message that was being transferred
+	 * @param from Node where the message was being transferred from
+	 * @param to Node where the message was being transferred to
+	 */
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to);
 }

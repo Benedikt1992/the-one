@@ -77,4 +77,9 @@ public class DTN2Reporter extends Report implements MessageListener {
 			}
 		}
 	}
+
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
 }

@@ -46,6 +46,11 @@ public class MessageGraphvizReport extends Report implements MessageListener {
 		}
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 	/* nothing to implement for these */
 	public void messageDeleted(Message m, DTNHost where, boolean dropped) {	}
 	public void messageTransferAborted(Message m, DTNHost from, DTNHost to) {}

@@ -74,6 +74,11 @@ public class EventLogReport extends Report
 		processEvent(StandardEventsReader.DELIVERED, from, to, m, extra);
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 	public void newMessage(Message m) {
 		processEvent(StandardEventsReader.CREATE, m.getFrom(), null, m, null);
 	}

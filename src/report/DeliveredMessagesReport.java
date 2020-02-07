@@ -61,6 +61,11 @@ public class DeliveredMessagesReport extends Report implements MessageListener {
 		}
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 	public void newMessage(Message m) {
 		if (isWarmup()) {
 			addWarmupID(m.getId());

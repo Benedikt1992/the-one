@@ -56,6 +56,11 @@ public class MessageChecker implements MessageListener {
 		this.add(m, from, to, TYPE_RELAY, null, firstDelivery);
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 	public void newMessage(Message m) {
 		this.add(m, m.getFrom(), m.getTo(), TYPE_CREATE, null, null);
 	}

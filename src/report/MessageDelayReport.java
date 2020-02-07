@@ -56,6 +56,11 @@ public class MessageDelayReport extends Report implements MessageListener {
 	}
 
 	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
+	@Override
 	public void done() {
 		if (delays.size() == 0) {
 			write("# no messages delivered in sim time "+format(getSimTime()));

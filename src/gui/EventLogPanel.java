@@ -290,6 +290,11 @@ public class EventLogPanel extends JPanel
 		}
 	}
 
+	@Override
+	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
+
+	}
+
 	public void newMessage(Message m) {
 		processEvent(msgCreateCheck, "Message created", m.getFrom(), null, m);
 	}
