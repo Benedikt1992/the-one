@@ -19,7 +19,10 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 	/** Optional reported node ranges (comma separated list of ranges, e.g. 3-6,34-56 */
 	public static final String REPORTED_NODE_RANGES = "nodeRanges";
 
+	public static final String STARTED_ONLY_S = "startedOnly";
+
 	protected HashSet<Integer> reportedNodes;
+	protected boolean startedOnly;
 
 	private Map<String, Integer> outgoingCounts;
 	private Map<String, Integer> incomingCounts;
@@ -42,6 +45,7 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 				}
 			}
 		}
+		startedOnly = settings.getBoolean(STARTED_ONLY_S, false);
 		init();
 	}
 
@@ -76,12 +80,31 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 
 	@Override
 	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
-		String conKey = getConnectionKey(from, to);
-		String transferKey = m.getId() + from.toString() + toString();
+		if (!startedOnly) {
+			String conKey = getConnectionKey(from, to);
+			String transferKey = m.getId() + from.toString() + toString();
 
-		if (connections.containsKey(conKey) && !connections.get(conKey).contains(transferKey)) {
-			connections.get(conKey).add(transferKey);
+			if (connections.containsKey(conKey) && !connections.get(conKey).contains(transferKey)) {
+				connections.get(conKey).add(transferKey);
 
+				boolean allNodes = reportedNodes == null;
+				if (allNodes || reportedNodes.contains(from.getAddress())) {
+					Integer oldValue = outgoingCounts.getOrDefault(from.toString(), 0);
+					outgoingCounts.put(from.toString(), ++oldValue);
+					hosts.add(from.toString());
+				}
+
+				if (allNodes || reportedNodes.contains(to.getAddress())) {
+					Integer oldValue = incomingCounts.getOrDefault(to.toString(), 0);
+					incomingCounts.put(to.toString(), ++oldValue);
+					hosts.add(to.toString());
+				}
+			}
+		}
+	}
+
+	public void messageTransferStarted(Message m, DTNHost from, DTNHost to) {
+		if( startedOnly ) {
 			boolean allNodes = reportedNodes == null;
 			if (allNodes || reportedNodes.contains(from.getAddress())) {
 				Integer oldValue = outgoingCounts.getOrDefault(from.toString(), 0);
@@ -102,8 +125,6 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 	public void messageTransferAborted(Message m, DTNHost from, DTNHost to) {}
 	public void messageTransferred(Message m, DTNHost from, DTNHost to, boolean finalTarget) {}
 	public void newMessage(Message m) {}
-	public void messageTransferStarted(Message m, DTNHost from, DTNHost to) {}
-
 
 	@Override
 	public void done() {
