@@ -474,8 +474,7 @@ public class DTNHost implements Comparable<DTNHost> {
 	public int receiveMessage(Message m, DTNHost from) {
 		int retVal = this.router.receiveMessage(m, from);
 
-		if (retVal != MessageRouter.TRY_LATER_BUSY) {
-			/* Busy means the medium is occupied and therefore the message was never sent */
+		if (retVal == MessageRouter.DENIED_OLD) {
 			for (MessageListener ml : this.msgListeners) {
 				ml.messageTransferRequested(m, from, this);
 			}
