@@ -52,13 +52,16 @@ public class MessageDeliveredDuplicatesReport extends Report implements MessageL
 	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
 		boolean allNodes = reportedNodes == null;
 		if (allNodes || reportedNodes.contains(to.getAddress())) {
-			HashMap<String, HashSet<String>> messages = duplicates.getOrDefault(to.toString(),
-					new HashMap<String, HashSet<String>>());
-			HashSet<String> received = messages.getOrDefault(m.getId(), new HashSet<String>());
-			// TODO use the message itself. Currently it doesn't count if the same host send the same message on 2 occasions.
-			received.add(from.toString());
-			messages.put(m.getId(), received);
-			duplicates.put(to.toString(), messages);
+			if (to.toString().equals(m.getTo().toString())) {
+				HashMap<String, HashSet<String>> messages = duplicates.getOrDefault(to.toString(),
+						new HashMap<String, HashSet<String>>());
+				HashSet<String> received = messages.getOrDefault(m.getId(), new HashSet<String>());
+				// TODO use the message itself. Currently it doesn't count if the same host send the same message on 2 occasions.
+				// TODO this could work as message processing? (is much faster!)
+				received.add(from.toString());
+				messages.put(m.getId(), received);
+				duplicates.put(to.toString(), messages);
+			}
 		}
 	}
 
