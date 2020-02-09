@@ -57,7 +57,6 @@ public class MessageDeliveredDuplicatesReport extends Report implements MessageL
 						new HashMap<String, HashSet<String>>());
 				HashSet<String> received = messages.getOrDefault(m.getId(), new HashSet<String>());
 				// TODO use the message itself. Currently it doesn't count if the same host send the same message on 2 occasions.
-				// TODO this could work as message processing? (is much faster!)
 				received.add(from.toString());
 				messages.put(m.getId(), received);
 				duplicates.put(to.toString(), messages);

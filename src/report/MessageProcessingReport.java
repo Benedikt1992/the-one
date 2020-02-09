@@ -26,7 +26,7 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 
 	private Map<String, Integer> outgoingCounts;
 	private Map<String, Integer> incomingCounts;
-	private Map<String, HashSet<String>> connections;
+	private Map<String, HashSet<Transfer>> connections;
 	private Set<String> hosts;
 
 	/**
@@ -54,20 +54,39 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 		super.init();
 		this.outgoingCounts = new HashMap<String, Integer>();
 		this.incomingCounts = new HashMap<String, Integer>();
-		this.connections = new HashMap<String, HashSet<String>>();
+		this.connections = new HashMap<String, HashSet<Transfer>>();
 		this.hosts = new HashSet<String>();
 	}
 
 	@Override
 	public void hostsConnected(DTNHost host1, DTNHost host2) {
-		String key = getConnectionKey(host1, host2);
-		connections.put(key, new HashSet<String>());
 	}
 
 	@Override
 	public void hostsDisconnected(DTNHost host1, DTNHost host2) {
 		String key = getConnectionKey(host1, host2);
-		connections.remove(key);
+		HashSet<Transfer> transfers = connections.remove(key);
+
+		boolean allNodes = reportedNodes == null;
+		if (transfers != null && (
+				allNodes ||
+				reportedNodes.contains(host1.getAddress()) ||
+				reportedNodes.contains(host2.getAddress())
+		)) {
+			for (Transfer transfer : transfers) {
+				if (allNodes || reportedNodes.contains(transfer.getFromAddress())) {
+					Integer oldValue = outgoingCounts.getOrDefault(transfer.getFrom(), 0);
+					outgoingCounts.put(transfer.getFrom(), ++oldValue);
+					hosts.add(transfer.getFrom());
+				}
+
+				if (allNodes || reportedNodes.contains(transfer.getToAddress())) {
+					Integer oldValue = incomingCounts.getOrDefault(transfer.getTo(), 0);
+					incomingCounts.put(transfer.getTo(), ++oldValue);
+					hosts.add(transfer.getTo());
+				}
+			}
+		}
 	}
 
 	private String getConnectionKey(DTNHost host1, DTNHost host2) {
@@ -82,24 +101,12 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
 		if (!startedOnly) {
 			String conKey = getConnectionKey(from, to);
-			String transferKey = m.getId() + from.toString() + toString();
 
-			if (connections.containsKey(conKey) && !connections.get(conKey).contains(transferKey)) {
-				connections.get(conKey).add(transferKey);
+			HashSet<Transfer> transfers = connections.getOrDefault(conKey, new HashSet<Transfer>());
+			transfers.add(new Transfer(from, to, m));
 
-				boolean allNodes = reportedNodes == null;
-				if (allNodes || reportedNodes.contains(from.getAddress())) {
-					Integer oldValue = outgoingCounts.getOrDefault(from.toString(), 0);
-					outgoingCounts.put(from.toString(), ++oldValue);
-					hosts.add(from.toString());
-				}
-
-				if (allNodes || reportedNodes.contains(to.getAddress())) {
-					Integer oldValue = incomingCounts.getOrDefault(to.toString(), 0);
-					incomingCounts.put(to.toString(), ++oldValue);
-					hosts.add(to.toString());
-				}
-			}
+			// todo is this necessary?
+			connections.put(conKey, transfers);
 		}
 	}
 
@@ -136,5 +143,52 @@ public class MessageProcessingReport extends Report implements ConnectionListene
 			write(hostKey + "," + outgoing.toString() + "," + incoming.toString());
 		}
 		super.done();
+	}
+
+	private class Transfer {
+		private DTNHost from;
+		private DTNHost to;
+		private Message message;
+
+		public Transfer(DTNHost from, DTNHost to, Message message) {
+			this.from = from;
+			this.to = to;
+			this.message = message;
+		}
+
+		public String getFrom() {
+			return from.toString();
+		}
+
+		public Integer getFromAddress() {
+			return from.getAddress();
+		}
+
+		public String getTo() {
+			return to.toString();
+		}
+
+		public Integer getToAddress() {
+			return to.getAddress();
+		}
+
+		public String getMessage() {
+			return message.getId();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			Transfer transfer = (Transfer) o;
+			return getFrom().equals(transfer.getFrom()) &&
+					getTo().equals(transfer.getTo()) &&
+					getMessage().equals(transfer.getMessage());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(getFrom(), getTo(), getMessage());
+		}
 	}
 }
