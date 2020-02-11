@@ -2,6 +2,7 @@ import os
 from argparse import ArgumentParser, ArgumentError
 
 from src.delivery_cumulation_graph import DeliveryCumulationGraph
+from src.hop_distribution import HopDistribution
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
 
@@ -42,6 +43,10 @@ class Visualizer:
         created_messages_reader = CreatedMessagesReportReader(self.created_messages_report)
 
         DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader).create_all_from_scenario(self.output, self.args.scenario)
+        HopDistribution(delivered_messages_reader, created_messages_reader).create_histogram_from_scenario(self.output, self.args.scenario)
+
+        HopDistribution(delivered_messages_reader, created_messages_reader).create_boxplots_from_scenario(self.output, self.args.scenario)
+
         # TODO implement the different graphs from BP
         pass
 

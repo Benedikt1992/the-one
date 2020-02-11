@@ -39,3 +39,11 @@ class CreatedMessagesReportReader:
                 destinations[row[self.to_host]] = [row[self.id]]
 
         return destinations
+
+    def get_destinations(self):
+        destinations = set()
+
+        for row in self.rows:
+            destinations.add(row[self.to_host])
+
+        return destinations

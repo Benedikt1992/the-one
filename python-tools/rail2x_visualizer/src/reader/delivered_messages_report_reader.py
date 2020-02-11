@@ -41,3 +41,10 @@ class DeliveredMessagesReportReader:
             if row[self.to_host] == destination:
                 deliveries.append((float(row[self.delivery_time]), row[self.id]))
         return deliveries
+
+    def get_hops(self, destination=None):
+        hops = []
+        for row in self.rows:
+            if destination is None or row[self.to_host] == destination:
+                hops.append(int(row[self.hopcount]))
+        return hops
