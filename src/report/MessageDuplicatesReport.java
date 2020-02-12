@@ -15,7 +15,7 @@ import java.util.*;
  * (e.g. if e a node tries to send a Message which is already in the buffer of the node it is counted)
  * This report can have a big impact on the simulation speed.
  */
-public class MessageDeliveredDuplicatesReport extends Report implements MessageListener {
+public class MessageDuplicatesReport extends Report implements MessageListener {
 	/** Optional reported node ranges (comma separated list of ranges, e.g. 3-6,34-56 */
 	public static final String REPORTED_NODE_RANGES = "nodeRanges";
 
@@ -26,7 +26,7 @@ public class MessageDeliveredDuplicatesReport extends Report implements MessageL
 	/**
 	 * Constructor.
 	 */
-	public MessageDeliveredDuplicatesReport() {
+	public MessageDuplicatesReport() {
 		super();
 		Settings settings = getSettings();
 		if (settings.contains(REPORTED_NODE_RANGES)) {
@@ -52,15 +52,13 @@ public class MessageDeliveredDuplicatesReport extends Report implements MessageL
 	public void messageTransferRequested(Message m, DTNHost from, DTNHost to) {
 		boolean allNodes = reportedNodes == null;
 		if (allNodes || reportedNodes.contains(to.getAddress())) {
-			if (to.toString().equals(m.getTo().toString())) {
-				HashMap<String, HashSet<String>> messages = duplicates.getOrDefault(to.toString(),
-						new HashMap<String, HashSet<String>>());
-				HashSet<String> received = messages.getOrDefault(m.getId(), new HashSet<String>());
-				// TODO use the message itself. Currently it doesn't count if the same host send the same message on 2 occasions.
-				received.add(from.toString());
-				messages.put(m.getId(), received);
-				duplicates.put(to.toString(), messages);
-			}
+            HashMap<String, HashSet<String>> messages = duplicates.getOrDefault(to.toString(),
+                    new HashMap<String, HashSet<String>>());
+            HashSet<String> received = messages.getOrDefault(m.getId(), new HashSet<String>());
+            // TODO use the message itself. Currently it doesn't count if the same host send the same message on 2 occasions.
+            received.add(from.toString());
+            messages.put(m.getId(), received);
+            duplicates.put(to.toString(), messages);
 		}
 	}
 
