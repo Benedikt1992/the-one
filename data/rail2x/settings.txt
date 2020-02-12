@@ -140,8 +140,8 @@ Report.report5 = MessageProcessingReport
 # all trains and stations
 MessageProcessingReport.nodeRanges = 0-465
 MessageProcessingReport.startedOnly = true
-Report.report6 = MessageDeliveredDuplicatesReport
-MessageDeliveredDuplicatesReport.nodeRanges = 295-465
+Report.report6 = MessageDuplicatesReport
+MessageDuplicatesReport.nodeRanges = 0-465
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
