@@ -38,7 +38,8 @@ class DeliveryCumulationGraph:
     def __get_cumulation_array(self, destination):
         deliveries = self.delivered_messages_reader.get_deliveries(destination)
         deliveries = sorted(deliveries, key=lambda x: x[0])
-        max_time = int(deliveries[-1][0]) + 1
+        # todo use settings value for max time
+        max_time = 10588 # int(deliveries[-1][0]) + 1
         cumulative_array = [0] * max_time
         cumulation = 0
         for delivery in deliveries:

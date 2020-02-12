@@ -30,11 +30,13 @@ class HopDistribution:
             tick_labels.append(destination)
             data.append(self.delivered_messages_reader.get_hops(destination))
 
+        #TODO fix size of out put. Currently it starts to overlap
         plt.boxplot(data, vert=False)
         plt.title("Boxplots of all destinations")
-        plt.ylabel('Hops')
-        plt.xlabel('Destinations')
+        plt.ylabel('Destinations')
+        plt.xlabel('Hops')
         plt.yticks(ticks, tick_labels)
+
         self.__store_figure(output_path, scenario, "hop-boxplots", "all")
 
     @staticmethod
