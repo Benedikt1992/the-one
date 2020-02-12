@@ -47,3 +47,11 @@ class CreatedMessagesReportReader:
             destinations.add(row[self.to_host])
 
         return destinations
+
+    def get_messages(self):
+        messages = set()
+
+        for row in self.rows:
+            messages.add(row[self.id])
+
+        return messages
