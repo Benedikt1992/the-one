@@ -129,7 +129,7 @@ Report.warmup = 0
 Report.reportDir = reports/
 # Report classes to load
 Report.report1 = MessageCopyCountReport
-Report.report2 = ContactTimesReport
+Report.report2 = CreatedMessagesReport
 Report.report3 = DeliveredMessagesReport
 MessageCopyCountReport.granularity = 100
 Report.report4 = MessageSnapshotReport
