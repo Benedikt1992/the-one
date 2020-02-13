@@ -14,6 +14,8 @@ class Duplicates:
     def duplicates_heatmap(self, output_path, scenario, node_prefix=""):
         messages = sorted(list(self.created_messages_reader.get_messages()))
         duplicates = self.duplicates_reader.get_duplicates_grouped_by_host(node_prefix)
+        if not duplicates:
+            return # no nodes with prefix found
 
         for key in duplicates.keys():
             duplicates[key] = sorted(duplicates[key], key=lambda x: x[0])
