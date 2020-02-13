@@ -19,23 +19,21 @@ class HopDistribution:
         self.__store_figure(output_path, scenario, "hop-histogram", "all")
 
     def create_boxplots_from_scenario(self, output_path, scenario):
-        destinations = self.created_messages_reader.get_destinations()
+        destinations = list(self.created_messages_reader.get_destinations())
+        destinations = sorted(destinations,  key=lambda x: (len(x), x))
         data = []
         tick_labels = []
-        ticks = []
-        tick = 1
         for destination in destinations:
-            ticks.append(tick)
-            tick += 1
             tick_labels.append(destination)
             data.append(self.delivered_messages_reader.get_hops(destination))
 
-        #TODO fix size of out put. Currently it starts to overlap
-        plt.boxplot(data, vert=False)
-        plt.title("Boxplots of all destinations")
-        plt.ylabel('Destinations')
-        plt.xlabel('Hops')
-        plt.yticks(ticks, tick_labels)
+        boxplot_width = 0.7
+        fig, axs = plt.subplots(figsize=(10, boxplot_width*len(destinations)))
+        axs.boxplot(data, vert=False)
+        axs.set_title("Boxplots of all destinations")
+        axs.set_ylabel('Destinations')
+        axs.set_xlabel('Hops')
+        axs.set_yticklabels(tick_labels)
 
         self.__store_figure(output_path, scenario, "hop-boxplots", "all")
 
