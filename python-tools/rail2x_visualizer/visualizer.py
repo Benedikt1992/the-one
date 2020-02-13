@@ -7,6 +7,7 @@ from src.hop_distribution import HopDistribution
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
 from src.reader.message_duplicates_report_reader import MessageDuplicatesReportReader
+from src.reader.one_settings_reader import ONESettingsReader
 
 
 class Visualizer:
@@ -47,14 +48,21 @@ class Visualizer:
                                                       self.args.scenario + "_MessageDuplicatesReport.txt")
         if not os.path.isfile(self.message_duplicates_report):
             raise ValueError("MessageDuplicatesReport is not available at {}".format(self.message_duplicates_report))
+
+        # Settings
+        self.settings = os.path.join(self.args.reports, "settings.txt")
+        if not os.path.isfile(self.settings):
+            raise ValueError(
+                "Settings are not available at {}".format(self.settings))
         # todo test if all reports are available
 
     def run(self):
         delivered_messages_reader = DeliveredMessagesReportReader(self.delivered_messages_report)
         created_messages_reader = CreatedMessagesReportReader(self.created_messages_report)
         message_duplicates_reader = MessageDuplicatesReportReader(self.message_duplicates_report)
+        settings_reader = ONESettingsReader(self.settings)
 
-        # DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader).create_all_from_scenario(self.output, self.args.scenario)
+        DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader).create_all_from_scenario(self.output, self.args.scenario)
         hops = HopDistribution(delivered_messages_reader, created_messages_reader)
         hops.create_histogram_from_scenario(self.output, self.args.scenario)
         hops.create_boxplots_from_scenario(self.output, self.args.scenario)

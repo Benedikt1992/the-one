@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
+from src.reader.one_settings_reader import ONESettingsReader
 
 
 class DeliveryCumulationGraph:
-    def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader):
+    def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader, settings: ONESettingsReader):
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader
+        self.settings = settings
 
     def create_all_from_scenario(self, output_path, scenario):
         destinations = self.created_messages_reader.get_messages_grouped_by_destination()
@@ -17,7 +19,6 @@ class DeliveryCumulationGraph:
             self.create_station_from_scenario(output_path, scenario, destination, messages)
 
     def create_station_from_scenario(self, output_path, scenario, destination, messages):
-        #todo load simulation time from settings report
         array = self.__get_cumulation_array(destination)
         maximum = len(messages)
         x_axis = [0] * len(array)
@@ -38,8 +39,7 @@ class DeliveryCumulationGraph:
     def __get_cumulation_array(self, destination):
         deliveries = self.delivered_messages_reader.get_deliveries(destination)
         deliveries = sorted(deliveries, key=lambda x: x[0])
-        # todo use settings value for max time
-        max_time = 10588 # int(deliveries[-1][0]) + 1
+        max_time = self.settings.get_simulation_duration()
         cumulative_array = [0] * max_time
         cumulation = 0
         for delivery in deliveries:
