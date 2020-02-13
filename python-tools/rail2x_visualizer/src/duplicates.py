@@ -11,14 +11,14 @@ class Duplicates:
         self.duplicates_reader = duplicates_reader
         self.created_messages_reader = creation_reader
 
-    def duplicates_heatmap(self, output_path, scenario, node_prefix):
+    def duplicates_heatmap(self, output_path, scenario, node_prefix=""):
         messages = sorted(list(self.created_messages_reader.get_messages()))
         duplicates = self.duplicates_reader.get_duplicates_grouped_by_host(node_prefix)
 
         for key in duplicates.keys():
             duplicates[key] = sorted(duplicates[key], key=lambda x: x[0])
 
-        hosts = sorted(duplicates.keys())
+        hosts = sorted(duplicates.keys(), key=lambda x: (len(x), x))
         data = []
         for host in hosts:
             for i in range(len(messages)):
@@ -28,7 +28,6 @@ class Duplicates:
                 except IndexError:
                     duplicates[host].append((messages[i], 0))
             data.append([n[1] for n in duplicates[host]])
-
         # transpose data
         data = list(map(list, zip(*data)))
 
@@ -39,7 +38,11 @@ class Duplicates:
         ax.set_xlabel(node_prefix + 's')
         ax.set_ylabel('Messages')
         cbar.ax.set_ylabel("Duplicates")
-        self.__store_figure(output_path, scenario, node_prefix)
+        if len(messages) > 1000:
+            print("Too many messages. Store heatmap in pixel format.")
+            self.__store_figure(output_path, scenario, node_prefix, 'png')
+        else:
+            self.__store_figure(output_path, scenario, node_prefix)
 
     @staticmethod
     def __store_figure(output, scenario, prefix, format='svg'):
