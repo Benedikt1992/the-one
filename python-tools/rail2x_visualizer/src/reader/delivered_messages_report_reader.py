@@ -48,3 +48,26 @@ class DeliveredMessagesReportReader:
             if destination is None or row[self.to_host] == destination:
                 hops.append(int(row[self.hopcount]))
         return hops
+
+    def __iter__(self):
+        return self.__deliveries_iterator()
+
+    def __deliveries_iterator(self):
+        for delivery in self.rows:
+            if delivery[self.isResponse] == 'N':
+                is_response = False
+            else:
+                is_response = True
+            current_delivery = {
+                'time': float(delivery[self.time]),
+                'id': delivery[self.id],
+                'size': int(delivery[self.size]),
+                'hops': int(delivery[self.hopcount]),
+                'latency': float(delivery[self.delivery_time]),
+                'from': delivery[self.from_host],
+                'to': delivery[self.to_host],
+                'remainingttl': int(delivery[self.remaining_ttl]),
+                'isResponse': is_response,
+                'path': delivery[self.path]
+            }
+            yield current_delivery
