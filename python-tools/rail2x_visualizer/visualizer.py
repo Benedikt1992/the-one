@@ -5,9 +5,11 @@ from src.delivery_cumulation_graph import DeliveryCumulationGraph
 from src.distance_deliverytime_graph import DistanceDeliverytimeGraph
 from src.duplicates import Duplicates
 from src.hop_distribution import HopDistribution
+from src.node_load import NodeLoad
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
 from src.reader.message_duplicates_report_reader import MessageDuplicatesReportReader
+from src.reader.message_processing_report_reader import MessageProcessingReportReader
 from src.reader.node_location_reader import NodeLocationReader
 from src.reader.one_settings_reader import ONESettingsReader
 
@@ -42,6 +44,7 @@ class Visualizer:
         self.delivered_messages_report = None
         self.created_messages_report = None
         self.message_duplicates_report = None
+        self.message_processing_report = None
 
         # Settings
         self.settings = os.path.join(self.args.reports, "settings.txt")
@@ -59,7 +62,9 @@ class Visualizer:
             created_messages_reader = CreatedMessagesReportReader(self.created_messages_report)
             message_duplicates_reader = MessageDuplicatesReportReader(self.message_duplicates_report)
             node_location_reader = NodeLocationReader(settings_reader)
+            message_processing_reader = MessageProcessingReportReader(self.message_processing_report)
 
+            NodeLoad(message_processing_reader).load_distribution_by_hostgroup()
             DistanceDeliverytimeGraph(delivered_messages_reader,node_location_reader).create_scatter_plot(self.output, scenario)
             DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader).create_all_from_scenario(self.output, scenario)
             hops = HopDistribution(delivered_messages_reader, created_messages_reader)
@@ -82,12 +87,20 @@ class Visualizer:
                                                     scenario + "_CreatedMessagesReport.txt")
         if not os.path.isfile(self.created_messages_report):
             raise ValueError("CreatedMessagesReport is not available at {}".format(self.created_messages_report))
+
         # MessageDuplicatesReport
         self.message_duplicates_report = os.path.join(self.args.reports,
                                                       scenario + "_MessageDuplicatesReport.txt")
         if not os.path.isfile(self.message_duplicates_report):
             raise ValueError(
                 "MessageDuplicatesReport is not available at {}".format(self.message_duplicates_report))
+
+        # MessageProcessingReport
+        self.message_processing_report = os.path.join(self.args.reports,
+                                                      scenario + "_MessageProcessingReport.txt")
+        if not os.path.isfile(self.message_processing_report):
+            raise ValueError(
+                "MessageDuplicatesReport is not available at {}".format(self.message_processing_report))
 
 
 if __name__ == "__main__":
