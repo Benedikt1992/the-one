@@ -10,6 +10,7 @@ from src.reader.created_messages_report_reader import CreatedMessagesReportReade
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
 from src.reader.message_duplicates_report_reader import MessageDuplicatesReportReader
 from src.reader.message_processing_report_reader import MessageProcessingReportReader
+from src.reader.message_snapshot_report_reader import MessageSnapshotReportReader
 from src.reader.node_location_reader import NodeLocationReader
 from src.reader.one_settings_reader import ONESettingsReader
 
@@ -45,6 +46,7 @@ class Visualizer:
         self.created_messages_report = None
         self.message_duplicates_report = None
         self.message_processing_report = None
+        self.message_snapshot_report = None
 
         # Settings
         self.settings = os.path.join(self.args.reports, "settings.txt")
@@ -63,9 +65,12 @@ class Visualizer:
             message_duplicates_reader = MessageDuplicatesReportReader(self.message_duplicates_report)
             node_location_reader = NodeLocationReader(settings_reader)
             message_processing_reader = MessageProcessingReportReader(self.message_processing_report)
+            message_snapshot_reader = MessageSnapshotReportReader(self.message_snapshot_report)
 
-            NodeLoad(message_processing_reader).load_distribution_by_hostgroup(self.output, scenario)
-            DistanceDeliverytimeGraph(delivered_messages_reader,node_location_reader).create_scatter_plot(self.output, scenario)
+            load = NodeLoad(message_processing_reader, message_snapshot_reader)
+            load.load_timeline(self.output, scenario)
+            load.load_distribution_by_hostgroup(self.output, scenario)
+            DistanceDeliverytimeGraph(delivered_messages_reader, node_location_reader).create_scatter_plot(self.output, scenario)
             DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader).create_all_from_scenario(self.output, scenario)
             hops = HopDistribution(delivered_messages_reader, created_messages_reader)
             hops.create_histogram_from_scenario(self.output, scenario)
@@ -102,6 +107,12 @@ class Visualizer:
             raise ValueError(
                 "MessageDuplicatesReport is not available at {}".format(self.message_processing_report))
 
+        # MessageSnapshotReport
+        self.message_snapshot_report = os.path.join(self.args.reports,
+                                                    scenario + "_MessageSnapshotReport.txt")
+        if not os.path.isfile(self.message_snapshot_report):
+            raise ValueError(
+                "MessageSnapshotReport is not available at {}".format(self.message_snapshot_report))
 
 if __name__ == "__main__":
     visualizer = Visualizer()
