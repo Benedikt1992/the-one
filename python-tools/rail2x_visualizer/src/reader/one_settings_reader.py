@@ -5,6 +5,9 @@ from string import Template
 
 
 class ONESettingsReader:
+    """
+    This class processes settings from a (batched) ONE simulation.
+    """
     def __init__(self, file_path, simulation_wd):
         self.current_run = None
         self.simulation_working_dir = simulation_wd
@@ -27,9 +30,17 @@ class ONESettingsReader:
             self.settings_runs.append(settings_set)
 
     def get_simulation_duration(self):
+        """
+        How long did the simulation run
+        :return:
+        """
         return int(self.settings_runs[self.current_run]['Scenario.endTime'])
 
     def next_run(self):
+        """
+        Load the next run configuration from a batched simulation.
+        :return:
+        """
         if self.current_run is None:
             self.current_run = 0
         else:
@@ -39,6 +50,10 @@ class ONESettingsReader:
         return self.current_run
 
     def get_stationary_nodes(self):
+        """
+        Get information to reconstruct the location of stationary nodes.
+        :return: {<group id>: (<start of addresses of nodes in this group>, <coordinate file path>)}
+        """
         current_settings = self.settings_runs[self.current_run]
         host_groups = int(current_settings['Scenario.nrofHostGroups'])
 
@@ -57,6 +72,10 @@ class ONESettingsReader:
         return nodes
 
     def get_scenario(self):
+        """
+        Get the name of the scenario that is currently examined
+        :return:
+        """
         scenario_pattern = self.settings_runs[self.current_run]['Scenario.name']
         t = self.ScenarioTemplate(scenario_pattern)
         scenario = t.safe_substitute(self.settings_runs[self.current_run])

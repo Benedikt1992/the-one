@@ -2,6 +2,9 @@ import csv
 
 
 class CreatedMessagesReportReader:
+    """
+    This class processes a CreatedMessagesReport from the ONE simulator
+    """
     time = 0
     id = 1
     size = 2
@@ -30,6 +33,10 @@ class CreatedMessagesReportReader:
                 self.rows.append(row)
 
     def get_messages_grouped_by_destination(self):
+        """
+        Find which messages were generated for which destination
+        :return: {<destinantion name> : [Message Names]}
+        """
         destinations = {}
 
         for row in self.rows:
@@ -41,6 +48,10 @@ class CreatedMessagesReportReader:
         return destinations
 
     def get_destinations(self):
+        """
+        Which nodes should receive any messages.
+        :return: set of names of destination nodes.
+        """
         destinations = set()
 
         for row in self.rows:
@@ -49,6 +60,10 @@ class CreatedMessagesReportReader:
         return destinations
 
     def get_messages(self):
+        """
+        Which messages were generated
+        :return: Set of all message names.
+        """
         messages = set()
 
         for row in self.rows:

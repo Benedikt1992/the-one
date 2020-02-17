@@ -6,11 +6,20 @@ from src.reader.delivered_messages_report_reader import DeliveredMessagesReportR
 
 
 class HopDistribution:
+    """
+    This class visualizes the hops the messages needed in order to reach their destination.
+    """
     def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader):
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader
 
     def create_histogram_from_scenario(self, output_path, scenario):
+        """
+        Create a histogram showing the hop distance distribution of all messages
+        :param output_path:
+        :param scenario:
+        :return:
+        """
         boxplot_distribution = self.delivered_messages_reader.get_hops()
         plt.hist(boxplot_distribution, bins=50)
         plt.title('Hop Distribution of all Messages')
@@ -19,6 +28,12 @@ class HopDistribution:
         self.__store_figure(output_path, scenario, "hop-histogram", "all")
 
     def create_boxplots_from_scenario(self, output_path, scenario):
+        """
+        Create a boxplot for each destination showing the distribution of hops of messages destined to this node.
+        :param output_path:
+        :param scenario:
+        :return:
+        """
         destinations = list(self.created_messages_reader.get_destinations())
         destinations = sorted(destinations,  key=lambda x: (len(x), x))
         data = []

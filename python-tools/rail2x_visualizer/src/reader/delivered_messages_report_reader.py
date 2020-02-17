@@ -2,6 +2,10 @@ import csv
 
 
 class DeliveredMessagesReportReader:
+    """
+    This class processes a DeliveredMessagesReport from the ONE simulator.
+    Objects of this class are iterable and return a dict object for each delivered message.
+    """
     time = 0
     id = 1
     size = 2
@@ -36,6 +40,11 @@ class DeliveredMessagesReportReader:
                 self.rows.append(row)
 
     def get_deliveries(self, destination):
+        """
+        Find delivered messages for a given host
+        :param destination: Name of a simulated node
+        :return: list of tuples (delivery time, message name)
+        """
         deliveries = []
         for row in self.rows:
             if row[self.to_host] == destination:
@@ -43,6 +52,11 @@ class DeliveredMessagesReportReader:
         return deliveries
 
     def get_hops(self, destination=None):
+        """
+        Get amount of hops for messages. Optionally only for messages with a specific destination
+        :param destination: Optionally, node name
+        :return: list of hops
+        """
         hops = []
         for row in self.rows:
             if destination is None or row[self.to_host] == destination:

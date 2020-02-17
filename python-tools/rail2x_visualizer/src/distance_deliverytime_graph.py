@@ -8,6 +8,10 @@ from src.reader.node_location_reader import NodeLocationReader
 
 
 class DistanceDeliverytimeGraph:
+    """
+    Show a correlation of the distance between the source and destination of a message
+    and the time the message was delivered.
+    """
     def __init__(self, delivered_messages: DeliveredMessagesReportReader, node_locations: NodeLocationReader):
         self.delivered_messages = delivered_messages
         self.locations = node_locations

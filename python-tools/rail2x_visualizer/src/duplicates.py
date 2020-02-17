@@ -7,11 +7,21 @@ from src.reader.message_duplicates_report_reader import MessageDuplicatesReportR
 
 
 class Duplicates:
+    """
+    Show how often a message was processed by a node in a heatmap.
+    """
     def __init__(self, duplicates_reader: MessageDuplicatesReportReader, creation_reader: CreatedMessagesReportReader):
         self.duplicates_reader = duplicates_reader
         self.created_messages_reader = creation_reader
 
     def duplicates_heatmap(self, output_path, scenario, node_prefix=""):
+        """
+        See class description
+        :param output_path:
+        :param scenario:
+        :param node_prefix: optionally a prefix to filter the nodes displayed within the heatmap.
+        :return:
+        """
         messages = sorted(list(self.created_messages_reader.get_messages()))
         duplicates = self.duplicates_reader.get_duplicates_grouped_by_host(node_prefix)
         if not duplicates:

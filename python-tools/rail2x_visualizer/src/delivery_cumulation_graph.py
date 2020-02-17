@@ -8,6 +8,10 @@ from src.reader.one_settings_reader import ONESettingsReader
 
 
 class DeliveryCumulationGraph:
+    """
+    Show the cumulation of packages over time at the destination of the packages.
+    Each destinantion is plotted in its own graph.
+    """
     def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader, settings: ONESettingsReader):
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader

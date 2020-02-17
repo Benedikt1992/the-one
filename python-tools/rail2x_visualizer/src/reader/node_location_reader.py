@@ -4,6 +4,9 @@ from src.reader.one_settings_reader import ONESettingsReader
 
 
 class NodeLocationReader:
+    """
+    This class searches for the location of stationary nodes based on the settings of the simulation run.
+    """
     def __init__(self, settings: ONESettingsReader):
         nodes = settings.get_stationary_nodes()
 
@@ -19,4 +22,9 @@ class NodeLocationReader:
                     self.node_dict[node_name] = (x, y)
 
     def get_node_location(self, node):
+        """
+        Get the location (WKT) of a given stationary node.
+        :param node:
+        :return:
+        """
         return self.node_dict.get(node, None)

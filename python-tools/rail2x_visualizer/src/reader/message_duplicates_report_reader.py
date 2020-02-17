@@ -2,6 +2,9 @@ import csv
 
 
 class MessageDuplicatesReportReader:
+    """
+    This class processes a MessageDuplicatesReport from the ONE simulator.
+    """
     host = 0
     message = 1
     duplicates = 2
@@ -22,6 +25,12 @@ class MessageDuplicatesReportReader:
                 self.rows.append(row)
 
     def get_duplicates_grouped_by_host(self, prefix=""):
+        """
+        Get the amount of deliveries for a single message to a host.
+        Optionally filter the desired host with a prefix.
+        :param prefix: A string that all desired hosts share
+        :return: dict of lists of tupley (message name, amount of deliveries)
+        """
         hosts = {}
 
         for row in self.rows:

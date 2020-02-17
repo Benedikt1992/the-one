@@ -3,6 +3,9 @@ import re
 
 
 class MessageProcessingReportReader:
+    """
+    This class processes a MessageProcessingReport from the ONE simulator.
+    """
     host = 0
     outgoing = 1
     incoming = 2
@@ -23,6 +26,10 @@ class MessageProcessingReportReader:
                 self.rows.append(row)
 
     def get_host_groups(self):
+        """
+        Find which host groups were reported.
+        :return: set of host groups
+        """
         groups = set()
         for row in self.rows:
             regex = r'(?P<group>[a-zA-Z]+)[0-9]+'
@@ -31,6 +38,12 @@ class MessageProcessingReportReader:
         return groups
 
     def get_incoming_distribution(self, host_group=r'.*'):
+        """
+        Get a list of processed incoming messages.
+        By default all hosts are included but can be filtered
+        :param host_group: regex matching all desired hosts.
+        :return: list of amount of processed incoming messages
+        """
         distribution = []
         for row in self.rows:
             if re.search(host_group, row[self.host]):
@@ -38,6 +51,12 @@ class MessageProcessingReportReader:
         return distribution
 
     def get_outgoing_distribution(self, host_group=r'.*'):
+        """
+        Get a list of processed outgoing messages.
+        By default all hosts are included but can be filtered
+        :param host_group: regex matching all desired hosts.
+        :return: list of amount of processed outgoing messages
+        """
         distribution = []
         for row in self.rows:
             if re.search(host_group, row[self.host]):

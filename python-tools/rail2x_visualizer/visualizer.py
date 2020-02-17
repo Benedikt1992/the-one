@@ -114,6 +114,7 @@ class Visualizer:
             raise ValueError(
                 "MessageSnapshotReport is not available at {}".format(self.message_snapshot_report))
 
+
 if __name__ == "__main__":
     visualizer = Visualizer()
     visualizer.run()

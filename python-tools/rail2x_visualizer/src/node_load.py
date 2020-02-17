@@ -7,11 +7,20 @@ from src.reader.message_snapshot_report_reader import MessageSnapshotReportReade
 
 
 class NodeLoad:
+    """
+    Show the load on nodes.
+    """
     def __init__(self, processing_report: MessageProcessingReportReader, snapshot_report: MessageSnapshotReportReader):
         self.processing_report = processing_report
         self.snapshot_report = snapshot_report
 
     def load_distribution_by_hostgroup(self, output_path, scenario):
+        """
+        Show the distribution of sent and received messages sorted by host group
+        :param output_path:
+        :param scenario:
+        :return:
+        """
         groups = self.processing_report.get_host_groups()
         data = []
         tick_labels = []
@@ -31,6 +40,13 @@ class NodeLoad:
         self.__store_figure(output_path, scenario, 'processed-messages')
 
     def load_timeline(self, output_path, scenario):
+        """
+        Show hte amount of carried messages during the simulation.
+        Each hostgroup is plotted within one graph.
+        :param output_path:
+        :param scenario:
+        :return:
+        """
         groups = self.snapshot_report.get_host_groups()
 
         for group in groups:

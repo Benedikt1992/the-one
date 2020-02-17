@@ -3,6 +3,9 @@ import re
 
 
 class MessageSnapshotReportReader:
+    """
+    This class processes a MessageSnapshotReport from the ONE simulator.
+    """
     time = 0
     nodeId = 1
     messages = 2
@@ -38,6 +41,10 @@ class MessageSnapshotReportReader:
             self.interval = current_time - last_time
 
     def get_host_groups(self):
+        """
+        Find which host groups were reported.
+        :return: set of host groups
+        """
         groups = set()
         for row in self.snapshots[1]:
             regex = r'(?P<group>[a-zA-Z]+)[0-9]+'
@@ -46,6 +53,12 @@ class MessageSnapshotReportReader:
         return groups
 
     def get_lines(self, group=r'.*'):
+        """
+        Get the time line of transported messages for each host.
+        Optionally, the hosts can be filtered.
+        :param group: regex matching all desired hosts
+        :return: Tuple of timestamps and a list of lists each containing the transported messages of a host
+        """
         lines = {}
         intervals = []
         for index, snapshot in enumerate(self.snapshots):
