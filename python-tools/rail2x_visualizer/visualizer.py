@@ -64,7 +64,7 @@ class Visualizer:
             node_location_reader = NodeLocationReader(settings_reader)
             message_processing_reader = MessageProcessingReportReader(self.message_processing_report)
 
-            NodeLoad(message_processing_reader).load_distribution_by_hostgroup()
+            NodeLoad(message_processing_reader).load_distribution_by_hostgroup(self.output, scenario)
             DistanceDeliverytimeGraph(delivered_messages_reader,node_location_reader).create_scatter_plot(self.output, scenario)
             DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader).create_all_from_scenario(self.output, scenario)
             hops = HopDistribution(delivered_messages_reader, created_messages_reader)

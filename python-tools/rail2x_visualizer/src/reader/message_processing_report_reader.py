@@ -29,3 +29,18 @@ class MessageProcessingReportReader:
             matches = re.search(regex, row[self.host])
             groups.add(matches.group('group'))
         return groups
+
+    def get_incoming_distribution(self, host_group=r'.*'):
+        distribution = []
+        for row in self.rows:
+            if re.search(host_group, row[self.host]):
+                distribution.append(int(row[self.incoming]))
+        return distribution
+
+    def get_outgoing_distribution(self, host_group=r'.*'):
+        distribution = []
+        for row in self.rows:
+            if re.search(host_group, row[self.host]):
+                distribution.append(int(row[self.outgoing]))
+        return distribution
+
