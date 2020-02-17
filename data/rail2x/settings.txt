@@ -122,25 +122,23 @@ MapBasedMovement.mapFile1 = data/rail2x/ICE-germany-extended.wkt
 ## Reports - all report names have to be valid report classes
 
 # how many reports to load
-Report.nrofReports = 6
+Report.nrofReports = 5
 # length of the warm up period (simulated seconds)
 Report.warmup = 0
 # default directory of reports (can be overridden per Report with output setting)
 Report.reportDir = reports/
 # Report classes to load
-Report.report1 = MessageCopyCountReport
-Report.report2 = CreatedMessagesReport
-Report.report3 = DeliveredMessagesReport
-MessageCopyCountReport.granularity = 100
-Report.report4 = MessageSnapshotReport
+Report.report1 = CreatedMessagesReport
+Report.report2 = DeliveredMessagesReport
+Report.report3 = MessageSnapshotReport
 # all trains
 MessageSnapshotReport.nodeRanges = 0-294
 MessageSnapshotReport.granularity = 100
-Report.report5 = MessageProcessingReport
+Report.report4 = MessageProcessingReport
 # all trains and stations
 MessageProcessingReport.nodeRanges = 0-465
 MessageProcessingReport.startedOnly = true
-Report.report6 = MessageDuplicatesReport
+Report.report5 = MessageDuplicatesReport
 MessageDuplicatesReport.nodeRanges = 0-465
 
 ## Default settings for some routers settings
