@@ -10,6 +10,7 @@ package core;
 public class SimClock {
 	private static double clockTime = 0.0;
 	private static SimClock clock = null;
+	private static double updateInterval = 0.0;
 
 	private SimClock() {}
 
@@ -53,6 +54,14 @@ public class SimClock {
 	 */
 	public static String getFormattedTime(int decimals) {
 		return String.format("%." + decimals + "f", clockTime);
+	}
+
+	public static double getUpdateInterval() {
+		return updateInterval;
+	}
+
+	public static void setUpdateInterval(double updateInterval) {
+		SimClock.updateInterval = updateInterval;
 	}
 
 	/**

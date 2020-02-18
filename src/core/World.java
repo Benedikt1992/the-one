@@ -72,6 +72,7 @@ public class World {
 		this.eventQueues = eventQueues;
 
 		this.simClock = SimClock.getInstance();
+		this.simClock.setUpdateInterval(updateInterval);
 		this.scheduledUpdates = new ScheduledUpdatesQueue();
 		this.isCancelled = false;
 

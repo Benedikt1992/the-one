@@ -6,12 +6,18 @@ package core;
 
 import routing.MessageRouter;
 
+import java.util.*;
+
 /**
  * A constant bit-rate connection between two DTN nodes.
  */
 public class CBRConnection extends Connection {
 	private int speed;
-	private double transferDoneTime;
+	private List<Double> transferDoneTimes;
+	private double intervalCapacity;
+	private double queuedCapacity;
+	protected List<Message> msgsOnFly;
+
 
 	/**
 	 * Creates a new connection between nodes and sets the connection
@@ -27,8 +33,10 @@ public class CBRConnection extends Connection {
 			DTNHost toNode,	NetworkInterface toInterface, int connectionSpeed) {
 		super(fromNode, fromInterface, toNode, toInterface);
 		this.speed = connectionSpeed;
-		this.transferDoneTime = 0;
-
+		this.transferDoneTimes = new ArrayList<Double>();
+		this.intervalCapacity = this.speed * SimClock.getUpdateInterval();
+		this.queuedCapacity = 0;
+		this.msgsOnFly = new ArrayList<Message>();
 	}
 
 	/**
@@ -43,40 +51,108 @@ public class CBRConnection extends Connection {
 	 * {@link MessageRouter#receiveMessage(Message, DTNHost)}
 	 */
 	public int startTransfer(DTNHost from, Message m) {
-		assert this.msgOnFly == null : "Already transferring " +
-			this.msgOnFly + " from " + this.msgFromNode + " to " +
-			this.getOtherNode(this.msgFromNode) + ". Can't " +
-			"start transfer of " + m + " from " + from;
+
+		assert this.queuedCapacity < this.intervalCapacity: "Already transferring maximum capacity of data per " +
+				"simulation updateInterval. Can't start transfer of " + m + " from " + from;
 
 		this.msgFromNode = from;
 		Message newMessage = m.replicate();
 		int retVal = getOtherNode(from).receiveMessage(newMessage, from);
 
 		if (retVal == MessageRouter.RCV_OK) {
-			this.msgOnFly = newMessage;
-			this.transferDoneTime = SimClock.getTime() +
-			(1.0*m.getSize()) / this.speed;
+			this.msgsOnFly.add(newMessage);
+			if (this.transferDoneTimes.isEmpty()) {
+				this.transferDoneTimes.add(SimClock.getTime() +
+						(1.0*m.getSize()) / this.speed);
+			} else {
+				double maxTime = getMaxTime();
+				this.transferDoneTimes.add( maxTime + (1.0*m.getSize()) / this.speed);
+			}
+			this.queuedCapacity += newMessage.getSize();
 		}
 
 		return retVal;
 	}
 
+	private double getMaxTime() {
+		double maxTime = 0;
+		for (Double time: this.transferDoneTimes) {
+			if (time > maxTime) {
+				maxTime = time;
+			}
+		}
+		return maxTime;
+	}
+
 	/**
-	 * Aborts the transfer of the currently transferred message.
+	 * Aborts the transfer of the currently transferred messages.
 	 */
 	public void abortTransfer() {
-		assert msgOnFly != null : "No message to abort at " + msgFromNode;
-		getOtherNode(msgFromNode).messageAborted(this.msgOnFly.getId(),
-				msgFromNode,getRemainingByteCount());
+		assert !msgsOnFly.isEmpty() : "No messages to abort.";
+		for (Message m :
+				this.msgsOnFly) {
+			getOtherNode(msgFromNode).messageAborted(m.getId(),
+					msgFromNode,getRemainingByteCount());
+		}
 		clearMsgOnFly();
-		this.transferDoneTime = 0;
+	}
+
+	public void finalizeTransfer() {
+		double time = SimClock.getTime();
+		ArrayList<Integer> removals = new ArrayList<>();
+		for (int i = 0; i < msgsOnFly.size(); i++) {
+			if (transferDoneTimes.get(i) <= time) {
+				removals.add(i);
+				this.bytesTransferred += msgsOnFly.get(i).getSize();
+				queuedCapacity -= msgsOnFly.get(i).getSize();
+				getOtherNode(msgFromNode).messageTransferred(msgsOnFly.get(i).getId(),
+						msgFromNode);
+			}
+		}
+		Collections.reverse(removals);
+		for (Integer i :
+				removals) {
+			transferDoneTimes.remove(i);
+			msgsOnFly.remove(i);
+		}
+	}
+
+	public int getTotalBytesTransferred() {
+		if (this.msgsOnFly.isEmpty()) {
+			return this.bytesTransferred;
+		}
+		else {
+			return this.bytesTransferred +
+					((int)queuedCapacity - getRemainingByteCount());
+		}
+	}
+
+	public boolean isReadyForTransfer() {
+		return super.isReadyForTransfer() && queuedCapacity < intervalCapacity;
+	}
+
+	protected void clearMsgOnFly() {
+		super.clearMsgOnFly();
+		this.msgOnFly = null;
+		this.msgsOnFly.clear();
+		this.msgFromNode = null;
+		this.queuedCapacity = 0;
+		this.transferDoneTimes.clear();
 	}
 
 	/**
 	 * Gets the transferdonetime
 	 */
 	public double getTransferDoneTime() {
-		return transferDoneTime;
+		return getMaxTime();
+	}
+
+	public Message getMessage() {
+		if (!msgsOnFly.isEmpty()) {
+			// TODO change signature of getMessage to return a list of messages.
+			return msgsOnFly.get(0);
+		}
+		return this.msgOnFly;
 	}
 
 	/**
@@ -84,7 +160,14 @@ public class CBRConnection extends Connection {
 	 * @return True if the transfer is done, false if not
 	 */
 	public boolean isMessageTransferred() {
-		return getRemainingByteCount() == 0;
+		double currentTime = SimClock.getTime();
+		for (double transferTime: transferDoneTimes
+			 ) {
+			if (transferTime < currentTime) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -92,6 +175,10 @@ public class CBRConnection extends Connection {
 	 */
 	public double getSpeed() {
 		return this.speed;
+	}
+
+	public boolean isTransferring() {
+		return !this.msgsOnFly.isEmpty();
 	}
 
 	/**
@@ -103,11 +190,11 @@ public class CBRConnection extends Connection {
 	public int getRemainingByteCount() {
 		int remaining;
 
-		if (msgOnFly == null) {
+		if (msgsOnFly.isEmpty()) {
 			return 0;
 		}
 
-		remaining = (int)((this.transferDoneTime - SimClock.getTime())
+		remaining = (int)((getMaxTime() - SimClock.getTime())
 				* this.speed);
 
 		return (remaining > 0 ? remaining : 0);
@@ -118,7 +205,7 @@ public class CBRConnection extends Connection {
 	 */
 	public String toString() {
 		return super.toString() + (isTransferring() ?
-				" until " + String.format("%.2f", this.transferDoneTime) : "");
+				" until " + String.format("%.2f", getMaxTime()) : "");
 	}
 
 }
