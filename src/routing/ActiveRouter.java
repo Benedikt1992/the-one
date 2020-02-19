@@ -110,14 +110,16 @@ public abstract class ActiveRouter extends MessageRouter {
 		 * (startTransfer may remove messages) */
 		ArrayList<Message> temp =
 			new ArrayList<Message>(this.getMessageCollection());
+
+		boolean returnV = false;
 		for (Message m : temp) {
 			if (other == m.getTo()) {
 				if (startTransfer(m, con) == RCV_OK) {
-					return true;
+					returnV = true;
 				}
 			}
 		}
-		return false;
+		return returnV;
 	}
 
 	@Override
@@ -371,47 +373,60 @@ public abstract class ActiveRouter extends MessageRouter {
 	 * Tries to send messages for the connections that are mentioned
 	 * in the Tuples in the order they are in the list until one of
 	 * the connections starts transferring or all tuples have been tried.
+	 * Once a connection starts transfering it tries to fill the bandwidth
+	 * of the connection with remaining messages.
 	 * @param tuples The tuples to try
-	 * @return The tuple whose connection accepted the message or null if
+	 * @return The list of tuple whose connection accepted the message or null if
 	 * none of the connections accepted the message that was meant for them.
 	 */
-	protected Tuple<Message, Connection> tryMessagesForConnected(
+	protected Tuple<Connection, List<Message>> tryMessagesForConnected(
 			List<Tuple<Message, Connection>> tuples) {
 		if (tuples.size() == 0) {
 			return null;
 		}
 
+		List<Tuple<Message, Connection>> sending = new ArrayList<>();
+		Connection transferingCon = null;
+		List<Message> messages = new ArrayList<>();
 		for (Tuple<Message, Connection> t : tuples) {
 			Message m = t.getKey();
 			Connection con = t.getValue();
-			if (startTransfer(m, con) == RCV_OK) {
-				return t;
+			if (transferingCon == null || con == transferingCon) {
+				if (startTransfer(m, con) == RCV_OK) {
+					messages.add(m);
+					transferingCon = con;
+				}
 			}
 		}
-
+		if (transferingCon != null) {
+			return new Tuple<Connection, List<Message>>(transferingCon, messages);
+		}
 		return null;
 	}
 
 	 /**
-	  * Goes trough the messages until the other node accepts one
+	  * Goes trough the messages until the other node accepts one or more
 	  * for receiving (or doesn't accept any). If a transfer is started, the
 	  * connection is included in the list of sending connections.
 	  * @param con Connection trough which the messages are sent
 	  * @param messages A list of messages to try
-	  * @return The message whose transfer was started or null if no
+	  * @return The messages whose transfer was started or null if no
 	  * transfer was started.
 	  */
-	protected Message tryAllMessages(Connection con, List<Message> messages) {
+	protected List<Message> tryAllMessages(Connection con, List<Message> messages) {
+		List<Message> sentMessages = new ArrayList<>();
 		for (Message m : messages) {
 			int retVal = startTransfer(m, con);
 			if (retVal == RCV_OK) {
-				return m;	// accepted a message, don't try others
+				sentMessages.add(m);
 			}
 			else if (retVal > 0) {
-				return null; // should try later -> don't bother trying others
+				break; // should try later -> don't bother trying others
 			}
 		}
-
+		if (!sentMessages.isEmpty()) {
+			return sentMessages;
+		}
 		return null; // no message was accepted
 	}
 
@@ -430,7 +445,7 @@ public abstract class ActiveRouter extends MessageRouter {
 			List<Connection> connections) {
 		for (int i=0, n=connections.size(); i<n; i++) {
 			Connection con = connections.get(i);
-			Message started = tryAllMessages(con, messages);
+			List<Message> started = tryAllMessages(con, messages);
 			if (started != null) {
 				return con;
 			}
@@ -476,11 +491,11 @@ public abstract class ActiveRouter extends MessageRouter {
 		}
 
 		@SuppressWarnings(value = "unchecked")
-		Tuple<Message, Connection> t =
+		Tuple<Connection, List<Message>> t =
 			tryMessagesForConnected(sortByQueueMode(getMessagesForConnected()));
 
 		if (t != null) {
-			return t.getValue(); // started transfer
+			return t.getKey(); // started transfer
 		}
 
 		// didn't start transfer to any node -> ask messages from connected
@@ -592,8 +607,10 @@ public abstract class ActiveRouter extends MessageRouter {
 				if (con.getMessage() != null) {
 					transferDone(con);
 					con.finalizeTransfer();
-				} /* else: some other entity aborted transfer */
-				removeCurrent = true;
+				}
+				if (!con.isTransferring()) {/* else: some other entity aborted transfer */
+					removeCurrent = true;
+				}
 			}
 			/* remove connections that have gone down */
 			else if (!con.isUp()) {

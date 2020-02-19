@@ -421,7 +421,7 @@ public class ProphetRouterWithEstimation extends ActiveRouter {
 	 * their delivery probability
 	 * @return The return value of {@link #tryMessagesForConnected(List)}
 	 */
-	private Tuple<Message, Connection> tryOtherMessages() {
+	private Tuple<Connection, List<Message>> tryOtherMessages() {
 		List<Tuple<Message, Connection>> messages =
 			new ArrayList<Tuple<Message, Connection>>();
 

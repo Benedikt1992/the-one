@@ -110,7 +110,7 @@ public class CBRConnection extends Connection {
 			}
 		}
 		Collections.reverse(removals);
-		for (Integer i :
+		for (int i :
 				removals) {
 			transferDoneTimes.remove(i);
 			msgsOnFly.remove(i);
