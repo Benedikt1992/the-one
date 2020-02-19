@@ -349,11 +349,14 @@ public class MaxPropRouterWithEstimation extends ActiveRouter {
 	 */
 	@Override
 	protected void transferDone(Connection con) {
-		Message m = con.getMessage();
-		/* was the message delivered to the final recipient? */
-		if (m.getTo() == con.getOtherNode(getHost())) {
-			this.ackedMessageIds.add(m.getId()); // yes, add to ACKed messages
-			this.deleteMessage(m.getId(), false); // delete from buffer
+		List<Message> messages = con.getMessage();
+		for (Message m :
+				messages) {
+			/* was the message delivered to the final recipient? */
+			if (m.getTo() == con.getOtherNode(getHost())) {
+				this.ackedMessageIds.add(m.getId()); // yes, add to ACKed messages
+				this.deleteMessage(m.getId(), false); // delete from buffer
+			}
 		}
 	}
 

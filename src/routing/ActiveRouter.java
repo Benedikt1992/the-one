@@ -567,11 +567,15 @@ public abstract class ActiveRouter extends MessageRouter {
 	 */
 	public boolean isSending(String msgId) {
 		for (Connection con : this.sendingConnections) {
-			if (con.getMessage() == null) {
+			List<Message> messages = con.getMessage();
+			if (messages == null) {
 				continue; // transmission is finalized
 			}
-			if (con.getMessage().getId().equals(msgId)) {
-				return true;
+			for (Message m :
+					messages) {
+				if (m.getId().equals(msgId)) {
+					return true;
+				}
 			}
 		}
 		return false;

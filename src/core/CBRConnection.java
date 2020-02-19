@@ -97,6 +97,27 @@ public class CBRConnection extends Connection {
 		clearMsgOnFly();
 	}
 
+	public void abortTransfer(String id) {
+		assert !msgsOnFly.isEmpty() : "No messages to abort.";
+		List<Integer> removals = new ArrayList<>();
+		for (int i = 0; i < msgsOnFly.size(); i++) {
+			if (msgsOnFly.get(i).getId().equals(id)) {
+				removals.add(i);
+			}
+		}
+		Collections.reverse(removals);
+		for (int i :
+				removals) {
+			getOtherNode(msgFromNode).messageAborted(id, msgFromNode, getRemainingByteCount());
+			this.queuedCapacity -= this.msgsOnFly.get(i).getSize();
+			this.msgsOnFly.remove(i);
+			this.transferDoneTimes.remove(i);
+		}
+		if(msgsOnFly.isEmpty()) {
+			clearMsgOnFly();
+		}
+	}
+
 	public void finalizeTransfer() {
 		double time = SimClock.getTime();
 		ArrayList<Integer> removals = new ArrayList<>();
@@ -147,12 +168,20 @@ public class CBRConnection extends Connection {
 		return getMaxTime();
 	}
 
-	public Message getMessage() {
+	public List<Message> getMessage() {
+		List<Message> messages = new ArrayList<>();
 		if (!msgsOnFly.isEmpty()) {
-			// TODO change signature of getMessage to return a list of messages.
-			return msgsOnFly.get(0);
+			double currenTime = SimClock.getTime();
+			for (int i = 0; i < msgsOnFly.size(); i++) {
+				if (transferDoneTimes.get(i) <= currenTime) {
+					messages.add(msgsOnFly.get(i));
+				}
+			}
 		}
-		return this.msgOnFly;
+		if (!messages.isEmpty()) {
+			return messages;
+		}
+		return super.getMessage();
 	}
 
 	/**

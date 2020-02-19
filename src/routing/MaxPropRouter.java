@@ -209,23 +209,27 @@ public class MaxPropRouter extends ActiveRouter {
 	 */
 	@Override
 	protected void transferDone(Connection con) {
-		Message m = con.getMessage();
-		String id = m.getId();
-		DTNHost recipient = con.getOtherNode(getHost());
-		Set<String> sentMsgIds = this.sentMessages.get(recipient);
+		List<Message> messages = con.getMessage();
 
-		/* was the message delivered to the final recipient? */
-		if (m.getTo() == recipient) {
-			this.ackedMessageIds.add(m.getId()); // yes, add to ACKed messages
-			this.deleteMessage(m.getId(), false); // delete from buffer
-		}
+		for (Message m :
+				messages) {
+			String id = m.getId();
+			DTNHost recipient = con.getOtherNode(getHost());
+			Set<String> sentMsgIds = this.sentMessages.get(recipient);
 
-		/* update the map of where each message is already sent */
-		if (sentMsgIds == null) {
-			sentMsgIds = new HashSet<String>();
-			this.sentMessages.put(recipient, sentMsgIds);
+			/* was the message delivered to the final recipient? */
+			if (m.getTo() == recipient) {
+				this.ackedMessageIds.add(m.getId()); // yes, add to ACKed messages
+				this.deleteMessage(m.getId(), false); // delete from buffer
+			}
+
+			/* update the map of where each message is already sent */
+			if (sentMsgIds == null) {
+				sentMsgIds = new HashSet<String>();
+				this.sentMessages.put(recipient, sentMsgIds);
+			}
+			sentMsgIds.add(id);
 		}
-		sentMsgIds.add(id);
 	}
 
 	/**

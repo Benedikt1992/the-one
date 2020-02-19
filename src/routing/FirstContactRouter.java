@@ -9,6 +9,8 @@ import core.DTNHost;
 import core.Message;
 import core.Settings;
 
+import java.util.List;
+
 /**
  * First contact router which uses only a single copy of the message
  * (or fragments) and forwards it to the first available contact.
@@ -63,7 +65,11 @@ public class FirstContactRouter extends ActiveRouter {
 	@Override
 	protected void transferDone(Connection con) {
 		/* don't leave a copy for the sender */
-		this.deleteMessage(con.getMessage().getId(), false);
+		List<Message> messages = con.getMessage();
+		for (Message m :
+				messages) {
+			this.deleteMessage(m.getId(), false);
+		}
 	}
 
 	@Override

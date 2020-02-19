@@ -137,24 +137,29 @@ public class SprayAndWaitRouter extends ActiveRouter {
 	@Override
 	protected void transferDone(Connection con) {
 		Integer nrofCopies;
-		String msgId = con.getMessage().getId();
-		/* get this router's copy of the message */
-		Message msg = getMessage(msgId);
+		List<Message> messages = con.getMessage();
+		for (Message m :
+				messages) {
+			String msgId = m.getId();
+			/* get this router's copy of the message */
+			Message msg = getMessage(msgId);
 
-		if (msg == null) { // message has been dropped from the buffer after..
-			return; // ..start of transfer -> no need to reduce amount of copies
+			if (msg == null) { // message has been dropped from the buffer after..
+				return; // ..start of transfer -> no need to reduce amount of copies
+			}
+
+			/* reduce the amount of copies left */
+			nrofCopies = (Integer)msg.getProperty(MSG_COUNT_PROPERTY);
+			if (isBinary) {
+				/* in binary S'n'W the sending node keeps ceil(n/2) copies */
+				nrofCopies = (int)Math.ceil(nrofCopies/2.0);
+			}
+			else {
+				nrofCopies--;
+			}
+			msg.updateProperty(MSG_COUNT_PROPERTY, nrofCopies);
 		}
 
-		/* reduce the amount of copies left */
-		nrofCopies = (Integer)msg.getProperty(MSG_COUNT_PROPERTY);
-		if (isBinary) {
-			/* in binary S'n'W the sending node keeps ceil(n/2) copies */
-			nrofCopies = (int)Math.ceil(nrofCopies/2.0);
-		}
-		else {
-			nrofCopies--;
-		}
-		msg.updateProperty(MSG_COUNT_PROPERTY, nrofCopies);
 	}
 
 	@Override

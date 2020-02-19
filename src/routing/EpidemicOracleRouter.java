@@ -101,8 +101,12 @@ public class EpidemicOracleRouter extends ActiveRouter {
 		if (this.hasMessage(id)) {
 			for (Connection c : this.sendingConnections) {
 				/* if sending the message-to-be-removed, cancel transfer */
-				if (c.getMessage().getId().equals(id)) {
-					c.abortTransfer();
+				List<Message> messages = c.getMessage();
+				for (Message m :
+						messages) {
+					if (m.getId().equals(id)) {
+						c.abortTransfer(id);
+					}
 				}
 			}
 			this.deleteMessage(id, false);
@@ -147,16 +151,19 @@ public class EpidemicOracleRouter extends ActiveRouter {
 
 	@Override
 	protected void transferDone(Connection con) {
-		Message m = con.getMessage();
+		List<Message> messages = con.getMessage();
 
-		if (m == null) {
+		if (messages == null) {
 			if (DEBUG) core.Debug.p("Null message for con " + con);
 			return;
 		}
 
 		/* was the message delivered to the final recipient? */
-		if (m.getTo() == con.getOtherNode(getHost())) {
-			this.deleteMessage(m.getId(), false);
+		for (Message m :
+				messages) {
+			if (m.getTo() == con.getOtherNode(getHost())) {
+				this.deleteMessage(m.getId(), false);
+			}
 		}
 	}
 

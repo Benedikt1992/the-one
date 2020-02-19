@@ -6,6 +6,9 @@ package core;
 
 import routing.MessageRouter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A connection between two DTN nodes.
  */
@@ -94,10 +97,26 @@ public abstract class Connection {
 	public void update() {};
 
 	/**
-     * Aborts the transfer of the currently transferred message.
-     */
+	 * Aborts the transfer of the currently transferred message.
+	 */
 	public void abortTransfer() {
 		assert msgOnFly != null : "No message to abort at " + msgFromNode;
+		int bytesRemaining = getRemainingByteCount();
+
+		this.bytesTransferred += msgOnFly.getSize() - bytesRemaining;
+
+		getOtherNode(msgFromNode).messageAborted(this.msgOnFly.getId(),
+				msgFromNode, bytesRemaining);
+		clearMsgOnFly();
+	}
+
+	/**
+	 * Aborts the transfer of a specific message which is currently transferred.
+	 */
+	public void abortTransfer(String id) {
+		assert msgOnFly != null : "No message to abort at " + msgFromNode;
+		assert msgOnFly.getId().equals(id): "Message " + id + " is not in transfer from " + msgFromNode;
+
 		int bytesRemaining = getRemainingByteCount();
 
 		this.bytesTransferred += msgOnFly.getSize() - bytesRemaining;
@@ -160,8 +179,10 @@ public abstract class Connection {
 	 * Gets the message that this connection is currently transferring.
 	 * @return The message or null if no message is being transferred
 	 */
-	public Message getMessage() {
-		return this.msgOnFly;
+	public List<Message> getMessage() {
+		List<Message> msgs = new ArrayList<Message>();
+		msgs.add(this.msgOnFly);
+		return msgs;
 	}
 
 	/**

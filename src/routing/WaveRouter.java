@@ -6,6 +6,7 @@ package routing;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import routing.util.RoutingInfo;
@@ -141,7 +142,11 @@ public class WaveRouter extends ActiveRouter {
 	@Override
 	protected void transferDone(Connection con) {
 		/* remove from custody messages (if it was there) */
-		this.custodyMessages.remove(con.getMessage().getId());
+		List<Message> messages = con.getMessage();
+		for (Message m :
+				messages) {
+			this.custodyMessages.remove(m.getId());
+		}
 	}
 
 	@Override
