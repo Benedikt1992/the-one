@@ -16,6 +16,7 @@ public class CBRConnection extends Connection {
 	private List<Double> transferDoneTimes;
 	private double intervalCapacity;
 	private double queuedCapacity;
+	private List<DTNHost> msgFromNodes;
 	protected List<Message> msgsOnFly;
 
 
@@ -37,6 +38,8 @@ public class CBRConnection extends Connection {
 		this.intervalCapacity = this.speed * SimClock.getUpdateInterval();
 		this.queuedCapacity = 0;
 		this.msgsOnFly = new ArrayList<Message>();
+		this.msgFromNodes = new ArrayList<>();
+
 	}
 
 	/**
@@ -55,11 +58,11 @@ public class CBRConnection extends Connection {
 		assert this.queuedCapacity < this.intervalCapacity: "Already transferring maximum capacity of data per " +
 				"simulation updateInterval. Can't start transfer of " + m + " from " + from;
 
-		this.msgFromNode = from;
 		Message newMessage = m.replicate();
 		int retVal = getOtherNode(from).receiveMessage(newMessage, from);
 
 		if (retVal == MessageRouter.RCV_OK) {
+		    this.msgFromNodes.add(from);
 			this.msgsOnFly.add(newMessage);
 			if (this.transferDoneTimes.isEmpty()) {
 				this.transferDoneTimes.add(SimClock.getTime() +
@@ -89,10 +92,10 @@ public class CBRConnection extends Connection {
 	 */
 	public void abortTransfer() {
 		assert !msgsOnFly.isEmpty() : "No messages to abort.";
-		for (Message m :
-				this.msgsOnFly) {
-			getOtherNode(msgFromNode).messageAborted(m.getId(),
-					msgFromNode,getRemainingByteCount());
+
+        for (int i = 0; i < msgsOnFly.size(); i++) {
+            getOtherNode(msgFromNodes.get(i)).messageAborted(msgsOnFly.get(i).getId(),
+					msgFromNodes.get(i),getRemainingByteCount());
 		}
 		clearMsgOnFly();
 	}
@@ -108,10 +111,11 @@ public class CBRConnection extends Connection {
 		Collections.reverse(removals);
 		for (int i :
 				removals) {
-			getOtherNode(msgFromNode).messageAborted(id, msgFromNode, getRemainingByteCount());
+			getOtherNode(msgFromNodes.get(i)).messageAborted(id, msgFromNodes.get(i), getRemainingByteCount());
 			this.queuedCapacity -= this.msgsOnFly.get(i).getSize();
 			this.msgsOnFly.remove(i);
 			this.transferDoneTimes.remove(i);
+			this.msgFromNodes.remove(i);
 		}
 		if(msgsOnFly.isEmpty()) {
 			clearMsgOnFly();
@@ -126,8 +130,8 @@ public class CBRConnection extends Connection {
 				removals.add(i);
 				this.bytesTransferred += msgsOnFly.get(i).getSize();
 				queuedCapacity -= msgsOnFly.get(i).getSize();
-				getOtherNode(msgFromNode).messageTransferred(msgsOnFly.get(i).getId(),
-						msgFromNode);
+				getOtherNode(msgFromNodes.get(i)).messageTransferred(msgsOnFly.get(i).getId(),
+						msgFromNodes.get(i));
 			}
 		}
 		Collections.reverse(removals);
@@ -135,6 +139,7 @@ public class CBRConnection extends Connection {
 				removals) {
 			transferDoneTimes.remove(i);
 			msgsOnFly.remove(i);
+			msgFromNodes.remove(i);
 		}
 	}
 
@@ -159,6 +164,7 @@ public class CBRConnection extends Connection {
 		this.msgFromNode = null;
 		this.queuedCapacity = 0;
 		this.transferDoneTimes.clear();
+		this.msgFromNodes.clear();
 	}
 
 	/**
