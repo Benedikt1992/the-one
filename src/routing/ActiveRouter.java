@@ -385,7 +385,6 @@ public abstract class ActiveRouter extends MessageRouter {
 			return null;
 		}
 
-		List<Tuple<Message, Connection>> sending = new ArrayList<>();
 		Connection transferingCon = null;
 		List<Message> messages = new ArrayList<>();
 		for (Tuple<Message, Connection> t : tuples) {
