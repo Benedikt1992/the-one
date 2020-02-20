@@ -97,6 +97,10 @@ public abstract class MessageRouter {
 	private DTNHost host;
 	/** size of the buffer */
 	private long bufferSize;
+	/** occupancy of the buffer */
+	private long bufferOccupancyCache;
+	/** Indicator for validity of {@link this.bufferOccupancyCache} */
+	private boolean bufferCacheValid;
 	/** TTL for all messages */
 	protected int msgTtl;
 	/** Queue mode for sending messages */
@@ -119,6 +123,8 @@ public abstract class MessageRouter {
 		if (s.contains(B_SIZE_S)) {
 			this.bufferSize = s.getLong(B_SIZE_S);
 		}
+		this.bufferOccupancyCache = 0;
+		this.bufferCacheValid = false;
 
 		if (s.contains(MSG_TTL_S)) {
 			this.msgTtl = s.getInt(MSG_TTL_S);
@@ -282,17 +288,22 @@ public abstract class MessageRouter {
 	 * size isn't defined)
 	 */
 	public long getFreeBufferSize() {
-		long occupancy = 0;
+		if (this.bufferCacheValid) {
+			return this.getBufferSize() - this.bufferOccupancyCache;
+		} else {
+			long occupancy = 0;
 
-		if (this.getBufferSize() == Integer.MAX_VALUE) {
-			return Integer.MAX_VALUE;
+			if (this.getBufferSize() == Integer.MAX_VALUE) {
+				return Integer.MAX_VALUE;
+			}
+
+			for (Message m : getMessageCollection()) {
+				occupancy += m.getSize();
+			}
+			this.bufferOccupancyCache = occupancy;
+			this.bufferCacheValid = true;
+			return this.getBufferSize() - occupancy;
 		}
-
-		for (Message m : getMessageCollection()) {
-			occupancy += m.getSize();
-		}
-
-		return this.getBufferSize() - occupancy;
 	}
 
 	/**
@@ -446,6 +457,7 @@ public abstract class MessageRouter {
 	 */
 	protected void addToMessages(Message m, boolean newMessage) {
 		this.messages.put(m.getId(), m);
+		this.bufferCacheValid = false;
 
 		if (newMessage) {
 			for (MessageListener ml : this.mListeners) {
@@ -461,6 +473,7 @@ public abstract class MessageRouter {
 	 */
 	protected Message removeFromMessages(String id) {
 		Message m = this.messages.remove(id);
+		this.bufferCacheValid = false;
 		return m;
 	}
 
