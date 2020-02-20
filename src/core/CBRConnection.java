@@ -160,11 +160,11 @@ public class CBRConnection extends Connection {
 	protected void clearMsgOnFly() {
 		super.clearMsgOnFly();
 		this.msgOnFly = null;
-		this.msgsOnFly.clear();
+		this.msgsOnFly = new ArrayList<>();
 		this.msgFromNode = null;
 		this.queuedCapacity = 0;
-		this.transferDoneTimes.clear();
-		this.msgFromNodes.clear();
+		this.transferDoneTimes = new ArrayList<>();
+		this.msgFromNodes = new ArrayList<>();
 	}
 
 	/**
