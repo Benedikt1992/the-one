@@ -18,6 +18,7 @@ public class CBRConnection extends Connection {
 	private double queuedCapacity;
 	private List<DTNHost> msgFromNodes;
 	protected List<Message> msgsOnFly;
+	protected Set<String> sentMessages;
 
 
 	/**
@@ -39,6 +40,7 @@ public class CBRConnection extends Connection {
 		this.queuedCapacity = 0;
 		this.msgsOnFly = new ArrayList<Message>();
 		this.msgFromNodes = new ArrayList<>();
+		this.sentMessages = new HashSet<>();
 
 	}
 
@@ -54,9 +56,15 @@ public class CBRConnection extends Connection {
 	 * {@link MessageRouter#receiveMessage(Message, DTNHost)}
 	 */
 	public int startTransfer(DTNHost from, Message m) {
-
 		assert this.queuedCapacity < this.intervalCapacity: "Already transferring maximum capacity of data per " +
 				"simulation updateInterval. Can't start transfer of " + m + " from " + from;
+
+		if (this.sentMessages.contains(m.getId())) {
+			return MessageRouter.DENIED_OLD;
+		}
+		if (this.queuedCapacity >= this.intervalCapacity ) {
+			return MessageRouter.TRY_LATER_BUSY;
+		}
 
 		Message newMessage = m.replicate();
 		int retVal = getOtherNode(from).receiveMessage(newMessage, from);
@@ -72,6 +80,8 @@ public class CBRConnection extends Connection {
 				this.transferDoneTimes.add( maxTime + (1.0*m.getSize()) / this.speed);
 			}
 			this.queuedCapacity += newMessage.getSize();
+		} else if (retVal == MessageRouter.DENIED_OLD) {
+			sentMessages.add(m.getId());
 		}
 
 		return retVal;
@@ -132,6 +142,7 @@ public class CBRConnection extends Connection {
 				queuedCapacity -= msgsOnFly.get(i).getSize();
 				getOtherNode(msgFromNodes.get(i)).messageTransferred(msgsOnFly.get(i).getId(),
 						msgFromNodes.get(i));
+				this.sentMessages.add(msgsOnFly.get(i).getId());
 			}
 		}
 		Collections.reverse(removals);
