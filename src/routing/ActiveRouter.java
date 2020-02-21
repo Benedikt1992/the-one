@@ -4,11 +4,7 @@
  */
 package routing;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import routing.util.EnergyModel;
 import routing.util.MessageTransferAcceptPolicy;
@@ -42,7 +38,7 @@ public abstract class ActiveRouter extends MessageRouter {
 	/** how often TTL check (discarding old messages) is performed */
 	public static int TTL_CHECK_INTERVAL = 60;
 	/** connection(s) that are currently used for sending */
-	protected ArrayList<Connection> sendingConnections;
+	protected HashSet<Connection> sendingConnections;
 	/** sim time when the last TTL check was done */
 	private double lastTtlCheck;
 
@@ -82,7 +78,7 @@ public abstract class ActiveRouter extends MessageRouter {
 	@Override
 	public void init(DTNHost host, List<MessageListener> mListeners) {
 		super.init(host, mListeners);
-		this.sendingConnections = new ArrayList<Connection>(1);
+		this.sendingConnections = new HashSet<Connection>();
 		this.lastTtlCheck = 0;
 	}
 
@@ -601,9 +597,10 @@ public abstract class ActiveRouter extends MessageRouter {
 
 		/* in theory we can have multiple sending connections even though
 		  currently all routers allow only one concurrent sending connection */
-		for (int i=0; i<this.sendingConnections.size(); ) {
+//		for (int i=0; i<this.sendingConnections.size(); ) {
+		for (Connection con :
+					sendingConnections) {
 			boolean removeCurrent = false;
-			Connection con = sendingConnections.get(i);
 
 			/* finalize ready transfers */
 			if (con.isMessageTransferred()) {
@@ -629,11 +626,7 @@ public abstract class ActiveRouter extends MessageRouter {
 				if (this.getFreeBufferSize() < 0) {
 					this.makeRoomForMessage(0);
 				}
-				sendingConnections.remove(i);
-			}
-			else {
-				/* index increase needed only if nothing was removed */
-				i++;
+				sendingConnections.remove(con);
 			}
 		}
 
