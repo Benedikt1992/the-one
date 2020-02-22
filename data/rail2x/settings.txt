@@ -137,7 +137,7 @@ MessageSnapshotReport.granularity = 100
 Report.report4 = MessageProcessingReport
 # all trains and stations
 MessageProcessingReport.nodeRanges = 0-465
-MessageProcessingReport.startedOnly = true
+MessageProcessingReport.startedOnly = false
 Report.report5 = MessageDuplicatesReport
 MessageDuplicatesReport.nodeRanges = 0-465
 
