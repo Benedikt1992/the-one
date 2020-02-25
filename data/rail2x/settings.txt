@@ -144,7 +144,8 @@ MessageDuplicatesReport.nodeRanges = 0-465
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
 SprayAndWaitRouter.nrofCopies = 6
-SprayAndWaitRouter.binaryMode = true
+SprayAndWaitRouter.binaryMode = false
+SprayAndWaitRouter.linearMode = true
 
 ## Optimization settings -- these affect the speed of the simulation
 ## see World class for details.
