@@ -4,10 +4,13 @@
  */
 package routing;
 
-import core.Connection;
-import core.DTNHost;
-import core.Message;
-import core.Settings;
+import core.*;
+import movement.MapScheduledMovement;
+import movement.MovementModel;
+import movement.map.DijkstraPathFinder;
+import movement.map.MapNode;
+import movement.map.MapScheduledNode;
+import movement.map.MapScheduledRoute;
 import util.Tuple;
 
 import java.util.*;
@@ -24,6 +27,7 @@ public class GeOppsRouter extends ActiveRouter {
 	protected boolean keepMessages;
 
 	protected Map<String, Double> estimatedDeliveryTimes;
+	protected DijkstraPathFinder pathFinder;
 
 
 	/**
@@ -38,6 +42,7 @@ public class GeOppsRouter extends ActiveRouter {
 
 		keepMessages = geoppsSettings.getBoolean(KEEP_MSG);
 		estimatedDeliveryTimes = new HashMap<>();
+		pathFinder = new DijkstraPathFinder(null);
 	}
 
 	/**
@@ -48,7 +53,18 @@ public class GeOppsRouter extends ActiveRouter {
 		super(r);
 		this.keepMessages = r.keepMessages;
 		this.estimatedDeliveryTimes = new HashMap<>();
+		this.pathFinder = r.pathFinder;
 		//TODO: is there something we need to copy (global stuff)
+	}
+
+	@Override
+	public boolean createNewMessage(Message m) {
+		boolean succeeded = super.createNewMessage(m);
+		if (succeeded) {
+			Double deliveryTime = findDeliveryEstimation(m.getTo(), getHost());
+			estimatedDeliveryTimes.put(m.getId(), deliveryTime);
+		}
+		return succeeded;
 	}
 
 	@Override
@@ -77,10 +93,8 @@ public class GeOppsRouter extends ActiveRouter {
 		for (Message m : messages) {
 			for (Connection c : connections) {
 				Double deliveryTime = findDeliveryEstimation(m.getTo(), c.getOtherNode(getHost()));
-				if (deliveryTime != null) {
-					if (deliveryTime < deliveryTimes.getOrDefault(m, new Tuple<>(Double.MAX_VALUE, null)).getKey()) {
-						deliveryTimes.put(m, new Tuple<>(deliveryTime, c));
-					}
+				if (deliveryTime < deliveryTimes.getOrDefault(m, new Tuple<>(Double.MAX_VALUE, null)).getKey()) {
+					deliveryTimes.put(m, new Tuple<>(deliveryTime, c));
 				}
 			}
 		}
@@ -94,16 +108,44 @@ public class GeOppsRouter extends ActiveRouter {
 			}
 		}
 
-		if (sendableMessages.size() > 0) {
-			return sendableMessages;
-		} else {
-			return null;
-		}
+		return sendableMessages;
 	}
 
-	private Double findDeliveryEstimation(DTNHost to, DTNHost otherNode) {
-		//TODO calculate...
-		return null;
+	private Double findDeliveryEstimation(DTNHost destination, DTNHost transportNode) {
+		Double estimatedTime = Double.MAX_VALUE;
+		Coord dst_loc = destination.getLocation();
+		MovementModel mmodel = transportNode.getMovement();
+		if (mmodel instanceof MapScheduledMovement) {
+			MapScheduledRoute schedule = ((MapScheduledMovement)mmodel).getSchedule();
+			List<MapScheduledNode> stops = schedule.getStops();
+			MapScheduledNode first = schedule.getStop(0);
+			MapScheduledNode second = schedule.getStop(1);
+			List<MapNode> nodePath = pathFinder.getShortestPath(first.getNode(), second.getNode());
+			double distance = 0;
+			for (int i = 0; i < nodePath.size() - 1; i++) {
+				MapNode n1 = nodePath.get(i);
+				MapNode n2 = nodePath.get(i + 1);
+				distance += n1.getLocation().distance(n2.getLocation());
+			}
+			double duration = second.getTime() - first.getTime();
+			double speed = distance / duration;
+			double currentTime = SimClock.getTime();
+			for (MapScheduledNode stop : stops) {
+				if (stop.getTime() > currentTime) {
+					double x = dst_loc.getX() - stop.getNode().getLocation().getX();
+					double y = dst_loc.getY() - stop.getNode().getLocation().getY();
+					distance = Math.sqrt(x*x + y*y);
+					double possibleTime = stop.getTime() + distance / speed;
+					if (possibleTime < estimatedTime) { estimatedTime = possibleTime; }
+				}
+			}
+
+		} else {
+			/* TODO implement DeliveryEstimaton for other MovementModels using the Path object of the host. */
+		}
+
+
+		return estimatedTime;
 	}
 
 	@Override

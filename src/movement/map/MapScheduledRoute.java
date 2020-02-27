@@ -61,6 +61,8 @@ public class MapScheduledRoute {
 		return this.stops;
 	}
 
+	public MapScheduledNode getStop(int index) { return this.stops.get(index); }
+
 	/**
 	 * Returns the next stop on the route
 	 * @return the next stop on the route

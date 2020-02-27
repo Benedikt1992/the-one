@@ -37,7 +37,7 @@ public class MapScheduledMovement extends MapBasedMovement implements
 
 	/** Prototype's reference to all routes read for the group */
 	private List<MapScheduledRoute> allRoutes = null;
-	/** next route's index to give by prototype */
+	/** next route's index to give by prototype. Index of used route by node if not prototype. */
 	private Integer nextRouteIndex = null;
 	/** The DelayModel used to calculate delays on the route */
 	private DelayModel delayModel;
@@ -75,6 +75,8 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		super(proto);
 		MapScheduledRoute route = proto.allRoutes.get(proto.nextRouteIndex).replicate();
 		this.route = proto.delayModel.calculateDelay(route);
+		this.nextRouteIndex = proto.nextRouteIndex;
+		this.allRoutes = proto.allRoutes;
 
         List<MapScheduledNode> stops = this.route.getStops();
         this.updatedActiveTimes = new double[2];
@@ -157,6 +159,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 		} else {
 			return null;
 		}
+	}
+
+	public MapScheduledRoute getSchedule() {
+		return allRoutes.get(nextRouteIndex).replicate();
 	}
 
 

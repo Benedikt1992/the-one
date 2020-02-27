@@ -221,6 +221,13 @@ public class DTNHost implements Comparable<DTNHost> {
 		return this.path;
 	}
 
+	/**
+	 * Returns the MovementModel this node is currently using or null if no
+	 * model is set at the moment.
+	 * @return The MovementModel this node is using
+	 */
+	public MovementModel getMovement() { return this.movement; }
+
 
 	/**
 	 * Sets the Node's location overriding any location set by movement model
