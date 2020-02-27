@@ -23,8 +23,12 @@ public class GeOppsRouter extends ActiveRouter {
 	public static final String GEOPPS_NS = "GeOppsRouter";
 	/** identifier for the message keeping setting ({@value})*/
 	public static final String KEEP_MSG = "keepMessages";
+	public static final String DIRECT_DISTANCE = "directDistance";
+	public static final String STOPS_ONLY = "stopsOnly";
 
 	protected boolean keepMessages;
+	protected boolean directDistance;
+	protected boolean stopsOnly;
 
 	protected Map<String, Double> estimatedDeliveryTimes;
 	protected DijkstraPathFinder pathFinder;
@@ -41,6 +45,8 @@ public class GeOppsRouter extends ActiveRouter {
 		Settings geoppsSettings = new Settings(GEOPPS_NS);
 
 		keepMessages = geoppsSettings.getBoolean(KEEP_MSG);
+		directDistance = geoppsSettings.getBoolean(DIRECT_DISTANCE);
+		stopsOnly = geoppsSettings.getBoolean(STOPS_ONLY);
 		estimatedDeliveryTimes = new HashMap<>();
 		pathFinder = new DijkstraPathFinder(null);
 	}
@@ -52,6 +58,8 @@ public class GeOppsRouter extends ActiveRouter {
 	protected GeOppsRouter(GeOppsRouter r) {
 		super(r);
 		this.keepMessages = r.keepMessages;
+		this.directDistance = r.directDistance;
+		this.stopsOnly = r.stopsOnly;
 		this.estimatedDeliveryTimes = new HashMap<>();
 		this.pathFinder = r.pathFinder;
 		//TODO: is there something we need to copy (global stuff)
@@ -113,28 +121,27 @@ public class GeOppsRouter extends ActiveRouter {
 
 	private Double findDeliveryEstimation(DTNHost destination, DTNHost transportNode) {
 		Double estimatedTime = Double.MAX_VALUE;
-		Coord dst_loc = destination.getLocation();
 		MovementModel mmodel = transportNode.getMovement();
 		if (mmodel instanceof MapScheduledMovement) {
+			MapNode dstNode = ((MapScheduledMovement)mmodel).getMap().getNodeByCoord(destination.getLocation());
+			if (dstNode == null) {
+				throw new SimError("Host " + destination.toString() + " is not located within the simulation map.");
+			}
 			MapScheduledRoute schedule = ((MapScheduledMovement)mmodel).getSchedule();
 			List<MapScheduledNode> stops = schedule.getStops();
 			MapScheduledNode first = schedule.getStop(0);
 			MapScheduledNode second = schedule.getStop(1);
-			List<MapNode> nodePath = pathFinder.getShortestPath(first.getNode(), second.getNode());
-			double distance = 0;
-			for (int i = 0; i < nodePath.size() - 1; i++) {
-				MapNode n1 = nodePath.get(i);
-				MapNode n2 = nodePath.get(i + 1);
-				distance += n1.getLocation().distance(n2.getLocation());
-			}
+			double distance = mapDistance(second.getNode(), first.getNode());
 			double duration = second.getTime() - first.getTime();
 			double speed = distance / duration;
 			double currentTime = SimClock.getTime();
 			for (MapScheduledNode stop : stops) {
 				if (stop.getTime() > currentTime) {
-					double x = dst_loc.getX() - stop.getNode().getLocation().getX();
-					double y = dst_loc.getY() - stop.getNode().getLocation().getY();
-					distance = Math.sqrt(x*x + y*y);
+					if (directDistance) {
+						distance = directDistance(dstNode, stop.getNode());
+					} else {
+						distance = mapDistance(dstNode, stop.getNode());
+					}
 					double possibleTime = stop.getTime() + distance / speed;
 					if (possibleTime < estimatedTime) { estimatedTime = possibleTime; }
 				}
@@ -146,6 +153,26 @@ public class GeOppsRouter extends ActiveRouter {
 
 
 		return estimatedTime;
+	}
+
+	private double mapDistance(MapNode dst, MapNode from) {
+		double distance = 0;
+		List<MapNode> nodePath = pathFinder.getShortestPath(from, dst);
+		for (int i = 0; i < nodePath.size() - 1; i++) {
+			MapNode n1 = nodePath.get(i);
+			MapNode n2 = nodePath.get(i + 1);
+			distance += n1.getLocation().distance(n2.getLocation());
+		}
+		return distance;
+	}
+
+	private double directDistance(MapNode dst, MapNode from) {
+		double distance;
+		Coord dst_loc = dst.getLocation();
+		double x = dst_loc.getX() - from.getLocation().getX();
+		double y = dst_loc.getY() - from.getLocation().getY();
+		distance = Math.sqrt(x*x + y*y);
+		return distance;
 	}
 
 	@Override
