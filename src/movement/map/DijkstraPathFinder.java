@@ -34,6 +34,8 @@ public class DijkstraPathFinder {
 
 	private int [] okMapNodes;
 
+	private Map<String, List<MapNode>> pathCache;
+
 	/**
 	 * Constructor.
 	 * @param okMapNodes The map node types that are OK for paths or null if
@@ -42,6 +44,7 @@ public class DijkstraPathFinder {
 	public DijkstraPathFinder(int [] okMapNodes) {
 		super();
 		this.okMapNodes = okMapNodes;
+		this.pathCache = new HashMap<>();
 	}
 
 	/**
@@ -71,10 +74,14 @@ public class DijkstraPathFinder {
 	 * a list of MapNodes or an empty list if such path is not available
 	 */
 	public List<MapNode> getShortestPath(MapNode from, MapNode to) {
-		List<MapNode> path = new LinkedList<MapNode>();
+		List<MapNode> path = pathCache.getOrDefault(from.toString() + to.toString(), new LinkedList<>());
+		if (path.size() > 0) {
+			return path;
+		}
 
 		if (from.compareTo(to) == 0) { // source and destination are the same
 			path.add(from); // return a list containing only source node
+			pathCache.put(from.toString() + to.toString(), path);
 			return path;
 		}
 
@@ -101,6 +108,7 @@ public class DijkstraPathFinder {
 			}
 
 			path.add(0, from); // finally put the source node to first node
+			pathCache.put(from.toString() + to.toString(), path);
 		}
 
 		return path;
