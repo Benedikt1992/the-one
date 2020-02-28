@@ -33,6 +33,7 @@ public class GeOppsRouter extends ActiveRouter {
 
 	protected Map<String, Double> estimatedDeliveryTimes;
 	protected DijkstraPathFinder pathFinder;
+	protected Map<String, Double> distanceCache;
 
 
 	/**
@@ -50,6 +51,7 @@ public class GeOppsRouter extends ActiveRouter {
 		stopsOnly = geoppsSettings.getBoolean(STOPS_ONLY);
 		estimatedDeliveryTimes = new HashMap<>();
 		pathFinder = new DijkstraPathFinder(null);
+		distanceCache = new HashMap<>();
 	}
 
 	/**
@@ -63,6 +65,7 @@ public class GeOppsRouter extends ActiveRouter {
 		this.stopsOnly = r.stopsOnly;
 		this.estimatedDeliveryTimes = new HashMap<>();
 		this.pathFinder = r.pathFinder;
+		this.distanceCache = r.distanceCache;
 		//TODO: is there something we need to copy (global stuff)
 	}
 
@@ -145,12 +148,13 @@ public class GeOppsRouter extends ActiveRouter {
 			double currentTime = SimClock.getTime();
 			for (MapScheduledNode stop : stops) {
 				if (stop.getTime() > currentTime) {
+					double possibleTime;
 					if (directDistance) {
 						distance = directDistance(dstNode, stop.getNode());
 					} else {
 						distance = mapDistance(dstNode, stop.getNode());
 					}
-					double possibleTime = stop.getTime() + distance / speed;
+					possibleTime = stop.getTime() + distance / speed;
 					if (possibleTime < estimatedTime) { estimatedTime = possibleTime; }
 				}
 			}
@@ -159,18 +163,24 @@ public class GeOppsRouter extends ActiveRouter {
 			/* TODO implement DeliveryEstimaton for other MovementModels using the Path object of the host. */
 		}
 
-
 		return estimatedTime;
 	}
 
 	private double mapDistance(MapNode dst, MapNode from) {
-		double distance = 0;
+		String key = dst.getLocation().toString() + from.getLocation().toString();
+		double distance = distanceCache.getOrDefault(key, 0.0);
+
+		if (distance > 0) {
+			return distance;
+		}
+
 		List<MapNode> nodePath = pathFinder.getShortestPath(from, dst);
 		for (int i = 0; i < nodePath.size() - 1; i++) {
 			MapNode n1 = nodePath.get(i);
 			MapNode n2 = nodePath.get(i + 1);
 			distance += n1.getLocation().distance(n2.getLocation());
 		}
+		distanceCache.put(key,distance);
 		return distance;
 	}
 
