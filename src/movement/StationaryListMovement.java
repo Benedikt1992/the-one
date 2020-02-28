@@ -8,6 +8,7 @@ import core.Coord;
 import core.Settings;
 import core.SettingsError;
 import input.WKTReader;
+import movement.map.MapNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class StationaryListMovement extends MapBasedMovement {
 	/** Per node group setting for setting the location ({@value}) */
 	public static final String LOCATION_FILE_S = "nodeLocationsFile";
 	private Coord loc; /** The location of the node */
+	private MapNode locNode;
 	private List<Coord> locations = null; /** All locations */
 	private Integer nextLocationIndex = null;
 
@@ -54,6 +56,10 @@ public class StationaryListMovement extends MapBasedMovement {
 
 		nextLocationIndex = 0;
 		loc = locations.get(nextLocationIndex).clone();
+		locNode = getMap().getNodeByCoord(loc);
+		if (locNode == null) {
+			throw new SettingsError("The stationary node at " + loc.toString() + " is not located on the map.");
+		}
 	}
 
 	/**
@@ -63,6 +69,10 @@ public class StationaryListMovement extends MapBasedMovement {
 	public StationaryListMovement(StationaryListMovement sm) {
 		super(sm);
 		this.loc = sm.locations.get(sm.nextLocationIndex).clone();
+		this.locNode = getMap().getNodeByCoord(this.loc);
+		if (this.locNode == null) {
+			throw new SettingsError("The stationary node at " + this.loc.toString() + " is not located on the map.");
+		}
 		sm.nextLocationIndex++;
 		if (sm.nextLocationIndex >= sm.locations.size()) {
 			sm.nextLocationIndex = 0;
@@ -97,6 +107,10 @@ public class StationaryListMovement extends MapBasedMovement {
 	@Override
 	public StationaryListMovement replicate() {
 		return new StationaryListMovement(this);
+	}
+
+	public MapNode getMapLocation() {
+		return this.locNode;
 	}
 
 }

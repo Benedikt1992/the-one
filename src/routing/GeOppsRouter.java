@@ -7,6 +7,7 @@ package routing;
 import core.*;
 import movement.MapScheduledMovement;
 import movement.MovementModel;
+import movement.StationaryListMovement;
 import movement.map.DijkstraPathFinder;
 import movement.map.MapNode;
 import movement.map.MapScheduledNode;
@@ -123,10 +124,17 @@ public class GeOppsRouter extends ActiveRouter {
 		Double estimatedTime = Double.MAX_VALUE;
 		MovementModel mmodel = transportNode.getMovement();
 		if (mmodel instanceof MapScheduledMovement) {
-			MapNode dstNode = ((MapScheduledMovement)mmodel).getMap().getNodeByCoord(destination.getLocation());
-			if (dstNode == null) {
-				throw new SimError("Host " + destination.toString() + " is not located within the simulation map.");
+			MapNode dstNode;
+			if (destination.getMovement() instanceof StationaryListMovement) {
+				dstNode = ((StationaryListMovement) destination.getMovement()).getMapLocation();
+			} else {
+				// Search for the MapNode. This takes a long time!
+				dstNode = ((MapScheduledMovement)mmodel).getMap().getNodeByCoord(destination.getLocation());
+				if (dstNode == null) {
+					throw new SimError("Host " + destination.toString() + " is not located within the simulation map.");
+				}
 			}
+
 			MapScheduledRoute schedule = ((MapScheduledMovement)mmodel).getSchedule();
 			List<MapScheduledNode> stops = schedule.getStops();
 			MapScheduledNode first = schedule.getStop(0);
