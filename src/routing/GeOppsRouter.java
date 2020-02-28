@@ -139,30 +139,72 @@ public class GeOppsRouter extends ActiveRouter {
 			}
 
 			MapScheduledRoute schedule = ((MapScheduledMovement)mmodel).getSchedule();
-			List<MapScheduledNode> stops = schedule.getStops();
-			MapScheduledNode first = schedule.getStop(0);
-			MapScheduledNode second = schedule.getStop(1);
-			double distance = mapDistance(second.getNode(), first.getNode());
-			double duration = second.getTime() - first.getTime();
-			double speed = distance / duration;
-			double currentTime = SimClock.getTime();
-			for (MapScheduledNode stop : stops) {
-				if (stop.getTime() > currentTime) {
-					double possibleTime;
-					if (directDistance) {
-						distance = directDistance(dstNode, stop.getNode());
-					} else {
-						distance = mapDistance(dstNode, stop.getNode());
-					}
-					possibleTime = stop.getTime() + distance / speed;
-					if (possibleTime < estimatedTime) { estimatedTime = possibleTime; }
-				}
+			if (stopsOnly) {
+				estimatedTime = stationDeliveryEstimation(dstNode, schedule);
+			} else {
+				estimatedTime = routeDeliveryEstimation(dstNode, schedule);
 			}
 
 		} else {
 			/* TODO implement DeliveryEstimaton for other MovementModels using the Path object of the host. */
 		}
 
+		return estimatedTime;
+	}
+
+	private Double routeDeliveryEstimation(MapNode dstNode, MapScheduledRoute schedule) {
+		Double estimatedTime = Double.MAX_VALUE;
+		List<MapScheduledNode> stops = schedule.getStops();
+		double currentTime = SimClock.getTime();
+		for (int i = 0; i < stops.size() - 1; i++) {
+			if (stops.get(i).getTime() > currentTime) {
+				List<MapNode> path = pathFinder.getShortestPath(stops.get(i).getNode(), stops.get(i+1).getNode());
+				double distance = mapDistance(stops.get(i+1).getNode(), stops.get(i).getNode());
+				double duration = stops.get(i+1).getTime() - stops.get(i).getTime();
+				double speed = distance / duration;
+				double navigatedDistance = 0.0;
+				for (int j = 0; j < path.size(); j++) {
+					if (j>0) {
+						double x = path.get(j).getLocation().getX() - path.get(j-1).getLocation().getX();
+						double y = path.get(j).getLocation().getY() - path.get(j-1).getLocation().getY();
+						navigatedDistance += Math.sqrt(x*x + y*y);
+					}
+					double possibleTime;
+					if (directDistance) {
+						distance = directDistance(dstNode, path.get(j));
+					} else {
+						distance = mapDistance(dstNode, path.get(j));
+					}
+
+					possibleTime = stops.get(i).getTime() + navigatedDistance/speed + distance / speed;
+					if (possibleTime < estimatedTime) { estimatedTime = possibleTime; }
+				}
+			}
+		}
+		return estimatedTime;
+	}
+
+	private Double stationDeliveryEstimation(MapNode dstNode, MapScheduledRoute schedule) {
+		Double estimatedTime = Double.MAX_VALUE;
+		List<MapScheduledNode> stops = schedule.getStops();
+		MapScheduledNode first = schedule.getStop(0);
+		MapScheduledNode second = schedule.getStop(1);
+		double distance = mapDistance(second.getNode(), first.getNode());
+		double duration = second.getTime() - first.getTime();
+		double speed = distance / duration;
+		double currentTime = SimClock.getTime();
+		for (MapScheduledNode stop : stops) {
+			if (stop.getTime() > currentTime) {
+				double possibleTime;
+				if (directDistance) {
+					distance = directDistance(dstNode, stop.getNode());
+				} else {
+					distance = mapDistance(dstNode, stop.getNode());
+				}
+				possibleTime = stop.getTime() + distance / speed;
+				if (possibleTime < estimatedTime) { estimatedTime = possibleTime; }
+			}
+		}
 		return estimatedTime;
 	}
 
