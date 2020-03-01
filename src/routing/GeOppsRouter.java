@@ -114,13 +114,15 @@ public class GeOppsRouter extends ActiveRouter {
             if( messages.size() == 0) {
                 return;
             }
+
+			for (Message m : messages) {
+				keepMessage.add(m.getId());
+			}
+
             List<Connection> connections = getStationaryNodeConnections();
             Connection con = tryMessagesToConnections(messages, connections);
             if (con!= null) {
                 List<Message> started = con.getMessage();
-                for (Message m : started) {
-                    keepMessage.add(m.getId());
-                }
             }
         }
 
