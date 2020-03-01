@@ -84,7 +84,7 @@ public class GeOppsRouter extends ActiveRouter {
 	public boolean createNewMessage(Message m) {
 		boolean succeeded = super.createNewMessage(m);
 		if (succeeded) {
-            Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m.getTo(), getHost());
+            Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m);
 			estimatedDeliveryTimes.put(m.getId(), deliveryTime.getValue());
 			messageDeadlines.put(m.getId(), deliveryTime.getKey());
 		}
@@ -159,7 +159,14 @@ public class GeOppsRouter extends ActiveRouter {
 		/* Find shortest possible delivery time for each message */
 		for (Message m : messages) {
 			for (Connection c : connections) {
-                Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m.getTo(), c.getOtherNode(getHost()));
+				DTNHost otherNode = c.getOtherNode(getHost());
+				MessageRouter router = otherNode.getRouter();
+				Tuple<Double, Double> deliveryTime;
+				if (router instanceof GeOppsRouter) {
+					deliveryTime = ((GeOppsRouter) router).findDeliveryEstimation(m);
+				} else {
+					deliveryTime = new Tuple<>(Double.MAX_VALUE, Double.MAX_VALUE);
+				}
 				if (deliveryTime.getValue() < deliveryTimes.getOrDefault(m, new Tuple<>(Double.MAX_VALUE, null)).getKey()) {
 					deliveryTimes.put(m, new Tuple<>(deliveryTime.getValue(), c));
 				}
@@ -178,7 +185,17 @@ public class GeOppsRouter extends ActiveRouter {
 		return sendableMessages;
 	}
 
-	private Tuple<Double, Double> findDeliveryEstimation(DTNHost destination, DTNHost transportNode) {
+	private Tuple<Double, Double> findDeliveryEstimation(Message message) {
+		Double deadline = messageDeadlines.getOrDefault(message.getId(), null);
+		double cTime = SimClock.getTime();
+		// TODO use location instead of message as key! (messages with same location as destination...)
+		if (deadline != null && deadline >= cTime) {
+			Double deliveryTime = estimatedDeliveryTimes.get(message.getId());
+			return new Tuple<>(deadline, deliveryTime);
+		}
+
+		DTNHost destination = message.getTo();
+		DTNHost transportNode = getHost();
 		Tuple<Double,Double> estimatedTime = new Tuple<>(Double.MAX_VALUE, Double.MAX_VALUE);
 		MovementModel mmodel = transportNode.getMovement();
 		if (mmodel instanceof MapScheduledMovement) {
@@ -201,9 +218,11 @@ public class GeOppsRouter extends ActiveRouter {
 			}
 
 		} else {
-			/* TODO implement DeliveryEstimaton for other MovementModels using the Path object of the host. */
+			/* TODO implement DeliveryEstimation for other MovementModels using the Path object of the host. */
 		}
 
+		messageDeadlines.put(message.getId(), estimatedTime.getKey());
+		estimatedDeliveryTimes.put(message.getId(), estimatedTime.getValue());
 		return estimatedTime;
 	}
 
@@ -302,10 +321,8 @@ public class GeOppsRouter extends ActiveRouter {
 			for (Message m : messages) {
 			    if (!keepMessage.contains(m.getId())) {
                     deleteMessage(m.getId(), false);
-                    estimatedDeliveryTimes.remove(m.getId());
-                    messageDeadlines.remove(m.getId());
                 } else {
-                    Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m.getTo(), getHost());
+                    Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m);
                     estimatedDeliveryTimes.put(m.getId(), deliveryTime.getValue());
                     messageDeadlines.put(m.getId(), deliveryTime.getKey());
                 }
@@ -317,9 +334,9 @@ public class GeOppsRouter extends ActiveRouter {
 	public Message messageTransferred(String id, DTNHost from) {
 		Message m =  super.messageTransferred(id, from);
 
-        Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m.getTo(), getHost());
-		estimatedDeliveryTimes.put(m.getId(), deliveryTime.getValue());
-		messageDeadlines.put(m.getId(), deliveryTime.getKey());
+//        Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m);
+//		estimatedDeliveryTimes.put(m.getId(), deliveryTime.getValue());
+//		messageDeadlines.put(m.getId(), deliveryTime.getKey());
 		return m;
 	}
 
