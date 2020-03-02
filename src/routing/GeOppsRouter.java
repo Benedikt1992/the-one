@@ -85,8 +85,8 @@ public class GeOppsRouter extends ActiveRouter {
 		boolean succeeded = super.createNewMessage(m);
 		if (succeeded) {
             Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m);
-			estimatedDeliveryTimes.put(m.getId(), deliveryTime.getValue());
-			messageDeadlines.put(m.getId(), deliveryTime.getKey());
+			estimatedDeliveryTimes.put(m.getTo().toString(), deliveryTime.getValue());
+			messageDeadlines.put(m.getTo().toString(), deliveryTime.getKey());
 		}
 		return succeeded;
 	}
@@ -144,7 +144,7 @@ public class GeOppsRouter extends ActiveRouter {
         List<Message> messages = new ArrayList<>();
         double cTime = SimClock.getTime();
         for (Message m : getMessageCollection()) {
-            if (messageDeadlines.get(m.getId()) < cTime) {
+            if (messageDeadlines.get(m.getTo().toString()) < cTime) {
                 messages.add(m);
             }
         }
@@ -177,7 +177,7 @@ public class GeOppsRouter extends ActiveRouter {
 		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
 		for (HashMap.Entry<Message, Tuple<Double, Connection>> entry :
 				deliveryTimes.entrySet()) {
-			if (entry.getValue().getKey() < estimatedDeliveryTimes.get(entry.getKey().getId())) {
+			if (entry.getValue().getKey() < estimatedDeliveryTimes.get(entry.getKey().getTo().toString())) {
 				sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
 			}
 		}
@@ -186,11 +186,11 @@ public class GeOppsRouter extends ActiveRouter {
 	}
 
 	private Tuple<Double, Double> findDeliveryEstimation(Message message) {
-		Double deadline = messageDeadlines.getOrDefault(message.getId(), null);
+		Double deadline = messageDeadlines.getOrDefault(message.getTo().toString(), null);
 		double cTime = SimClock.getTime();
 		// TODO use location instead of message as key! (messages with same location as destination...)
 		if (deadline != null && deadline >= cTime) {
-			Double deliveryTime = estimatedDeliveryTimes.get(message.getId());
+			Double deliveryTime = estimatedDeliveryTimes.get(message.getTo().toString());
 			return new Tuple<>(deadline, deliveryTime);
 		}
 
@@ -221,8 +221,8 @@ public class GeOppsRouter extends ActiveRouter {
 			/* TODO implement DeliveryEstimation for other MovementModels using the Path object of the host. */
 		}
 
-		messageDeadlines.put(message.getId(), estimatedTime.getKey());
-		estimatedDeliveryTimes.put(message.getId(), estimatedTime.getValue());
+		messageDeadlines.put(message.getTo().toString(), estimatedTime.getKey());
+		estimatedDeliveryTimes.put(message.getTo().toString(), estimatedTime.getValue());
 		return estimatedTime;
 	}
 
@@ -323,8 +323,8 @@ public class GeOppsRouter extends ActiveRouter {
                     deleteMessage(m.getId(), false);
                 } else {
                     Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m);
-                    estimatedDeliveryTimes.put(m.getId(), deliveryTime.getValue());
-                    messageDeadlines.put(m.getId(), deliveryTime.getKey());
+                    estimatedDeliveryTimes.put(m.getTo().toString(), deliveryTime.getValue());
+                    messageDeadlines.put(m.getTo().toString(), deliveryTime.getKey());
                 }
 			}
 		}
