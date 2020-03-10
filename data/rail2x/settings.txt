@@ -54,7 +54,7 @@ Scenario.nrofHostGroups = 3
 
 
 # Common settings for all groups
-Group.router = EpidemicRouter
+Group.router = GeOppsRouter
 # make sure to not loose messages in trains and stations
 Group.bufferSize = 5G
 # All nodes have the bluetooth interface
@@ -146,6 +146,11 @@ ProphetRouter.secondsInTimeUnit = 30
 SprayAndWaitRouter.nrofCopies = 6
 SprayAndWaitRouter.binaryMode = false
 SprayAndWaitRouter.linearMode = true
+GeOppsRouter.keepMessages = false
+GeOppsRouter.directDistance = false
+GeOppsRouter.stopsOnly = false
+GeOppsRouter.retryHops = false
+GeOppsRouter.stopBuffer = true
 
 ## Optimization settings -- these affect the speed of the simulation
 ## see World class for details.
