@@ -122,6 +122,10 @@ public class MapScheduledMovement extends MapBasedMovement implements
 			distance += n1.getLocation().distance(n2.getLocation());
 		}
 		double duration = to.getTime() - SimClock.getTime();
+		if (duration <= 0) {
+		    // duration can be negative due to delay models.
+		    duration = SimClock.getUpdateInterval();
+        }
 
 		for (MapNode node : nodePath) { // create a Path from the shortest path
 			p.addWaypoint(node.getLocation());
