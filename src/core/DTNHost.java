@@ -481,10 +481,8 @@ public class DTNHost implements Comparable<DTNHost> {
 	public int receiveMessage(Message m, DTNHost from) {
 		int retVal = this.router.receiveMessage(m, from);
 
-		if (retVal == MessageRouter.DENIED_OLD) {
-			for (MessageListener ml : this.msgListeners) {
-				ml.messageTransferRequested(m, from, this);
-			}
+		for (MessageListener ml : this.msgListeners) {
+			ml.messageTransferRequested(m, from, this);
 		}
 
 		if (retVal == MessageRouter.RCV_OK) {
