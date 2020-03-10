@@ -105,6 +105,9 @@ public class MapScheduledMovement extends MapBasedMovement implements
 			lastMapNode = to;
 			return null;
 		}
+		if (to.getTime() <= lastMapNode.getTime()) {
+			return null;
+		}
 
 		List<MapNode> nodePath = pathFinder.getShortestPath(lastMapNode.getNode(), to.getNode());
 
