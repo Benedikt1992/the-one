@@ -11,7 +11,8 @@ package_path = os.path.dirname(__file__)
 
 SOURCE_DIR_DEFAULT = os.path.join(package_path, 'testdata', 'raw-data')
 OUT_DIR_DEFAULT = os.path.join(package_path, 'testdata', 'data')
-ROUTE_REGEX_DEFAULT = '^ICE'
+# List of nightlines: https://de.wikipedia.org/wiki/Liste_der_Nachtzugverbindungen_in_Deutschland#ICE
+ROUTE_REGEX_DEFAULT = '^ICE(?![ ]?(208|209|949|948|1048|1049|990|781|618|619|1271|992|993|698|699)\s?$)'
 COUNTRY_DEFAULT = 'Germany'
 
 
