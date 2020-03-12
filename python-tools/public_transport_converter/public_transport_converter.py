@@ -49,11 +49,11 @@ class PublicTransportConverter:
             with open(os.path.join(self.cache_dir, "file_dates.json"), 'r') as dates_file:
                 self.file_dates = json.load(dates_file)
             osm_date = self.file_dates.get(os.path.basename(self.args.osm), None)
-            gtfs_date = self.file_dates.get(os.path.basename(self.args.gtfs), None)
-            if osm_date and gtfs_date:
+            # gtfs_date = self.file_dates.get(os.path.basename(self.args.gtfs), None)
+            if osm_date: # and gtfs_date:
                 latest_osm_date = os.stat(self.args.osm).st_mtime
-                latest_gtfs_date = os.stat(self.args.gtfs).st_mtime
-                if latest_gtfs_date > gtfs_date or latest_osm_date > osm_date:
+                # latest_gtfs_date = os.stat(self.args.gtfs).st_mtime
+                if GTFSParser.update_db(self.args.gtfs, self.file_dates) or latest_osm_date > osm_date:
                     self.cached = False
                 else:
                     self.cached = True
@@ -115,11 +115,9 @@ class PublicTransportConverter:
     def _write_date_cache(self):
         print("Write Cache...")
         osm_file = os.path.basename(self.args.osm)
-        gtfs_file = os.path.basename(self.args.gtfs)
         latest_osm_date = os.stat(self.args.osm).st_mtime
-        latest_gtfs_date = os.stat(self.args.gtfs).st_mtime
         self.file_dates[osm_file] = latest_osm_date
-        self.file_dates[gtfs_file] = latest_gtfs_date
+        GTFSParser.update_file_dates(self.args.gtfs, self.file_dates)
         date_file_path = os.path.join(self.cache_dir, "file_dates.json")
         with open(date_file_path, 'w') as f:
             json.dump(self.file_dates, f)

@@ -10,13 +10,26 @@ from src.elements.trip import Trip
 
 
 class GTFSParser:
-    #TODO extend with filter stuff from BP and reading from gtfs raw files
+
+    gtfs_files = [
+        'agency.txt',
+        'calendar_dates.txt',
+        'feed_info.txt',
+        'routes.txt',
+        'stop_times.txt',
+        'stops.txt',
+        'trips.txt'
+    ]
+    gtfs_db_file = 'gtfs.sqlite'
+
     def __init__(self, gtfs_path, begin, end):
-        os.path.isfile(gtfs_path)
-        self.path = gtfs_path
-        if not os.path.isfile(gtfs_path) or os.path.splitext(gtfs_path)[1] != '.sqlite':
-            raise ValueError("{} is not a file".format(gtfs_path))
-        self.schedule = pygtfs.Schedule(gtfs_path)
+
+        if os.path.isdir(gtfs_path):
+            self.schedule = self.create_db(gtfs_path)
+        else:
+            if not os.path.isfile(gtfs_path) or os.path.splitext(gtfs_path)[1] != '.sqlite':
+                raise ValueError("{} is not a file".format(gtfs_path))
+            self.schedule = pygtfs.Schedule(gtfs_path)
 
         first_date = self.schedule.feed_infos[0].feed_start_date
         last_date = self.schedule.feed_infos[0].feed_end_date
@@ -60,9 +73,6 @@ class GTFSParser:
 
     def get_start_date(self):
         return datetime.datetime(self.start_date.year, self.start_date.month, self.start_date.day)
-
-    def reload(self):
-        self.schedule = pygtfs.Schedule(self.path)
 
     def get_sections(self):
         """
@@ -112,3 +122,44 @@ class GTFSParser:
             current_date += datetime.timedelta(days=1)
 
         return all_trips
+
+    @classmethod
+    def update_db(cls, gtfs_path, file_dates):
+        if os.path.isfile(gtfs_path):
+            return cls.update_db_file(gtfs_path, file_dates)
+        elif os.path.isdir(gtfs_path):
+            if not os.path.isfile(os.path.join(gtfs_path, cls.gtfs_db_file)):
+                return True
+            for file in cls.gtfs_files:
+                latest_file_date = os.stat(os.path.join(gtfs_path, file)).st_mtime
+                file_date = file_dates.get(file, None)
+                if not file_date or file_date < latest_file_date:
+                    return True
+            return cls.update_db_file(os.path.join(gtfs_path, cls.gtfs_db_file), file_dates)
+        raise ValueError("GTFS path is not valid.")
+
+    @classmethod
+    def update_db_file(cls, gtfs_db_file, file_dates):
+        latest_gtfs_date = os.stat(gtfs_db_file).st_mtime
+        gtfs_date = file_dates.get(os.path.basename(gtfs_db_file), None)
+        if gtfs_date and gtfs_date >= latest_gtfs_date:
+            return False
+        return True
+
+    @classmethod
+    def update_file_dates(cls, gtfs_path, file_dates):
+        if os.path.isdir(gtfs_path):
+            for file in cls.gtfs_files:
+                file_dates[file] = os.stat(os.path.join(gtfs_path, file)).st_mtime
+            file_dates[cls.gtfs_db_file] = os.stat(os.path.join(gtfs_path, cls.gtfs_db_file)).st_mtime
+        elif os.path.isfile(gtfs_path):
+            db_file = os.path.basename(gtfs_path)
+            file_dates[db_file] = os.stat(gtfs_path).st_mtime
+
+    def create_db(self, gtfs_path):
+        database_path = os.path.join(gtfs_path, self.gtfs_db_file)
+        if os.path.isfile(database_path):
+            os.remove(database_path)
+        schedule = pygtfs.Schedule(database_path)
+        pygtfs.append_feed(schedule, gtfs_path)
+        return schedule
