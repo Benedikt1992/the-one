@@ -1,0 +1,2983 @@
+route_id,service_id,trip_id,trip_headsign
+0,0,0,Stralsund Hbf
+0,10,10,Stralsund Hbf
+0,26,27,Stralsund Hbf
+0,29,30,Stralsund Hbf
+0,60,64,Kassel-Wilhelmshöhe
+0,67,76,Kassel-Wilhelmshöhe
+0,71,85,Kassel-Wilhelmshöhe
+1,1,1,Karlsruhe Hbf
+1,30,31,Karlsruhe Hbf
+1,60,65,Karlsruhe Hbf
+1,68,77,Heidelberg Hbf
+3,3,3,Hamburg-Altona
+3,28,29,Hannover Hbf
+3,60,68,Kassel-Wilhelmshöhe
+3,68,80,Kassel-Wilhelmshöhe
+4,4,4,Hamburg-Altona
+4,14,14,Kassel-Wilhelmshöhe
+4,18,18,Hannover Hbf
+4,33,34,Hannover Hbf
+4,57,61,Kassel-Wilhelmshöhe
+4,65,81,Kassel-Wilhelmshöhe
+4,69,82,Kassel-Wilhelmshöhe
+5,5,5,Kassel-Wilhelmshöhe
+5,35,36,Hannover Hbf
+5,55,59,Hannover Hbf
+5,70,83,Kassel-Wilhelmshöhe
+5,22,5737,Hannover Hbf
+6,6,6,Karlsruhe Hbf
+6,71,84,Heidelberg Hbf
+7,7,7,Karlsruhe Hbf
+7,19,20,Karlsruhe Hbf
+7,65,74,Heidelberg Hbf
+7,913,4024,Karlsruhe Hbf
+8,8,8,Hamburg-Altona
+8,20,21,Hamburg-Altona
+8,37,38,Hannover Hbf
+8,41,45,Hannover Hbf
+8,49,53,Hamburg-Altona
+8,52,56,Hamburg-Altona
+8,58,62,Kassel-Wilhelmshöhe
+9,9,9,Frankfurt(Main)Hbf
+9,15,15,Karlsruhe Hbf
+9,36,39,Frankfurt(Main)Hbf
+9,38,41,Karlsruhe Hbf
+9,59,63,Frankfurt(Main)Hbf
+9,62,70,Karlsruhe Hbf
+9,66,75,Heidelberg Hbf
+9,2062,3950,Karlsruhe Hbf
+10,11,11,Stralsund Hbf
+10,16,16,Stralsund Hbf
+10,24,25,Stralsund Hbf
+10,27,28,Stralsund Hbf
+10,36,40,Stralsund Hbf
+10,44,48,Stralsund Hbf
+10,59,66,Kassel-Wilhelmshöhe
+10,62,71,Kassel-Wilhelmshöhe
+10,66,78,Kassel-Wilhelmshöhe
+11,13,13,Frankfurt(Main)Hbf
+11,17,17,Karlsruhe Hbf
+11,21,22,Frankfurt(Main)Hbf
+11,25,26,Frankfurt(Main)Hbf
+11,32,33,Frankfurt(Main)Hbf
+11,40,43,Karlsruhe Hbf
+11,42,46,Frankfurt(Main)Hbf
+11,46,50,Karlsruhe Hbf
+11,51,55,Karlsruhe Hbf
+11,53,57,Frankfurt(Main)Hbf
+11,61,69,Frankfurt(Main)Hbf
+11,63,72,Karlsruhe Hbf
+11,64,73,Karlsruhe Hbf
+12,17,19,Frankfurt(Main)Hbf
+12,40,44,Frankfurt(Main)Hbf
+12,47,51,Frankfurt(Main)Hbf
+12,11,2157,Hannover Hbf
+12,1217,2168,Hamburg Hbf
+12,1221,2172,Hamburg-Harburg
+12,36,2178,Hannover Hbf
+12,1226,2187,Hannover Hbf
+12,715,2203,Hannover Hbf
+12,1241,2214,Hannover Hbf
+14,23,24,Stralsund Hbf
+14,36,37,Stralsund Hbf
+14,43,47,Stralsund Hbf
+14,1216,2156,Stralsund Hbf
+14,21,2160,Stralsund Hbf
+14,944,2165,Stralsund Hbf
+14,26,2167,Stralsund Hbf
+14,1218,2169,Stralsund Hbf
+14,1220,2171,Stralsund Hbf
+14,40,2180,Stralsund Hbf
+14,1223,2181,Stralsund Hbf
+14,809,2182,Stralsund Hbf
+14,1227,2188,Stralsund Hbf
+15,60,67,Karlsruhe Hbf
+15,68,79,Karlsruhe Hbf
+16,72,86,Heidelberg Hbf
+16,75,96,Karlsruhe Hbf
+17,73,87,Heidelberg Hbf
+17,76,97,Karlsruhe Hbf
+18,73,88,Kassel-Wilhelmshöhe
+18,76,98,Kassel-Wilhelmshöhe
+19,73,89,Heidelberg Hbf
+19,76,99,Karlsruhe Hbf
+20,73,90,Kassel-Wilhelmshöhe
+20,76,100,Kassel-Wilhelmshöhe
+21,73,91,Karlsruhe Hbf
+21,76,101,Karlsruhe Hbf
+22,73,92,Kassel-Wilhelmshöhe
+22,76,102,Kassel-Wilhelmshöhe
+23,72,93,Kassel-Wilhelmshöhe
+23,74,94,Kassel-Wilhelmshöhe
+23,75,103,Kassel-Wilhelmshöhe
+23,77,104,Kassel-Wilhelmshöhe
+24,74,95,Kassel-Wilhelmshöhe
+24,77,105,Kassel-Wilhelmshöhe
+35,119,155,Berlin Ostbahnhof
+35,139,182,Berlin Ostbahnhof
+35,148,193,Berlin Hbf (tief)
+35,152,197,Berlin Ostbahnhof
+35,73,209,Berlin Ostbahnhof
+35,76,213,Berlin Ostbahnhof
+35,170,225,Berlin Ostbahnhof
+36,120,156,Berlin Ostbahnhof
+36,52,181,Berlin Ostbahnhof
+36,140,183,Berlin Ostbahnhof
+36,142,187,Berlin Ostbahnhof
+36,147,192,Berlin Ostbahnhof
+36,152,198,Berlin Ostbahnhof
+36,73,210,Berlin Ostbahnhof
+36,76,214,Berlin Ostbahnhof
+36,170,226,Berlin Ostbahnhof
+38,122,158,Interlaken Ost
+38,126,164,Interlaken Ost
+38,129,171,Interlaken Ost
+38,134,176,Interlaken Ost
+38,140,184,Interlaken Ost
+38,143,188,Interlaken Ost
+38,153,199,Interlaken Ost
+38,163,216,Interlaken Ost
+38,171,227,Interlaken Ost
+40,124,160,Hamburg-Altona
+40,127,165,Frankfurt(Main)Hbf
+40,132,174,Hamburg Hbf
+40,144,189,Hamburg-Altona
+40,156,203,Hamburg-Altona
+40,165,218,Frankfurt(Main)Hbf
+42,119,162,Interlaken Ost
+42,141,185,Interlaken Ost
+42,155,201,Interlaken Ost
+42,167,220,Interlaken Ost
+43,119,163,Interlaken Ost
+43,141,186,Interlaken Ost
+43,155,202,Interlaken Ost
+43,167,221,Interlaken Ost
+44,74,211,Hamburg-Altona
+44,77,223,Hamburg-Altona
+44,172,228,Hamburg-Altona
+49,189,245,Frankfurt(Main)Hbf
+49,211,268,München Hbf
+50,190,246,München Hbf
+50,234,296,Nürnberg Hbf
+50,287,413,Nürnberg Hbf
+50,300,435,München Hbf
+50,22,3473,München Hbf
+51,191,247,Dortmund Hbf
+51,144,299,Dortmund Hbf
+51,238,303,Dortmund Hbf
+51,259,336,Dortmund Hbf
+51,294,422,Dortmund Hbf
+51,22,2859,Dortmund Hbf
+52,192,248,München Hbf
+52,255,329,München Hbf
+52,283,403,Nürnberg Hbf
+52,22,3474,München Hbf
+53,193,249,Bruxelles Midi
+53,289,415,Bruxelles Midi
+53,302,437,Bruxelles Midi
+53,22,3403,Bruxelles Midi
+53,1810,3409,Bruxelles Midi
+53,1811,3414,Bruxelles Midi
+54,194,250,München Hbf
+54,221,278,München Hbf
+54,252,322,München Hbf
+54,268,359,München Hbf
+54,274,380,München Hbf
+54,286,408,München Hbf
+54,22,3476,München Hbf
+55,195,251,Bruxelles Midi
+55,294,423,Bruxelles Midi
+55,1806,3399,Bruxelles Midi
+55,22,3405,Bruxelles Midi
+55,729,3422,Bruxelles Midi
+56,194,252,München Hbf
+56,221,280,München Hbf
+56,22,293,München Hbf
+56,252,324,München Hbf
+56,268,361,München Hbf
+56,274,382,München Hbf
+56,286,410,München Hbf
+57,196,253,Essen Hbf
+57,228,289,Dortmund Hbf
+57,253,325,Düsseldorf Hbf
+57,284,404,Dortmund Hbf
+58,197,254,München Hbf
+58,229,290,München Hbf
+58,255,330,München Hbf
+58,268,362,München Hbf
+58,275,383,München Hbf
+58,285,411,München Hbf
+59,198,255,Köln Hbf
+59,290,416,Köln Hbf
+60,199,256,Frankfurt(Main)Hbf
+60,223,282,Frankfurt(Main)Hbf
+60,291,417,Frankfurt(Main)Hbf
+60,299,432,Frankfurt(Main)Hbf
+61,200,257,Frankfurt(Main)Hbf
+61,292,418,Frankfurt(Main)Hbf
+61,1805,3400,Frankfurt(Main)Hbf
+61,297,3431,Frankfurt(Main)Hbf
+62,201,258,Dortmund Hbf
+62,149,307,Essen Hbf
+62,255,331,Dortmund Hbf
+62,283,405,Dortmund Hbf
+63,202,259,Köln Hbf
+63,237,301,Köln Hbf
+63,295,424,Köln Hbf
+64,203,260,Frankfurt(Main)Hbf
+64,292,420,Frankfurt(Main)Hbf
+65,204,261,Dortmund Hbf
+65,253,327,Düsseldorf Hbf
+65,286,412,Dortmund Hbf
+66,205,262,München Hbf
+66,140,297,München Hbf
+66,237,302,München Hbf
+66,149,308,München Hbf
+66,255,332,München Hbf
+66,411,681,Nürnberg Hbf
+67,206,263,Köln Hbf
+67,293,421,Köln Hbf
+68,207,264,Basel Bad Bf
+68,231,292,Karlsruhe Hbf
+68,232,294,Karlsruhe Hbf
+68,239,305,Freiburg(Breisgau) Hbf
+68,254,328,Karlsruhe Hbf
+68,262,340,Basel Bad Bf
+68,162,400,Karlsruhe Hbf
+68,282,401,Basel Bad Bf
+68,2033,5091,Basel Bad Bf
+68,2252,5094,Basel Bad Bf
+69,208,265,Dortmund Hbf
+69,251,339,Düsseldorf Hbf
+69,491,4237,Dortmund Hbf
+69,2458,4796,Dortmund Hbf
+69,268,4804,Dortmund Hbf
+71,210,267,Dortmund Hbf
+71,710,4194,Dortmund Hbf
+71,2190,4238,Dortmund Hbf
+71,2923,6060,Köln Hbf
+71,2486,6062,Köln Hbf
+72,212,269,München Hbf
+72,249,318,München Hbf
+72,267,356,München Hbf
+72,276,384,München Hbf
+74,214,271,Köln Hbf
+75,215,272,Stuttgart Hbf
+76,216,273,Frankfurt(Main)Hbf
+76,297,427,Frankfurt(Main)Hbf
+77,217,274,München Hbf
+77,241,309,Dortmund Hbf
+77,256,333,München Hbf
+77,268,357,München Hbf
+77,273,378,München Hbf
+77,298,428,München Hbf
+77,301,436,München Hbf
+77,420,655,München Hbf
+77,494,804,München Hbf
+77,1817,3438,München Hbf
+77,271,3442,München Hbf
+78,218,275,Frankfurt(Main)Hbf
+78,185,304,Frankfurt(Main)Hbf
+78,297,429,Frankfurt(Main)Hbf
+79,219,276,Frankfurt(Main)Hbf
+79,257,334,Frankfurt(Main)Hbf
+79,297,430,Frankfurt(Main)Hbf
+80,220,277,Essen Hbf
+80,227,287,Dortmund Hbf
+80,246,314,Essen Hbf
+80,249,321,Düsseldorf Hbf
+80,268,358,Düsseldorf Hbf
+80,274,379,Essen Hbf
+80,285,407,Dortmund Hbf
+81,221,279,Essen Hbf
+81,227,288,Dortmund Hbf
+81,249,323,Düsseldorf Hbf
+81,268,360,Düsseldorf Hbf
+81,274,381,Essen Hbf
+81,285,409,Dortmund Hbf
+82,222,281,Köln Hbf
+82,297,431,Köln Hbf
+83,224,283,Bruxelles Midi
+83,297,433,Bruxelles Midi
+83,1800,3391,Bruxelles Midi
+83,1814,3417,Bruxelles Midi
+83,294,3429,Bruxelles Midi
+84,225,284,Amsterdam Centraal
+84,297,434,Amsterdam Centraal
+84,2843,5746,Amsterdam Centraal
+84,478,5768,Amsterdam Centraal
+84,2851,5784,Amsterdam Centraal
+85,227,286,München Hbf
+85,251,320,München Hbf
+85,285,406,München Hbf
+86,230,291,Köln Hbf
+86,288,419,Köln Hbf
+86,885,5865,Siegburg/Bonn
+87,233,295,Frankfurt(Main)Hbf
+88,243,311,Bruxelles Midi
+88,296,425,Bruxelles Midi
+89,244,312,Stuttgart Hbf
+90,245,313,Hamm(Westf)
+90,1517,6023,Hamm(Westf)
+90,2819,6026,Hamm(Westf)
+91,247,315,Köln Hbf
+92,244,316,Köln Hbf
+93,248,317,Köln Hbf
+93,655,5952,Utrecht Centraal
+94,252,326,Düsseldorf Hbf
+94,268,363,Düsseldorf Hbf
+94,436,673,Essen Hbf
+94,1837,3477,Dortmund Hbf
+94,285,3515,Dortmund Hbf
+94,496,3516,Essen Hbf
+95,260,337,Dortmund Hbf
+96,261,338,Düsseldorf Hbf
+97,263,341,München Hbf
+97,269,364,Nürnberg Hbf
+98,264,342,München Hbf
+98,270,365,München Hbf
+98,278,386,München Hbf
+99,264,343,München Hbf
+99,270,366,München Hbf
+99,278,388,München Hbf
+100,264,344,Düsseldorf Hbf
+100,270,367,Düsseldorf Hbf
+100,278,389,Dortmund Hbf
+101,263,345,München Hbf
+101,271,368,München Hbf
+101,280,390,München Hbf
+102,264,346,Düsseldorf Hbf
+102,270,369,Düsseldorf Hbf
+102,278,391,Dortmund Hbf
+103,263,347,München Hbf
+103,271,370,München Hbf
+103,280,392,München Hbf
+104,263,348,Düsseldorf Hbf
+104,271,371,Düsseldorf Hbf
+104,280,393,Dortmund Hbf
+105,264,349,München Hbf
+105,265,353,München Hbf
+105,270,372,München Hbf
+105,272,376,München Hbf
+105,278,394,München Hbf
+105,281,397,München Hbf
+106,263,350,Düsseldorf Hbf
+106,271,373,Düsseldorf Hbf
+106,278,3508,Dortmund Hbf
+106,281,3510,Essen Hbf
+107,263,351,Düsseldorf Hbf
+107,271,374,Düsseldorf Hbf
+107,280,395,Dortmund Hbf
+108,265,352,München Hbf
+108,272,375,Nürnberg Hbf
+108,281,396,Nürnberg Hbf
+109,265,354,Dortmund Hbf
+109,272,377,Dortmund Hbf
+109,281,398,Dortmund Hbf
+110,266,355,München Hbf
+110,281,399,München Hbf
+111,280,402,Dortmund Hbf
+111,263,6024,Düsseldorf Hbf
+111,271,6025,Düsseldorf Hbf
+112,302,438,Amsterdam Centraal
+112,1810,5081,Amsterdam Centraal
+113,303,439,Amsterdam Centraal
+113,2824,5690,Amsterdam Centraal
+113,2826,5695,Amsterdam Centraal
+113,2830,5705,Amsterdam Centraal
+114,304,440,Stuttgart Hbf
+114,315,454,Stuttgart Hbf
+116,306,442,Stuttgart Hbf
+116,317,456,Stuttgart Hbf
+116,326,469,Stuttgart Hbf
+117,305,443,Frankfurt(Main)Hbf
+119,304,445,Frankfurt(Main)Hbf
+119,315,458,Frankfurt(Main)Hbf
+121,309,447,Frankfurt(Main)Hbf
+123,310,449,Frankfurt(Main)Hbf
+147,309,595,Paris Est
+149,389,597,Paris Est
+149,394,605,Paris Est
+149,325,608,Paris Est
+150,390,598,Paris Est
+150,326,612,Paris Est
+155,393,603,Paris Est
+187,421,656,München Hbf
+187,455,698,Garmisch-Partenkirchen
+187,479,748,München Hbf
+187,491,798,München Hbf
+187,22,3475,München Hbf
+188,422,657,Stuttgart Hbf
+188,359,724,Stuttgart Hbf
+188,366,749,Stuttgart Hbf
+188,22,5177,Stuttgart Hbf
+189,423,658,München Hbf
+189,30,714,München Hbf
+189,470,731,München Hbf
+189,105,735,München Hbf
+190,194,659,München Hbf
+190,221,693,München Hbf
+190,22,705,München Hbf
+190,252,754,München Hbf
+190,268,786,München Hbf
+190,274,800,München Hbf
+190,286,816,München Hbf
+191,424,660,Stuttgart Hbf
+191,453,695,Stuttgart Hbf
+191,22,706,Stuttgart Hbf
+191,149,732,Stuttgart Hbf
+192,194,661,Dortmund Hbf
+192,221,696,Essen Hbf
+192,22,707,Dortmund Hbf
+192,252,755,Düsseldorf Hbf
+192,268,787,Düsseldorf Hbf
+192,274,801,Essen Hbf
+192,286,817,Dortmund Hbf
+193,425,662,München Hbf
+193,22,708,München Hbf
+193,252,757,München Hbf
+193,495,818,Nürnberg Hbf
+193,1835,3470,München Hbf
+193,268,3493,Nürnberg Hbf
+193,1844,3503,Nürnberg Hbf
+194,426,663,Düsseldorf Hbf
+194,458,701,Dortmund Hbf
+194,22,709,Düsseldorf Hbf
+195,427,664,Essen Hbf
+195,22,710,Essen Hbf
+195,228,712,Dortmund Hbf
+195,252,758,Düsseldorf Hbf
+195,285,819,Dortmund Hbf
+195,275,820,Essen Hbf
+195,268,3490,Düsseldorf Hbf
+196,428,665,München Hbf
+196,483,762,München Hbf
+196,496,821,München Hbf
+196,1364,4773,München Hbf
+197,429,666,Dortmund Hbf
+197,471,733,Dortmund Hbf
+198,430,667,Essen Hbf
+198,228,713,Dortmund Hbf
+198,472,734,Düsseldorf Hbf
+198,275,822,Essen Hbf
+198,1093,3480,Essen Hbf
+198,466,3481,Essen Hbf
+198,1840,3485,Köln Hbf
+198,268,3492,Köln Hbf
+198,285,3513,Dortmund Hbf
+199,431,668,Stuttgart Hbf
+199,459,711,Stuttgart Hbf
+200,432,669,München Hbf
+200,483,767,München Hbf
+200,496,823,München Hbf
+200,1364,4776,München Hbf
+201,433,670,Essen Hbf
+201,486,768,Düsseldorf Hbf
+201,1836,3472,Dortmund Hbf
+201,268,3494,Düsseldorf Hbf
+201,275,3504,Essen Hbf
+201,285,3514,Dortmund Hbf
+202,434,671,München Hbf
+202,487,769,München Hbf
+202,496,3518,München Hbf
+202,21,5743,München Hbf
+203,435,672,Stuttgart Hbf
+204,437,674,Frankfurt(Main)Hbf
+204,1093,3436,Frankfurt(Main)Hbf
+204,466,3437,Frankfurt(Main)Hbf
+204,256,3440,Frankfurt(Main)Hbf
+204,268,3441,Frankfurt(Main)Hbf
+204,1819,3444,Frankfurt(Main)Hbf
+204,1448,5677,Frankfurt(Main)Hbf
+205,438,675,München Hbf
+206,439,676,Dortmund Hbf
+206,256,5551,Dortmund Hbf
+206,268,5553,Dortmund Hbf
+207,440,677,Münster(Westf)Hbf
+207,359,5539,Münster(Westf)Hbf
+207,159,5550,Münster(Westf)Hbf
+207,2782,5552,Münster(Westf)Hbf
+208,441,678,München Hbf
+208,52,3451,München Hbf
+208,140,3452,München Hbf
+208,100,3453,München Hbf
+208,21,5030,München Hbf
+209,441,679,Stuttgart Hbf
+210,442,680,Dortmund Hbf
+210,496,3517,Dortmund Hbf
+211,443,682,Hamburg-Altona
+212,441,683,Dortmund Hbf
+213,444,684,Dortmund Hbf
+213,455,1686,Dortmund Hbf
+213,496,5520,Dortmund Hbf
+214,445,685,Dortmund Hbf
+214,496,5521,Dortmund Hbf
+214,2847,5765,Dortmund Hbf
+215,446,686,München Hbf
+215,461,716,München Hbf
+215,466,722,München Hbf
+215,249,746,München Hbf
+215,268,783,Nürnberg Hbf
+215,490,796,Nürnberg Hbf
+216,447,687,Stuttgart Hbf
+216,469,730,Stuttgart Hbf
+217,448,688,Berlin Gesundbrunnen
+217,463,719,Berlin Ostbahnhof
+217,468,729,Berlin Ostbahnhof
+217,476,744,Berlin Gesundbrunnen
+217,185,4086,Berlin Ostbahnhof
+217,157,4135,Berlin Gesundbrunnen
+218,221,689,München Hbf
+218,256,764,München Hbf
+218,268,784,München Hbf
+218,274,797,München Hbf
+219,449,690,Essen Hbf
+219,464,720,Essen Hbf
+219,465,721,Essen Hbf
+219,257,765,Düsseldorf Hbf
+220,450,691,Düsseldorf Hbf
+220,456,699,Düsseldorf Hbf
+221,451,692,Essen Hbf
+221,457,700,Dortmund Hbf
+221,462,717,Essen Hbf
+221,51,718,Essen Hbf
+221,480,750,Düsseldorf Hbf
+221,489,785,Düsseldorf Hbf
+221,493,802,Essen Hbf
+221,285,815,Dortmund Hbf
+222,452,694,Dortmund Hbf
+222,454,697,Düsseldorf Hbf
+226,460,715,München Hbf
+226,146,723,München Hbf
+226,238,3288,München Hbf
+226,361,3300,München Hbf
+227,467,725,Berlin Ostbahnhof
+227,2108,4040,Berlin Gesundbrunnen
+227,1280,5269,Berlin Ostbahnhof
+228,146,726,Berlin Ostbahnhof
+228,2109,4042,Berlin Gesundbrunnen
+228,2139,4105,Berlin Ostbahnhof
+228,2148,4130,Berlin Gesundbrunnen
+228,1943,4307,Berlin Ostbahnhof
+228,2676,5266,Berlin Gesundbrunnen
+228,2678,5270,Berlin Ostbahnhof
+228,576,5350,Berlin Ostbahnhof
+228,1200,5729,Berlin Hbf (tief)
+229,238,727,Berlin Ostbahnhof
+229,1364,4046,Berlin Gesundbrunnen
+230,185,728,Berlin Ostbahnhof
+230,2120,4064,Berlin Gesundbrunnen
+230,2135,4101,Berlin Ostbahnhof
+230,1953,4115,Berlin Ostbahnhof
+230,2146,4126,Berlin Gesundbrunnen
+230,52,5267,Berlin Ostbahnhof
+230,2677,5268,Berlin Ostbahnhof
+230,655,5349,Berlin Ostbahnhof
+231,473,736,München Hbf
+231,477,745,München Hbf
+231,482,752,München Hbf
+231,485,766,München Hbf
+231,492,799,München Hbf
+236,150,742,Dortmund Hbf
+236,83,1174,Dortmund Hbf
+236,702,1192,Dortmund Hbf
+236,717,1227,Dortmund Hbf
+236,718,1228,Dortmund Hbf
+236,1055,4213,Dortmund Hbf
+236,384,4217,Dortmund Hbf
+236,290,4249,Dortmund Hbf
+236,806,5792,Frankfurt(Main)Hbf
+238,478,747,Amsterdam Centraal
+238,2440,4768,Amsterdam Centraal
+238,289,5085,Amsterdam Centraal
+238,22,5752,Amsterdam Centraal
+239,481,751,Frankfurt(Main)Hbf
+239,2805,5622,Frankfurt(Main)Hbf
+239,148,5758,Frankfurt(Main)Hbf
+239,1815,5775,Frankfurt(Main)Hbf
+240,478,753,Amsterdam Centraal
+240,2440,4770,Amsterdam Centraal
+240,22,5754,Amsterdam Centraal
+240,289,5776,Amsterdam Centraal
+241,478,756,Amsterdam Centraal
+241,2443,4772,Amsterdam Centraal
+241,22,5755,Amsterdam Centraal
+241,289,5778,Amsterdam Centraal
+242,478,759,Frankfurt(Main)Hbf
+242,2442,4771,Frankfurt(Main)Hbf
+242,85,5749,Frankfurt(Main)Hbf
+242,289,5777,Frankfurt(Main)Hbf
+244,478,761,Amsterdam Centraal
+244,2446,4777,Amsterdam Centraal
+244,105,5762,Amsterdam Centraal
+244,289,5780,Amsterdam Centraal
+245,484,763,Amsterdam Centraal
+245,2439,4767,Amsterdam Centraal
+245,2454,4789,Amsterdam Centraal
+245,2460,4800,Amsterdam Centraal
+245,297,5088,Amsterdam Centraal
+246,488,770,Frankfurt(Main)Hbf
+246,2466,4808,Frankfurt(Main)Hbf
+246,85,5751,Frankfurt(Main)Hbf
+246,2845,5763,Frankfurt(Main)Hbf
+246,478,5767,Frankfurt(Main)Hbf
+246,2495,5781,Frankfurt(Main)Hbf
+246,2850,5782,Frankfurt(Main)Hbf
+247,264,771,München Hbf
+247,270,788,Nürnberg Hbf
+247,278,803,Nürnberg Hbf
+248,263,772,München Hbf
+248,271,789,München Hbf
+248,280,805,München Hbf
+249,264,773,Düsseldorf Hbf
+249,270,790,Düsseldorf Hbf
+249,278,806,Dortmund Hbf
+250,263,774,München Hbf
+250,271,791,München Hbf
+250,280,807,München Hbf
+251,263,775,Düsseldorf Hbf
+251,271,792,Düsseldorf Hbf
+251,280,808,Dortmund Hbf
+252,263,776,München Hbf
+252,271,793,Nürnberg Hbf
+252,280,809,Nürnberg Hbf
+253,263,777,Düsseldorf Hbf
+253,271,794,Düsseldorf Hbf
+253,281,810,Essen Hbf
+253,278,813,Dortmund Hbf
+254,263,778,München Hbf
+254,272,795,München Hbf
+254,281,811,München Hbf
+255,264,779,Düsseldorf Hbf
+255,281,812,Essen Hbf
+255,265,3488,Köln Hbf
+255,270,3495,Düsseldorf Hbf
+255,272,3497,Köln Hbf
+255,278,3506,Dortmund Hbf
+256,265,780,München Hbf
+256,281,814,München Hbf
+256,272,3498,München Hbf
+257,263,781,Düsseldorf Hbf
+257,271,3496,Düsseldorf Hbf
+257,278,3507,Dortmund Hbf
+257,281,3509,Essen Hbf
+258,265,782,München Hbf
+258,281,3512,München Hbf
+323,547,941,Schwarzach-St.Veit
+323,554,951,Schwarzach-St.Veit
+323,565,972,Schwarzach-St.Veit
+323,599,1017,Schwarzach-St.Veit
+324,548,942,München Hbf
+327,551,945,Schwarzach-St.Veit
+327,575,987,Schwarzach-St.Veit
+328,26,946,Hamburg Hbf
+328,33,949,Hamburg-Harburg
+328,557,955,Flensburg
+328,566,973,Flensburg
+328,576,988,Flensburg
+328,149,989,Flensburg
+328,105,994,Flensburg
+328,598,1016,München Hbf
+328,2312,4477,Flensburg
+328,22,4506,Flensburg
+328,40,4513,Hamburg-Harburg
+328,2340,4528,Flensburg
+328,1822,4629,Hamburg Hbf
+328,1432,4638,Hamburg Hbf
+328,2400,4651,Hamburg Hbf
+328,572,4653,Hamburg Hbf
+328,1824,4655,Hamburg Hbf
+328,2405,4661,Hamburg Hbf
+363,687,1167,Frankfurt(Main)Hbf
+363,85,1186,Frankfurt(Main)Hbf
+363,723,1236,Nürnberg Hbf
+364,688,1168,Frankfurt(Main)Hbf
+364,712,1221,Nürnberg Hbf
+364,726,1240,Regensburg Hbf
+365,689,1169,Berlin Hbf (tief)
+365,701,1185,Rostock Hbf
+365,713,1222,Berlin Hbf (tief)
+365,727,1241,Berlin Hbf (tief)
+365,728,1242,Rostock Hbf
+366,83,1170,Dortmund Hbf
+366,699,1182,Dortmund Hbf
+366,21,1187,Dortmund Hbf
+366,22,1190,Dortmund Hbf
+366,703,1194,Dortmund Hbf
+366,711,1215,Dortmund Hbf
+366,150,1224,Dortmund Hbf
+366,157,1229,Dortmund Hbf
+366,720,1231,Dortmund Hbf
+366,272,1238,Dortmund Hbf
+366,725,1239,Dortmund Hbf
+366,729,1243,Dortmund Hbf
+366,296,1246,Dortmund Hbf
+366,730,1248,Dortmund Hbf
+367,690,1171,Wien Hbf
+367,85,1188,Wien Hbf
+367,184,1210,Wien Hbf
+367,714,1223,Wien Hbf
+367,724,1237,Wien Hbf
+368,691,1172,Hamburg-Altona
+368,28,1196,Hamburg-Harburg
+368,715,1225,Hamburg-Altona
+368,721,1233,Hamburg-Altona
+369,83,1173,Wien Hbf
+369,700,1183,Wien Hbf
+369,21,1189,Wien Hbf
+369,22,1191,Wien Hbf
+369,704,1195,Wien Hbf
+369,705,1197,Wien Hbf
+369,719,1230,Wien Hbf
+369,159,1232,Wien Hbf
+369,729,1244,Wien Hbf
+369,294,1247,Wien Hbf
+370,692,1175,Wien Hbf
+370,85,1193,Wien Hbf
+370,30,1249,Wien Hbf
+370,184,1250,Wien Hbf
+370,110,1251,Wien Hbf
+371,693,1176,Frankfurt(Main)Hbf
+371,85,1252,Frankfurt(Main)Hbf
+371,100,1257,Frankfurt(Main)Hbf
+371,237,1258,Frankfurt(Main)Hbf
+371,732,1259,Frankfurt(Main)Hbf
+371,733,1261,Nürnberg Hbf
+372,694,1177,Wien Hbf
+372,21,4276,Wien Hbf
+372,22,4278,Wien Hbf
+372,185,4318,Wien Hbf
+372,290,4375,Wien Hbf
+372,366,5794,Wien Hbf
+373,695,1178,Wien Hbf
+373,85,5352,Wien Hbf
+373,184,5355,Wien Hbf
+373,263,5357,Wien Hbf
+373,712,5793,Wien Hbf
+373,726,5795,Wien Hbf
+374,696,1179,Wien Hbf
+374,85,1253,Wien Hbf
+374,731,1254,Wien Hbf
+374,99,1255,Wien Hbf
+374,358,1256,Wien Hbf
+374,714,1260,Wien Hbf
+374,723,1262,Wien Hbf
+377,707,1200,Dortmund Hbf
+377,709,1202,Dortmund Hbf
+377,146,1216,Dortmund Hbf
+377,148,1218,Dortmund Hbf
+377,576,1219,Dortmund Hbf
+378,708,1201,Wien Hbf
+378,184,1211,Wien Hbf
+380,738,1272,Hamburg-Altona
+380,743,1277,Hamburg Hbf
+380,744,1278,Hamburg-Altona
+380,749,1285,Hamburg-Altona
+380,751,1287,Hamburg Hbf
+383,741,1275,Ostseebad Binz
+383,745,1279,Bergen auf Rügen
+383,747,1281,Bergen auf Rügen
+383,469,1282,Stralsund Hbf
+383,384,1283,Stralsund Hbf
+383,907,1569,Ostseebad Binz
+426,866,1498,Hamburg-Altona
+426,41,1501,Hamburg-Harburg
+426,747,1508,Hamburg-Altona
+426,148,1509,Hamburg-Altona
+426,869,1511,Hamburg-Altona
+426,870,1512,Hamburg-Altona
+426,872,1514,München Hbf
+426,583,4525,Hamburg-Altona
+427,22,1499,Dortmund Hbf
+427,867,1500,Dortmund Hbf
+427,868,1503,Dortmund Hbf
+427,238,1507,Dortmund Hbf
+427,871,1513,Dortmund Hbf
+427,873,1515,Dortmund Hbf
+427,874,1516,Dortmund Hbf
+427,875,1517,Dortmund Hbf
+428,21,1518,Innsbruck Hbf
+428,876,1519,Innsbruck Hbf
+428,41,1520,Innsbruck Hbf
+428,52,1521,Innsbruck Hbf
+428,869,1522,Innsbruck Hbf
+428,870,1523,Innsbruck Hbf
+428,877,1524,Innsbruck Hbf
+430,879,1526,München Hbf
+430,884,1531,München Hbf
+430,887,1538,München Hbf
+430,30,1551,München Hbf
+430,906,1567,München Hbf
+430,997,1754,München Hbf
+430,384,1768,Nürnberg Hbf
+430,105,1771,München Hbf
+431,880,1527,Ostseebad Binz
+431,884,1532,Ostseebad Binz
+431,885,1533,Ostseebad Binz
+431,886,1534,Ostseebad Binz
+431,21,1539,Ostseebad Binz
+431,890,1543,Ostseebad Binz
+431,891,1544,Ostseebad Binz
+431,892,1545,Ostseebad Binz
+431,461,1553,Ostseebad Binz
+431,900,1555,Ostseebad Binz
+431,906,1568,Ostseebad Binz
+431,999,1757,Ostseebad Binz
+431,1002,1760,Ostseebad Binz
+431,360,1764,Ostseebad Binz
+431,1004,1766,Ostseebad Binz
+431,1005,1770,Ostseebad Binz
+437,21,1540,München Hbf
+437,897,1550,München Hbf
+437,469,1564,München Hbf
+437,998,1755,München Hbf
+437,1003,1762,München Hbf
+437,384,5008,München Hbf
+440,917,1582,Stralsund Hbf
+440,22,1589,Stralsund Hbf
+440,34,1593,Stralsund Hbf
+440,140,1605,Stralsund Hbf
+440,828,1612,Stralsund Hbf
+443,918,1585,Karlsruhe Hbf
+443,923,1592,Karlsruhe Hbf
+443,37,1595,Karlsruhe Hbf
+443,41,1599,Karlsruhe Hbf
+443,849,1604,Karlsruhe Hbf
+443,2063,3951,Karlsruhe Hbf
+443,2084,3982,Karlsruhe Hbf
+443,68,3992,Heidelberg Hbf
+448,930,1608,Hamburg-Harburg
+448,932,1614,Hamburg Hbf
+449,930,1609,Stralsund Hbf
+449,932,1615,Stralsund Hbf
+462,955,1685,Seefeld in Tirol
+462,956,1687,Seefeld in Tirol
+462,957,1688,Seefeld in Tirol
+462,958,1689,Seefeld in Tirol
+462,959,1690,Seefeld in Tirol
+462,960,1691,Seefeld in Tirol
+462,2199,4252,München Hbf
+462,461,4303,München Hbf
+462,2228,4312,München Hbf
+462,185,4317,München Hbf
+462,262,4352,München Hbf
+462,2252,4366,München Hbf
+462,2255,4369,München Hbf
+462,2258,4376,München Hbf
+462,2260,4378,München Hbf
+462,22,4673,München Hbf
+493,1015,1788,Hamburg-Altona
+493,942,1809,Hamburg-Altona
+493,30,1831,Hamburg Hbf
+493,713,2654,Hamburg-Altona
+494,1016,1789,München Hbf
+494,470,1854,München Hbf
+494,1005,2485,Nürnberg Hbf
+494,906,2491,Nürnberg Hbf
+495,1017,1790,Hamburg-Altona
+495,1032,1810,Hamburg-Altona
+495,85,1820,Hamburg-Altona
+495,30,1832,Hamburg Hbf
+495,461,1841,Hamburg-Altona
+495,900,1844,Hamburg-Altona
+495,713,2655,Hamburg-Altona
+496,1018,1791,München Hbf
+496,1033,1811,München Hbf
+496,133,1839,München Hbf
+496,105,2488,Nürnberg Hbf
+496,1124,3196,Nürnberg Hbf
+497,1019,1792,Hamburg-Altona
+497,1034,1812,Hamburg-Altona
+497,1037,1818,Hamburg-Altona
+497,28,1828,Hamburg Hbf
+497,1048,1846,Hamburg-Altona
+497,1053,1851,Hamburg-Altona
+497,1056,1858,Hamburg-Altona
+497,384,3198,Hamburg-Altona
+497,105,3200,Hamburg-Altona
+498,1020,1793,München Hbf
+498,942,1813,München Hbf
+498,30,1833,München Hbf
+498,1049,1847,München Hbf
+498,1051,1849,München Hbf
+498,1054,1852,München Hbf
+498,1056,1859,München Hbf
+498,1057,1860,München Hbf
+498,713,3141,Nürnberg Hbf
+499,1021,1794,Hamburg-Altona
+499,942,1814,Hamburg-Altona
+499,28,1829,Hamburg Hbf
+499,461,1842,Hamburg-Altona
+499,466,1845,Hamburg-Altona
+500,1016,1795,München Hbf
+500,470,1855,München Hbf
+500,1005,3197,Nürnberg Hbf
+500,906,3202,Nürnberg Hbf
+501,1022,1796,Hamburg-Altona
+501,942,1815,Hamburg-Altona
+501,28,1830,Hamburg Hbf
+501,1047,1843,Hamburg-Altona
+502,1023,1797,München Hbf
+502,944,1825,München Hbf
+502,1052,1850,München Hbf
+502,470,1856,München Hbf
+502,1005,5228,München Hbf
+502,2660,5231,Berlin Hbf (tief)
+503,1024,1798,München Hbf
+503,30,1834,München Hbf
+503,384,3199,Nürnberg Hbf
+503,105,3201,München Hbf
+504,83,1799,Hamburg-Altona
+504,1035,1816,Hamburg-Altona
+504,1036,1817,Hamburg-Altona
+504,1039,1821,Hamburg Hbf
+504,1042,1826,Hamburg-Altona
+504,1058,1861,Berlin Hbf (tief)
+504,384,3186,Hamburg Hbf
+504,1708,3189,Hamburg-Altona
+505,1024,1800,München Hbf
+505,30,1835,München Hbf
+506,1025,1801,Berlin Gesundbrunnen
+506,1026,1824,Berlin Gesundbrunnen
+506,1050,1848,Berlin Gesundbrunnen
+506,1055,1857,Berlin Hbf (tief)
+506,384,1992,Berlin Hbf (tief)
+506,105,1998,Berlin Hbf (tief)
+507,1026,1802,Leipzig Hbf
+507,1044,1836,Leipzig Hbf
+508,1027,1803,Berlin Hbf (tief)
+508,1041,1823,Berlin Hbf (tief)
+508,847,2641,Berlin Hbf (tief)
+508,235,6027,Berlin Hbf
+508,99,6028,Berlin Ostbahnhof
+509,1028,1804,München Hbf
+509,1045,1837,München Hbf
+510,1029,1805,München Hbf
+510,1043,1827,München Hbf
+510,1114,1965,München Hbf
+510,384,1991,München Hbf
+510,105,1996,München Hbf
+510,906,2007,München Hbf
+510,2921,6029,München Hbf
+511,738,1806,Hamburg-Altona
+511,743,1838,Hamburg Hbf
+511,1046,1840,Hamburg-Altona
+511,751,1862,Hamburg Hbf
+511,906,2656,Hamburg-Altona
+511,1686,3133,Hamburg-Altona
+511,22,3138,Hamburg-Altona
+511,1689,3139,Hamburg Hbf
+511,41,3169,Hamburg Hbf
+511,2735,5422,Hamburg-Altona
+511,2737,5424,Hamburg-Altona
+511,21,5988,Hamburg-Altona
+512,1030,1807,München Hbf
+512,906,5509,München Hbf
+513,1031,1808,München Hbf
+513,1124,2483,Nürnberg Hbf
+514,1038,1819,Berlin Gesundbrunnen
+514,469,1853,Berlin Hbf (tief)
+514,384,1983,Berlin Hbf (tief)
+515,1040,1822,Leipzig Hbf
+516,1059,1863,München Hbf
+516,1032,1882,München Hbf
+516,743,1921,München Hbf
+516,1092,1924,München Hbf
+516,1095,1931,München Hbf
+516,777,1949,München Hbf
+516,1107,1956,München Hbf
+516,655,1964,München Hbf
+516,1117,1971,München Hbf
+516,1121,1978,München Hbf
+516,1005,1982,München Hbf
+516,906,2000,Nürnberg Hbf
+516,1056,2009,München Hbf
+516,1130,2018,München Hbf
+517,1060,1864,München Hbf
+517,1076,1883,München Hbf
+517,85,1896,München Hbf
+517,1090,1912,München Hbf
+517,461,1926,München Hbf
+517,466,1937,München Hbf
+517,1005,1984,Nürnberg Hbf
+517,906,2001,Nürnberg Hbf
+518,1020,1865,Hamburg-Altona
+518,1077,1884,Hamburg-Altona
+518,17,1890,Hamburg-Altona
+518,30,1913,Hamburg Hbf
+518,1048,1950,Hamburg-Altona
+518,1053,1972,Hamburg-Altona
+518,1005,1985,Hamburg-Altona
+518,906,2002,Hamburg-Altona
+518,1056,2010,Hamburg-Altona
+519,1061,1866,München Hbf
+519,21,1897,München Hbf
+519,30,1914,München Hbf
+519,1101,1946,München Hbf
+519,1144,2043,München Hbf
+520,1062,1867,Hamburg-Altona
+520,942,1885,Hamburg-Altona
+520,30,1915,Hamburg Hbf
+520,461,1927,Hamburg-Altona
+520,466,1938,Hamburg-Altona
+520,713,1986,Hamburg-Altona
+521,1063,1868,München Hbf
+521,30,1916,München Hbf
+521,1103,1951,München Hbf
+521,780,1967,München Hbf
+521,1053,1973,München Hbf
+521,1005,1987,Nürnberg Hbf
+521,906,2003,München Hbf
+521,1056,2011,Nürnberg Hbf
+522,1064,1869,Hamburg-Altona
+522,1032,1886,Hamburg-Altona
+522,85,1898,Hamburg-Altona
+522,30,1917,Hamburg Hbf
+522,760,2045,Hamburg-Altona
+522,1149,2049,Hamburg-Altona
+524,1063,1871,München Hbf
+524,30,1918,München Hbf
+524,1103,1952,München Hbf
+524,780,1968,München Hbf
+524,1053,1974,München Hbf
+524,1005,1988,München Hbf
+524,906,2004,München Hbf
+524,1125,2012,München Hbf
+525,1066,1872,Hamburg-Altona
+525,1032,1887,Hamburg-Altona
+525,85,1899,Hamburg-Altona
+525,28,1910,Hamburg Hbf
+525,1093,1928,Hamburg-Altona
+525,466,1939,Hamburg-Altona
+525,1124,1989,Hamburg-Altona
+525,105,1993,Hamburg-Altona
+526,1067,1873,München Hbf
+526,1082,1900,Erfurt Hbf
+526,1091,1919,München Hbf
+526,42,1923,Erfurt Hbf
+526,559,1932,München Hbf
+526,1097,1934,München Hbf
+526,1102,1947,München Hbf
+526,1104,1953,München Hbf
+526,1112,1962,München Hbf
+526,780,1969,München Hbf
+526,1118,1975,München Hbf
+526,1123,1981,München Hbf
+526,105,1994,München Hbf
+526,906,2005,München Hbf
+527,1068,1874,Hamburg-Altona
+527,10,1888,Hamburg-Altona
+527,1083,1901,Berlin Hbf (tief)
+527,131,1920,Hamburg Hbf
+527,1105,1954,Hamburg-Altona
+527,1108,1957,Berlin Hbf (tief)
+527,1109,1958,Hamburg-Altona
+527,384,1990,Berlin Hbf (tief)
+527,105,1995,Hamburg-Altona
+527,906,2006,Hamburg-Altona
+527,1126,2013,Berlin Hbf (tief)
+527,1127,2014,Hamburg-Altona
+528,1069,1875,Frankfurt(Main)Hbf
+528,1029,1889,Frankfurt(Main)Hbf
+528,21,1902,Frankfurt(Main)Hbf
+528,100,1936,Frankfurt(Main)Hbf
+528,1099,1940,Frankfurt(Main)Hbf
+528,238,1942,Frankfurt(Main)Hbf
+528,361,1944,Frankfurt(Main)Hbf
+528,1110,1960,Frankfurt(Main)Hbf
+528,1115,1966,Frankfurt(Main)Hbf
+528,1119,1976,Frankfurt(Main)Hbf
+528,470,1979,Frankfurt(Main)Hbf
+528,1313,2823,Frankfurt(Main)Hbf
+529,1070,1876,Berlin Hbf (tief)
+529,1079,1893,Hamburg Hbf
+529,1084,1903,Hamburg Hbf
+529,1088,1909,Berlin Hbf (tief)
+529,1106,1955,Hamburg Hbf
+529,778,1959,Hamburg Hbf
+529,1111,1961,Berlin Hbf (tief)
+529,1122,1980,Hamburg Hbf
+529,105,1997,Hamburg-Altona
+529,906,2008,Berlin Hbf (tief)
+529,1127,2015,Hamburg-Altona
+529,1128,2016,Berlin Hbf (tief)
+529,1129,2017,Berlin Hbf (tief)
+531,1072,1878,Berlin Hbf (tief)
+532,1073,1879,München Hbf
+532,777,1948,München Hbf
+532,1116,1970,München Hbf
+532,906,1999,München Hbf
+533,1074,1880,Berlin Gesundbrunnen
+534,1075,1881,Berlin Gesundbrunnen
+534,1081,1895,Warnemünde
+534,944,1908,Warnemünde
+534,1113,1963,Rostock Hbf
+534,1120,1977,Rostock Hbf
+534,1147,2047,Warnemünde
+534,1148,2048,Rostock Hbf
+563,1200,2139,Köln Hbf
+566,1212,2151,Karlsruhe Hbf
+566,10,2155,Karlsruhe Hbf
+566,21,2159,Karlsruhe Hbf
+566,30,2174,Karlsruhe Hbf
+566,715,2201,Hannover Hbf
+566,721,2213,Hannover Hbf
+569,1215,2154,Göttingen
+569,22,2162,Göttingen
+569,34,2176,Göttingen
+569,1237,2206,Hannover Hbf
+569,1245,2218,Hannover Hbf
+573,743,2177,Stralsund Hbf
+573,1225,2186,Stralsund Hbf
+573,738,4498,Hamburg Hbf
+578,111,2202,Stralsund Hbf
+580,1249,2223,Hannover Hbf
+591,83,2248,Frankfurt(M) Flughafen Fernbf
+591,1271,2266,Wiesbaden Hbf
+591,52,2282,Wiesbaden Hbf
+591,1285,2299,Wiesbaden Hbf
+591,470,2328,Wiesbaden Hbf
+591,1313,2343,Frankfurt(Main)Hbf
+591,617,2351,Wiesbaden Hbf
+591,140,2566,Wiesbaden Hbf
+592,83,2250,Frankfurt(M) Flughafen Fernbf
+592,1272,2267,Wiesbaden Hbf
+592,52,2284,Wiesbaden Hbf
+592,1285,2301,Wiesbaden Hbf
+592,470,2329,Wiesbaden Hbf
+592,1313,2344,Frankfurt(Main)Hbf
+592,617,2352,Wiesbaden Hbf
+592,140,2568,Wiesbaden Hbf
+594,83,2252,Frankfurt(M) Flughafen Fernbf
+594,1272,2269,Wiesbaden Hbf
+594,52,2286,Wiesbaden Hbf
+594,1288,2303,Wiesbaden Hbf
+594,1101,2315,Wiesbaden Hbf
+594,470,2330,Wiesbaden Hbf
+594,1313,2345,Frankfurt(Main)Hbf
+594,617,2353,Wiesbaden Hbf
+594,140,2569,Wiesbaden Hbf
+596,83,2255,Frankfurt(M) Flughafen Fernbf
+596,1272,2270,Wiesbaden Hbf
+596,52,2288,Wiesbaden Hbf
+596,1290,2305,Wiesbaden Hbf
+596,1101,2316,Wiesbaden Hbf
+596,470,2331,Wiesbaden Hbf
+596,1313,2346,Frankfurt(Main)Hbf
+596,140,2806,Wiesbaden Hbf
+597,83,2257,Frankfurt(M) Flughafen Fernbf
+597,1272,2274,Wiesbaden Hbf
+597,1279,2292,Wiesbaden Hbf
+597,470,2334,Wiesbaden Hbf
+597,617,2354,Frankfurt(Main)Hbf
+597,52,2804,Wiesbaden Hbf
+597,104,2810,Wiesbaden Hbf
+597,1101,5970,Wiesbaden Hbf
+598,1265,2259,Frankfurt(Main)Hbf
+598,1281,2294,Frankfurt(Main)Hbf
+598,149,2361,Frankfurt(Main)Hbf
+598,1313,2821,Frankfurt(Main)Hbf
+598,51,3780,Frankfurt(Main)Hbf
+598,1980,3781,Frankfurt(Main)Hbf
+598,104,3784,Frankfurt(Main)Hbf
+600,1268,2263,Wiesbaden Hbf
+600,52,2279,Wiesbaden Hbf
+600,1283,2297,Wiesbaden Hbf
+600,469,2327,Wiesbaden Hbf
+600,1312,2342,Frankfurt(Main)Hbf
+600,1316,2350,Wiesbaden Hbf
+600,26,2553,Wiesbaden Hbf
+600,2816,5666,Wiesbaden Hbf
+604,1314,2347,Saarbrücken Hbf
+604,1315,2348,Saarbrücken Hbf
+604,1530,2819,Frankfurt(Main)Hbf
+604,1983,3787,Saarbrücken Hbf
+615,1335,2392,Paris Est
+615,1338,2397,Paris Est
+615,2772,5523,Paris Est
+616,310,2393,Paris Est
+617,1336,2394,Paris Est
+617,1339,2398,Paris Est
+618,1337,2395,Paris Est
+618,1340,2399,Paris Est
+620,1341,2400,München Hbf
+620,1390,2478,München Hbf
+620,105,2486,München Hbf
+620,1313,2502,München Hbf
+621,1342,2401,Köln Hbf
+621,1382,2457,Bonn-Bad Godesberg
+621,1396,2496,Köln Hbf
+621,1151,2510,Bonn-Bad Godesberg
+621,1258,2511,Köln Hbf
+621,1932,3660,Köln Hbf
+621,1943,3678,Bonn-Bad Godesberg
+621,467,3684,Köln Messe/Deutz Gl.11-12
+621,238,3690,Köln Hbf
+621,655,3696,Köln Hbf
+621,1949,3714,Köln Hbf
+621,1953,3726,Köln Hbf
+623,1341,2403,München Hbf
+623,1391,2480,München Hbf
+623,1313,2504,München Hbf
+624,1344,2404,Düsseldorf Hbf
+624,1397,2497,Düsseldorf Hbf
+624,366,2501,Essen Hbf
+624,1152,2512,Düsseldorf Hbf
+624,1933,3661,Düsseldorf Hbf
+624,655,3697,Düsseldorf Hbf
+624,1949,3715,Düsseldorf Hbf
+624,1953,3727,Düsseldorf Hbf
+625,1345,2405,Hamburg-Altona
+625,85,2448,Hamburg-Altona
+625,1090,2467,Hamburg Hbf
+625,105,2489,Hamburg-Altona
+625,738,2542,Hamburg-Altona
+625,743,2556,Hamburg Hbf
+625,1430,2560,Hamburg-Altona
+626,1346,2406,Düsseldorf Hbf
+626,1152,2513,Düsseldorf Hbf
+626,1933,3662,Düsseldorf Hbf
+627,1347,2407,Köln Hbf
+627,1396,2498,Köln Hbf
+627,1152,2514,Köln Hbf
+627,1934,3663,Köln Hbf
+627,1296,3686,Köln Messe/Deutz Gl.11-12
+627,655,3698,Köln Hbf
+627,1949,3716,Köln Hbf
+627,1953,3728,Köln Hbf
+628,1348,2408,Frankfurt(Main)Hbf
+628,1391,2482,Frankfurt(Main)Hbf
+628,1313,2505,Frankfurt(Main)Hbf
+629,1350,2410,München Hbf
+629,789,2651,München Hbf
+629,1313,2658,München Hbf
+630,1351,2411,Wien Hbf
+630,85,2988,Wien Hbf
+630,184,3004,Wien Hbf
+630,713,3017,Wien Hbf
+630,1644,3027,Wien Hbf
+631,23,2412,Kiel Hbf
+631,1422,2545,Kiel Hbf
+631,1428,2552,Kiel Hbf
+631,36,2557,Hamburg Hbf
+631,38,2558,Hamburg Hbf
+631,1431,2561,Kiel Hbf
+631,1440,2606,Kiel Hbf
+631,1453,2633,Kiel Hbf
+631,22,2646,Kiel Hbf
+631,33,2648,Hamburg Hbf
+632,1346,2413,Düsseldorf Hbf
+632,1939,3669,Düsseldorf Hbf
+632,1152,5982,Düsseldorf Hbf
+633,1346,2414,Köln Hbf
+633,1280,3670,Köln Hbf
+633,359,3688,Köln Messe/Deutz Gl.11-12
+633,655,3699,Köln Hbf
+633,1949,3718,Köln Hbf
+633,1953,3730,Köln Hbf
+633,1396,4127,Köln Hbf
+633,1152,5983,Köln Hbf
+634,1352,2415,Frankfurt(Main)Hbf
+634,1435,2597,Frankfurt(M) Flughafen Fernbf
+634,1446,2615,Frankfurt(Main)Süd
+634,471,3015,Frankfurt(Main)Hbf
+635,1353,2416,Köln Hbf
+635,1280,3681,Köln Hbf
+635,238,3692,Köln Messe/Deutz Gl.11-12
+635,2884,5883,Köln Hbf
+636,1354,2417,Düsseldorf Hbf
+636,1938,3682,Düsseldorf Hbf
+636,576,3710,Düsseldorf Hbf
+636,1950,3719,Düsseldorf Hbf
+636,1953,3731,Düsseldorf Hbf
+636,1397,4129,Düsseldorf Hbf
+636,366,4141,Essen Hbf
+636,148,5878,Düsseldorf Hbf
+636,2884,5884,Düsseldorf Hbf
+637,1355,2418,München Hbf
+637,149,3016,München Hbf
+637,105,3018,Nürnberg Hbf
+637,906,5977,Nürnberg Hbf
+638,1356,2419,Düsseldorf Hbf
+638,1258,5984,Düsseldorf Hbf
+639,1356,2420,Köln Hbf
+639,655,3700,Köln Hbf
+639,1762,3723,Köln Hbf
+639,1396,5980,Köln Hbf
+639,1258,5985,Köln Hbf
+640,1357,2421,München Hbf
+640,1408,2528,München Hbf
+640,1391,2583,München Hbf
+640,1101,3192,München Hbf
+640,1313,3206,München Hbf
+641,1358,2422,Düsseldorf Hbf
+641,148,3701,Köln Hbf
+641,366,4229,Essen Hbf
+641,379,4685,Köln Hbf
+641,1938,4699,Düsseldorf Hbf
+641,576,4717,Düsseldorf Hbf
+641,2422,4724,Köln Hbf
+641,1433,4729,Düsseldorf Hbf
+641,1953,4736,Köln Hbf
+641,1397,4748,Köln Hbf
+641,2434,4757,Düsseldorf Hbf
+642,1359,2423,Köln Hbf
+642,238,4704,Köln Messe/Deutz Gl.11-12
+642,2913,5986,Köln Hbf
+644,334,2425,Düsseldorf Hbf
+644,544,4670,Düsseldorf Hbf
+645,334,2426,Koblenz Hbf
+645,148,3702,Köln Hbf
+645,2679,5272,Koblenz Hbf
+645,2705,5361,Koblenz Hbf
+645,2879,5860,Koblenz Hbf
+645,2880,5863,Koblenz Hbf
+645,1847,5864,Koblenz Hbf
+645,2912,5981,Köln Hbf
+646,1361,2427,Frankfurt(Main)Hbf
+646,1437,2602,Frankfurt(Main)Hbf
+647,1362,2428,München Hbf
+647,1710,3193,München Hbf
+647,576,3194,München Hbf
+647,471,3195,München Hbf
+647,1711,3203,Stuttgart Hbf
+647,1712,3204,München Hbf
+647,610,3208,München Hbf
+647,1643,3210,München Hbf
+647,1097,5972,München Hbf
+647,2742,5973,Stuttgart Hbf
+647,2908,5974,München Hbf
+648,1363,2429,Köln Hbf
+648,655,3704,Köln Hbf
+648,366,4231,Essen Hbf
+648,1323,4686,Aachen Hbf
+648,2423,4726,Köln Hbf
+648,1195,4728,Düsseldorf Hbf
+648,2426,4732,Aachen Hbf
+648,1676,4738,Köln Hbf
+648,1200,4742,Aachen Hbf
+648,2430,4751,Köln Hbf
+648,2432,4754,Aachen Hbf
+648,2436,4760,Aachen Hbf
+648,1258,4765,Aachen Hbf
+649,1364,2430,Köln Hbf
+649,2679,5273,Köln Hbf
+650,1365,2431,München Hbf
+650,2910,5978,Nürnberg Hbf
+651,1366,2432,Köln Hbf
+651,1933,5920,Köln Hbf
+651,1152,5921,Köln Hbf
+652,884,2433,Köln Hbf
+652,148,3705,Köln Hbf
+652,2679,5275,Köln Hbf
+653,1367,2434,Saarbrücken Hbf
+653,54,5461,Saarbrücken Hbf
+653,2911,5979,Frankfurt(Main)Hbf
+654,1368,2435,München Hbf
+656,1370,2437,Jena Paradies
+656,2895,5919,Jena Paradies
+656,2239,5959,Naumburg(Saale)Hbf
+657,1371,2438,Köln Hbf
+658,1272,2439,Köln Hbf
+658,52,4827,Köln Hbf
+658,2472,4828,Köln Hbf
+658,1517,4831,Köln Hbf
+658,576,5857,Koblenz Hbf
+658,2878,5858,Koblenz Hbf
+658,1200,5861,Koblenz Hbf
+658,1957,5862,Koblenz Hbf
+659,435,2440,Kassel-Wilhelmshöhe
+660,1364,2441,Erfurt Hbf
+660,131,3166,Erfurt Hbf
+661,1372,2442,Köln Hbf
+661,52,4066,Köln Hbf
+661,2124,4075,Köln Hbf
+661,2132,4097,Köln Hbf
+661,1953,4112,Köln Hbf
+661,2143,4123,Köln Hbf
+661,2150,4132,Köln Hbf
+661,572,4203,Köln Hbf
+661,655,4208,Köln Hbf
+661,2505,4904,Hannover Hbf
+661,1762,4957,Hannover Hbf
+662,1373,2443,Köln Hbf
+662,1151,2507,Köln Hbf
+662,1284,3675,Köln Hbf
+662,467,3683,Köln Messe/Deutz Gl.11-12
+663,1374,2444,Düsseldorf Hbf
+663,1395,2495,Düsseldorf Hbf
+663,157,2500,Essen Hbf
+663,1151,2508,Düsseldorf Hbf
+663,1942,3676,Düsseldorf Hbf
+663,148,3695,Düsseldorf Hbf
+663,1948,3713,Düsseldorf Hbf
+663,1676,3725,Düsseldorf Hbf
+664,1375,2445,München Hbf
+664,461,2475,München Hbf
+664,469,2479,München Hbf
+664,384,2484,Nürnberg Hbf
+664,906,2490,Nürnberg Hbf
+665,1376,2447,München Hbf
+665,470,2481,München Hbf
+665,1005,2487,Nürnberg Hbf
+665,1392,2492,Nürnberg Hbf
+666,1378,2450,Düsseldorf Hbf
+666,134,2473,Düsseldorf Hbf
+666,1400,2515,Düsseldorf Hbf
+666,1808,3673,Düsseldorf Hbf
+667,1378,2451,Köln Hbf
+667,134,2474,Köln Hbf
+667,1394,2494,Köln Hbf
+667,1398,2499,Köln Hbf
+667,1400,2516,Köln Hbf
+667,463,3674,Köln Hbf
+667,185,3693,Köln Messe/Deutz Gl.11-12
+667,1947,3712,Köln Hbf
+669,738,2453,Hamburg-Altona
+669,743,2468,Hamburg Hbf
+669,1389,2472,Hamburg-Altona
+669,1095,2476,Hamburg-Altona
+670,1379,2454,Frankfurt(Main)Hbf
+670,1399,2506,Frankfurt(Main)Hbf
+671,1380,2455,Hamburg-Altona
+671,1384,2460,Hamburg-Altona
+671,133,2469,Hamburg Hbf
+671,1095,2477,Hamburg-Altona
+672,1381,2456,Düsseldorf Hbf
+672,1151,2509,Düsseldorf Hbf
+672,1942,3677,Düsseldorf Hbf
+673,1383,2458,Frankfurt(Main)Hbf
+673,1393,2493,Frankfurt(Main)Hbf
+673,1313,2503,Frankfurt(Main)Hbf
+675,1385,2461,Hamburg-Altona
+675,1387,2466,Hamburg Hbf
+675,1380,3135,Hamburg-Altona
+676,26,2462,Düsseldorf Hbf
+677,1381,2463,Köln Hbf
+677,1151,2517,Köln Hbf
+677,1284,3680,Köln Hbf
+677,467,3685,Köln Messe/Deutz Gl.11-12
+678,980,2470,Köln Hbf
+680,1402,2519,Dresden Hbf
+680,52,2562,Dresden Hbf
+680,140,2565,Leipzig Hbf
+680,470,2574,Dresden Hbf
+680,1313,2593,Dresden Hbf
+680,1462,2650,Dresden Hbf
+681,1403,2520,Berlin Gesundbrunnen
+681,1391,2575,Berlin Hbf (tief)
+681,760,2657,Berlin Gesundbrunnen
+681,1149,2659,Berlin Gesundbrunnen
+682,83,2521,Dresden Hbf
+682,1424,2547,Dresden Hbf
+682,22,2550,Dresden Hbf
+682,52,2563,Dresden Hbf
+682,140,2567,Leipzig Hbf
+682,470,2576,Dresden Hbf
+682,1313,2595,Dresden Hbf
+682,617,2619,Dresden Hbf
+683,1404,2522,Berlin Gesundbrunnen
+683,1425,2548,Berlin Gesundbrunnen
+683,1120,2577,Berlin Hbf (tief)
+683,471,2581,Berlin Hbf (tief)
+683,736,3205,Berlin Gesundbrunnen
+683,1314,3207,Berlin Gesundbrunnen
+683,1439,3209,Berlin Gesundbrunnen
+683,1445,3211,Berlin Gesundbrunnen
+684,83,2523,Dresden Hbf
+684,1426,2549,Dresden Hbf
+684,52,2564,Dresden Hbf
+684,470,2578,Dresden Hbf
+684,1313,2596,Dresden Hbf
+684,617,2620,Dresden Hbf
+687,83,2526,Dresden Hbf
+687,1427,2551,Dresden Hbf
+687,470,2582,Dresden Hbf
+687,1313,2599,Dresden Hbf
+687,617,2622,Dresden Hbf
+687,52,2802,Dresden Hbf
+687,104,2808,Dresden Hbf
+687,384,2814,Leipzig Hbf
+690,1410,2530,Dresden Hbf
+690,1313,2601,Dresden Hbf
+690,83,2794,Dresden Hbf
+690,51,2801,Dresden Hbf
+690,52,2803,Leipzig Hbf
+690,104,2809,Dresden Hbf
+690,470,2812,Dresden Hbf
+690,617,2826,Dresden Hbf
+691,1411,2531,Berlin Hbf (tief)
+691,384,4474,Berlin Hbf (tief)
+691,760,4482,Berlin Hbf (tief)
+691,1149,4484,Berlin Hbf (tief)
+692,1412,2532,Dresden Hbf
+692,83,2795,Dresden Hbf
+692,52,2805,Leipzig Hbf
+692,100,2807,Dresden-Neustadt
+692,104,2811,Dresden Hbf
+692,470,2813,Dresden Hbf
+692,1529,2817,Dresden Hbf
+692,1313,2820,Dresden Hbf
+692,1533,2827,Dresden Hbf
+692,51,3778,Dresden Hbf
+694,1414,2534,Stuttgart Hbf
+695,435,2535,Berlin Gesundbrunnen
+695,2310,4471,Berlin Gesundbrunnen
+695,105,4475,Berlin Hbf (tief)
+695,760,4483,Berlin Gesundbrunnen
+695,2316,4485,Berlin Gesundbrunnen
+697,1026,2537,Dresden Hbf
+697,1526,2800,Dresden Hbf
+697,1527,2815,Leipzig Hbf
+697,1531,2822,Dresden Hbf
+697,83,3771,Dresden Hbf
+697,1974,3772,Dresden Hbf
+697,51,3779,Dresden Hbf
+697,1982,3786,Dresden Hbf
+697,1532,3793,Dresden Hbf
+697,1988,3796,Dresden Hbf
+697,1793,3797,Dresden Hbf
+697,149,5676,Dresden Hbf
+698,1416,2538,Erfurt Hbf
+698,1524,2798,Leipzig Hbf
+698,736,3788,Leipzig Hbf
+698,1314,3789,Erfurt Hbf
+698,1986,3792,Erfurt Hbf
+698,1987,3794,Leipzig Hbf
+699,1417,2539,Erfurt Hbf
+699,1975,3773,Leipzig Hbf
+699,1984,3790,Leipzig Hbf
+699,913,3795,Erfurt Hbf
+699,1157,3798,Leipzig Hbf
+699,1100,5674,Leipzig Hbf
+699,2781,5675,Leipzig Hbf
+699,2819,5678,Erfurt Hbf
+700,1419,2541,Frankfurt(M) Flughafen Fernbf
+700,1399,2604,Frankfurt(Main)Süd
+700,297,2617,Frankfurt(Main)Süd
+701,1420,2543,Wiesbaden Hbf
+701,469,2572,Wiesbaden Hbf
+701,736,2592,Frankfurt(Main)Hbf
+701,1439,2605,Frankfurt(Main)Hbf
+701,1316,2618,Wiesbaden Hbf
+701,2817,5667,Wiesbaden Hbf
+701,1989,5671,Wiesbaden Hbf
+703,1341,2555,Berlin Gesundbrunnen
+703,1391,3595,Berlin Hbf (tief)
+703,760,3622,Berlin Gesundbrunnen
+703,1149,3623,Berlin Gesundbrunnen
+706,1435,2594,Berlin Gesundbrunnen
+706,1446,2614,Berlin Gesundbrunnen
+706,1454,2634,Berlin Gesundbrunnen
+706,1463,2653,Berlin Hbf (tief)
+706,1639,3022,Berlin Gesundbrunnen
+706,2082,3978,Berlin Hbf (tief)
+706,2085,3983,Berlin Hbf (tief)
+706,645,5462,Berlin Gesundbrunnen
+707,1436,2598,Berlin Hbf (tief)
+707,408,2636,Berlin Hbf (tief)
+708,1438,2603,Berlin Gesundbrunnen
+708,1456,2639,Berlin Gesundbrunnen
+708,1447,3378,Berlin Gesundbrunnen
+709,1399,2607,Berlin Gesundbrunnen
+709,1459,2643,Berlin Gesundbrunnen
+712,884,2635,Berlin Gesundbrunnen
+713,1455,2637,Berlin Gesundbrunnen
+714,435,2638,Berlin Gesundbrunnen
+715,1457,2640,Berlin Gesundbrunnen
+716,1458,2642,Berlin Gesundbrunnen
+717,1460,2644,Dresden Hbf
+717,52,2649,Dresden Hbf
+717,1688,3137,Dresden Hbf
+718,1461,2645,Berlin Gesundbrunnen
+718,1391,2652,Berlin Hbf (tief)
+719,546,2647,Berlin Hbf (tief)
+741,1536,2836,Berlin Gesundbrunnen
+741,1550,2853,Berlin Gesundbrunnen
+741,1120,2888,Berlin Hbf (tief)
+741,471,2889,Berlin Hbf (tief)
+741,1578,2914,Berlin Gesundbrunnen
+741,1643,3026,Berlin Hbf (tief)
+746,1541,2841,Stuttgart Hbf
+746,1575,2910,Stuttgart Hbf
+746,1586,2929,Stuttgart Hbf
+746,1593,2944,Stuttgart Hbf
+747,1542,2842,Hamburg-Altona
+747,133,2872,Hamburg Hbf
+747,235,2881,Hamburg-Altona
+747,1568,2898,Hamburg-Altona
+747,669,2912,Hamburg-Altona
+747,1585,2926,Hamburg-Altona
+747,1594,2945,Hamburg-Altona
+752,523,2847,Stuttgart Hbf
+756,1552,2858,Stuttgart Hbf
+756,1563,2882,Stuttgart Hbf
+756,1580,2919,Stuttgart Hbf
+756,1589,2932,Stuttgart Hbf
+756,1597,2949,Stuttgart Hbf
+760,72,2933,Hamburg-Altona
+760,75,2946,Hamburg-Altona
+760,729,2951,Hamburg-Altona
+761,1599,2952,Köln Hbf
+765,1636,3019,Warnemünde
+765,1641,3024,Warnemünde
+765,1646,3029,Rostock Hbf
+765,944,5222,Warnemünde
+765,469,5226,Rostock Hbf
+765,384,5229,Rostock Hbf
+765,2661,5235,Rostock Hbf
+766,1640,3023,Hannover Hbf
+766,1642,3025,Hannover Hbf
+767,1645,3028,Frankfurt(Main)Hbf
+767,1777,3348,Frankfurt(M) Flughafen Fernbf
+767,1447,5987,Frankfurt(Main)Süd
+768,1648,3031,Oldenburg(Oldb)
+768,21,3037,Oldenburg(Oldb)
+768,808,3046,Oldenburg(Oldb)
+768,1662,3059,Oldenburg(Oldb)
+768,52,3065,Oldenburg(Oldb)
+768,1665,3069,Oldenburg(Oldb)
+768,1666,3073,Oldenburg(Oldb)
+768,1668,3080,Oldenburg(Oldb)
+768,147,3100,Oldenburg(Oldb)
+768,1676,3106,Oldenburg(Oldb)
+768,2381,4601,Oldenburg(Oldb)
+769,1649,3032,Oldenburg(Oldb)
+769,808,3047,Oldenburg(Oldb)
+769,1663,3060,Oldenburg(Oldb)
+769,462,3061,Oldenburg(Oldb)
+769,1669,3081,Oldenburg(Oldb)
+769,2380,4600,Oldenburg(Oldb)
+770,1650,3033,Berlin Gesundbrunnen
+770,143,3068,Berlin Ostbahnhof
+770,2508,4907,Berlin Gesundbrunnen
+770,2518,4929,Berlin Ostbahnhof
+770,148,4940,Berlin Hbf (tief)
+770,1676,4958,Berlin Ostbahnhof
+772,1654,3038,Oldenburg(Oldb)
+772,1659,3043,Oldenburg(Oldb)
+772,1660,3051,Oldenburg(Oldb)
+772,144,3070,Oldenburg(Oldb)
+773,1655,3039,Oldenburg(Oldb)
+773,788,3067,Oldenburg(Oldb)
+773,1667,3079,Oldenburg(Oldb)
+773,1200,3107,Oldenburg(Oldb)
+773,813,4603,Oldenburg(Oldb)
+782,1690,3143,Berlin Südkreuz
+782,943,3148,Berlin Südkreuz
+782,1698,3160,Berlin Südkreuz
+782,30,3165,Berlin Südkreuz
+783,1691,3144,Berlin Südkreuz
+783,890,3153,Berlin Südkreuz
+783,1696,3158,Berlin Südkreuz
+783,33,3168,Berlin Südkreuz
+784,411,3145,Berlin Südkreuz
+784,1692,3149,Berlin Südkreuz
+784,21,3150,Berlin Südkreuz
+784,890,3154,Berlin Südkreuz
+784,1695,3157,Berlin Südkreuz
+784,1699,3161,Berlin Südkreuz
+784,28,3163,Berlin Südkreuz
+784,464,3176,Berlin Südkreuz
+784,1703,3179,Berlin Südkreuz
+784,99,3182,Berlin Gesundbrunnen
+784,100,3183,Berlin Südkreuz
+785,438,3146,Hamburg-Altona
+785,1693,3151,Hamburg-Altona
+785,1177,3155,Hamburg-Altona
+785,1694,3156,Hamburg-Altona
+785,1221,3164,Hamburg Hbf
+785,464,3177,Hamburg-Altona
+785,235,3178,Hamburg-Altona
+785,1704,3180,Hamburg-Altona
+785,145,3181,Hamburg-Altona
+785,148,3185,Hamburg-Altona
+786,22,3152,Berlin Südkreuz
+786,1702,3170,Berlin Südkreuz
+786,34,4422,Berlin Südkreuz
+791,944,3191,Berlin Hbf (tief)
+792,1716,3215,Berlin Ostbahnhof
+792,22,3234,Berlin Ostbahnhof
+792,141,3262,Berlin Ostbahnhof
+793,1717,3216,Berlin Ostbahnhof
+793,22,3235,Berlin Ostbahnhof
+793,141,3263,Berlin Ostbahnhof
+794,1718,3217,Berlin Ostbahnhof
+794,1740,3264,Berlin Ostbahnhof
+794,148,3315,Berlin Hbf (tief)
+795,119,3218,Frankfurt(M) Flughafen Fernbf
+795,141,3265,Frankfurt(M) Flughafen Fernbf
+796,1719,3219,Berlin Ostbahnhof
+796,1741,3266,Berlin Ostbahnhof
+796,147,3296,Berlin Ostbahnhof
+797,1718,3220,Frankfurt(M) Flughafen Fernbf
+797,1742,3267,Frankfurt(M) Flughafen Fernbf
+797,1755,3308,Frankfurt(M) Flughafen Fernbf
+798,1720,3221,Berlin Ostbahnhof
+798,1743,3268,Berlin Ostbahnhof
+798,1747,3275,Berlin Gesundbrunnen
+799,1721,3222,Frankfurt(M) Flughafen Fernbf
+799,1760,3321,Frankfurt(M) Flughafen Fernbf
+800,1722,3223,Berlin Ostbahnhof
+800,1047,3261,Berlin Ostbahnhof
+800,1746,3271,Berlin Ostbahnhof
+800,1765,3328,Berlin Ostbahnhof
+800,1792,3381,Berlin Ostbahnhof
+804,1726,3227,Frankfurt(M) Flughafen Fernbf
+804,1744,3269,Frankfurt(M) Flughafen Fernbf
+805,1727,3228,Frankfurt(M) Flughafen Fernbf
+805,1745,3270,Frankfurt(M) Flughafen Fernbf
+806,546,3239,Karlsruhe Hbf
+807,546,3240,Stuttgart Hbf
+808,546,3242,Berlin Ostbahnhof
+810,944,3245,Karlsruhe Hbf
+812,944,3247,Hamburg Hbf
+813,26,3248,Karlsruhe Hbf
+814,26,3249,Berlin Ostbahnhof
+815,1733,3253,Dortmund Hbf
+815,2210,4265,Dortmund Hbf
+816,1734,3254,Dortmund Hbf
+816,1754,3306,Dortmund Hbf
+816,1756,3309,Dortmund Hbf
+816,1757,3310,Dortmund Hbf
+816,1758,3316,Dortmund Hbf
+816,1094,4187,Dortmund Hbf
+816,100,4193,Dortmund Hbf
+816,1192,4202,Dortmund Hbf
+821,1738,3259,Wien Hbf
+821,184,3277,Wien Hbf
+821,359,3286,Wien Hbf
+822,1763,3326,Stuttgart Hbf
+822,1773,5333,Stuttgart Hbf
+822,728,5339,Stuttgart Hbf
+823,1764,3327,Frankfurt(M) Flughafen Fernbf
+823,1776,3347,Frankfurt(M) Flughafen Fernbf
+823,1973,3767,Frankfurt(Main)Süd
+823,1316,3769,Frankfurt(Main)Hbf
+824,1775,3339,Köln Hbf
+824,1779,3351,Köln Hbf
+824,1781,3353,Dortmund Hbf
+825,760,3340,Hamburg-Altona
+826,73,3341,Kiel Hbf
+826,76,3357,Kiel Hbf
+826,171,3362,Kiel Hbf
+826,1790,3372,Kiel Hbf
+827,736,3342,Stuttgart Hbf
+827,729,5341,Stuttgart Hbf
+828,760,3343,Hamburg-Altona
+828,2545,4996,Hamburg-Altona
+829,73,3344,Hamburg-Altona
+829,76,3360,Hamburg-Altona
+829,170,3363,Hamburg-Altona
+830,263,3345,Chur
+830,1780,3352,Chur
+830,76,3359,Chur
+830,170,3364,Chur
+831,73,3346,Kassel-Wilhelmshöhe
+832,1778,3349,Berlin Gesundbrunnen
+832,1447,3379,Berlin Gesundbrunnen
+833,1783,3355,Basel SBB
+833,72,3921,Basel SBB
+835,170,3365,Hamburg-Altona
+835,73,3918,Hamburg-Altona
+835,76,3929,Hamburg-Altona
+836,1786,3366,Zürich HB
+836,264,5600,Zürich HB
+836,2799,5606,Zürich HB
+836,75,5612,Zürich HB
+837,170,3367,Kiel Hbf
+837,73,3920,Kiel Hbf
+837,76,3935,Kiel Hbf
+838,1787,3368,Chur
+838,264,6007,Chur
+838,2799,6009,Chur
+838,2915,6011,Chur
+839,1788,3369,Hamburg-Altona
+839,173,3373,Hamburg-Altona
+839,73,5934,Hamburg-Altona
+839,76,5935,Hamburg-Altona
+840,1789,3370,Zürich HB
+841,162,3374,Basel SBB
+841,169,3377,Basel SBB
+841,264,5601,Basel SBB
+841,265,5604,Basel SBB
+841,2799,5607,Basel SBB
+841,2800,5609,Basel SBB
+842,169,3375,Zürich HB
+842,265,5907,Zürich HB
+842,2800,5908,Zürich HB
+843,169,3376,Zürich HB
+843,265,5603,Zürich HB
+843,2800,5608,Zürich HB
+845,1794,3385,Frankfurt(Main)Hbf
+845,1805,3398,Frankfurt(Main)Hbf
+845,22,3402,Frankfurt(Main)Hbf
+845,292,3420,Frankfurt(Main)Hbf
+845,297,3430,Frankfurt(Main)Hbf
+846,1795,3386,Frankfurt(Main)Hbf
+846,22,3404,Frankfurt(Main)Hbf
+846,1810,3410,Frankfurt(Main)Hbf
+846,289,3421,Frankfurt(Main)Hbf
+846,302,3434,Frankfurt(Main)Hbf
+847,1796,3387,Frankfurt(Main)Hbf
+847,290,3423,Frankfurt(Main)Hbf
+848,1797,3388,Bruxelles Midi
+848,105,3412,Bruxelles Midi
+848,290,3424,Bruxelles Midi
+849,1798,3389,Bruxelles Midi
+849,105,3413,Bruxelles Midi
+849,290,3425,Bruxelles Midi
+850,1799,3390,Frankfurt(Main)Hbf
+850,1807,3401,Frankfurt(Main)Hbf
+850,1816,3428,Frankfurt(Main)Hbf
+850,299,3432,Frankfurt(Main)Hbf
+851,1801,3392,Frankfurt(Main)Hbf
+851,290,3426,Frankfurt(Main)Hbf
+852,1801,3393,Bruxelles Midi
+852,290,3427,Bruxelles Midi
+854,1803,3396,Frankfurt(Main)Hbf
+854,729,3418,Frankfurt(Main)Hbf
+855,1804,3397,Bruxelles Midi
+855,1809,3408,Bruxelles Midi
+855,1815,3419,Bruxelles Midi
+855,303,3433,Bruxelles Midi
+856,1812,3415,Köln Hbf
+857,420,3435,Köln Hbf
+857,1818,3439,Essen Hbf
+857,271,3443,Essen Hbf
+857,494,3445,Köln Hbf
+864,1832,3467,Frankfurt(Main)Hbf
+865,1834,3469,Essen Hbf
+865,1839,3479,Essen Hbf
+865,256,3486,Düsseldorf Hbf
+865,268,3491,Düsseldorf Hbf
+865,1843,3502,Essen Hbf
+865,1847,3521,Essen Hbf
+866,272,3499,Dortmund Hbf
+867,272,3500,Düsseldorf Hbf
+867,281,3511,Dortmund Hbf
+868,1848,3522,Dortmund Hbf
+868,22,3566,Essen Hbf
+868,643,3575,Dortmund Hbf
+868,236,3577,Dortmund Hbf
+868,240,3589,Dortmund Hbf
+868,1902,3610,Dortmund Hbf
+868,1907,3619,Dortmund Hbf
+868,1908,3621,Dortmund Hbf
+869,1849,3523,Dortmund Hbf
+869,22,3567,Essen Hbf
+869,643,3576,Dortmund Hbf
+869,366,3611,Dortmund Hbf
+870,1850,3524,Dortmund Hbf
+870,22,3568,Dortmund Hbf
+870,1433,3593,Essen Hbf
+870,366,3612,Dortmund Hbf
+871,1851,3525,Bremen Hbf
+871,1884,3574,Hannover Hbf
+871,1887,3584,Bremen Hbf
+871,1432,4472,Bremen Hbf
+871,2609,5118,Bremen Hbf
+871,2760,5480,Hannover Hbf
+871,461,5488,Hannover Hbf
+871,466,5503,Hannover Hbf
+871,2767,5508,Bremen Hbf
+872,1852,3526,Hamburg-Altona
+872,1883,3573,Hannover Hbf
+872,1887,3585,Hamburg-Altona
+872,1432,4473,Hamburg-Altona
+873,1854,3528,München Hbf
+873,22,3569,München Hbf
+873,1903,3613,München Hbf
+873,1635,4674,München Hbf
+874,1855,3529,Dortmund Hbf
+874,22,3570,Dortmund Hbf
+874,470,3594,Essen Hbf
+874,366,3614,Dortmund Hbf
+876,1857,3531,München Hbf
+876,1899,3606,München Hbf
+876,366,4678,München Hbf
+876,22,4810,München Hbf
+877,1858,3532,Dortmund Hbf
+877,366,4478,Dortmund Hbf
+880,1861,3535,Dortmund Hbf
+880,2313,4479,Dortmund Hbf
+881,1862,3536,Hamburg-Altona
+881,2391,4631,Hamburg-Harburg
+881,53,4636,Hamburg-Altona
+881,1051,4642,Hamburg-Altona
+881,2397,4648,Hamburg-Altona
+881,2406,4663,Hamburg-Altona
+881,2407,4664,Hamburg-Altona
+881,2408,4665,Hamburg-Altona
+881,2409,4666,Hamburg-Altona
+884,1864,3539,München Hbf
+884,367,4679,München Hbf
+884,22,6057,München Hbf
+885,1865,3540,Nürnberg Hbf
+885,2398,4649,Nürnberg Hbf
+885,2399,4650,Nürnberg Hbf
+886,1866,3541,München Hbf
+886,2378,4598,München Hbf
+886,361,4615,München Hbf
+886,778,4616,München Hbf
+886,2384,4617,München Hbf
+886,2385,4618,München Hbf
+886,2392,4635,München Hbf
+886,2393,4637,München Hbf
+886,1105,4639,München Hbf
+886,2395,4643,München Hbf
+886,2401,4656,München Hbf
+886,2905,5964,München Hbf
+887,1867,3542,München Hbf
+887,2347,4543,München Hbf
+887,2349,4549,München Hbf
+887,2355,4560,München Hbf
+887,2358,4568,München Hbf
+887,723,4582,Nürnberg Hbf
+887,30,4632,München Hbf
+887,1105,4640,München Hbf
+887,2395,4644,München Hbf
+887,778,4645,München Hbf
+887,2402,4657,München Hbf
+887,2385,5315,München Hbf
+890,1870,3545,München Hbf
+890,22,6058,München Hbf
+890,488,6061,München Hbf
+891,942,3546,Münster(Westf)Hbf
+891,2651,5210,Münster(Westf)Hbf
+892,435,3547,Frankfurt(Main)Hbf
+892,22,5036,Hamburg-Altona
+892,34,5371,Hamburg-Harburg
+892,2711,5372,Hamburg-Altona
+892,646,5375,Hamburg-Altona
+892,1245,5381,Hamburg-Altona
+894,1872,3549,Kassel-Wilhelmshöhe
+894,22,4507,Hamburg-Altona
+894,2335,4516,Hamburg-Altona
+894,2337,4521,Hamburg-Altona
+894,576,4523,Hamburg-Altona
+894,1826,4527,Hamburg-Altona
+894,828,4558,Hamburg-Altona
+894,34,4634,Hannover Hbf
+894,2403,4659,Kassel-Wilhelmshöhe
+894,2663,5238,Kassel-Wilhelmshöhe
+894,2664,5239,Kassel-Wilhelmshöhe
+895,883,3550,München Hbf
+896,435,3551,Wiesbaden Hbf
+900,1457,3555,München Hbf
+901,1457,3557,München Hbf
+902,1876,3558,München Hbf
+902,777,3579,München Hbf
+902,781,3590,München Hbf
+904,1876,3560,München Hbf
+904,777,3580,München Hbf
+904,781,3591,München Hbf
+906,1878,3562,München Hbf
+908,1876,3564,München Hbf
+908,777,3582,München Hbf
+908,781,3592,München Hbf
+910,1881,3571,München Hbf
+913,1888,3586,München Hbf
+913,1892,3597,München Hbf
+913,112,3607,München Hbf
+913,2325,4496,München Hbf
+913,2334,4511,München Hbf
+913,2343,4532,München Hbf
+915,1898,3605,München Hbf
+916,1900,3608,Hamburg-Altona
+916,1901,3609,Hamburg-Altona
+916,2369,4586,Hamburg-Altona
+919,1912,3629,Basel SBB
+919,85,3650,Basel SBB
+919,141,3659,Basel SBB
+919,1960,3739,Basel SBB
+919,1967,3755,Basel SBB
+919,1968,3759,Basel SBB
+919,1970,3763,Basel SBB
+920,1913,3630,Basel SBB
+920,21,3651,Basel SBB
+920,141,3664,Basel SBB
+920,155,3741,Basel SBB
+920,1969,3760,Basel SBB
+920,1971,3764,Basel SBB
+923,1917,3634,Düsseldorf Hbf
+923,1941,3672,Düsseldorf Hbf
+923,1946,3709,Düsseldorf Hbf
+923,1954,3732,Düsseldorf Hbf
+923,1966,3749,Düsseldorf Hbf
+925,1719,3636,Basel SBB
+925,155,3742,Basel SBB
+925,167,3761,Basel SBB
+925,139,5438,Basel SBB
+925,148,5444,Basel SBB
+927,1919,3639,Frankfurt(Main)Hbf
+927,141,3703,Frankfurt(Main)Hbf
+929,1921,3641,Basel SBB
+929,155,3744,Basel SBB
+929,167,3762,Basel SBB
+929,2745,5439,Basel SBB
+929,239,5442,Freiburg(Breisgau) Hbf
+931,1923,3643,Frankfurt(Main)Hbf
+932,1924,3644,Karlsruhe Hbf
+932,1964,3747,Karlsruhe Hbf
+932,1435,3756,Karlsruhe Hbf
+932,1446,3768,Karlsruhe Hbf
+932,617,3770,Karlsruhe Hbf
+937,546,3653,Köln Hbf
+939,1936,3666,Köln Hbf
+939,146,3687,Köln Hbf
+939,238,3691,Köln Messe/Deutz Gl.11-12
+939,2106,4037,Köln Hbf
+939,2154,4145,Köln Hbf
+940,1937,3667,Düsseldorf Hbf
+940,576,3708,Düsseldorf Hbf
+940,1949,3717,Düsseldorf Hbf
+940,1953,3729,Düsseldorf Hbf
+940,2106,4038,Düsseldorf Hbf
+940,2142,4122,Düsseldorf Hbf
+940,366,4137,Essen Hbf
+940,2154,4146,Düsseldorf Hbf
+940,148,5421,Düsseldorf Hbf
+942,110,3746,Frankfurt(Main)Hbf
+945,1990,3800,München Ost
+945,2404,4660,München Hbf
+945,2405,4662,München Ost
+946,1991,3801,Kiel Hbf
+946,1090,3858,Hamburg Hbf
+946,558,3866,Kiel Hbf
+946,643,3871,Kiel Hbf
+946,2045,3905,Kiel Hbf
+946,2051,3915,Kiel Hbf
+946,2556,5019,Kiel Hbf
+946,743,5528,Hamburg Hbf
+946,49,5529,Kiel Hbf
+946,2344,5533,Kiel Hbf
+946,2776,5537,Kiel Hbf
+947,119,3802,Berlin Ostbahnhof
+947,139,3868,Berlin Ostbahnhof
+947,148,3888,Berlin Hbf
+947,152,3899,Berlin Ostbahnhof
+947,73,3917,Berlin Ostbahnhof
+947,76,3926,Berlin Ostbahnhof
+947,170,3942,Berlin Ostbahnhof
+948,1992,3803,Hamburg-Altona
+948,30,3860,Hamburg Hbf
+948,643,3873,Hamburg-Altona
+948,715,3900,Hamburg-Altona
+948,2049,3910,Hamburg-Altona
+949,1993,3804,Chur
+949,2056,3928,Chur
+950,1994,3805,Hamburg-Altona
+950,378,3854,Hamburg Hbf
+950,30,3861,Hamburg Hbf
+950,643,3874,Hamburg-Altona
+950,715,3901,Hamburg-Altona
+950,2049,3911,Hamburg-Altona
+951,1995,3806,Köln Hbf
+951,2024,3844,Dortmund Hbf
+951,22,3848,Köln Hbf
+951,146,3880,Dortmund Hbf
+951,162,3930,Dortmund Hbf
+951,168,3937,Köln Hbf
+951,1340,4846,Dortmund Hbf
+951,566,5092,Köln Hbf
+951,2312,5789,Köln Hbf
+952,119,3807,Berlin Ostbahnhof
+952,139,3869,Berlin Ostbahnhof
+952,148,3889,Berlin Hbf (tief)
+952,152,3902,Berlin Ostbahnhof
+952,73,3919,Berlin Ostbahnhof
+952,76,3932,Berlin Ostbahnhof
+952,170,3944,Berlin Ostbahnhof
+953,1996,3808,Basel SBB
+953,2022,3842,Basel SBB
+953,22,3849,Basel SBB
+953,467,3881,Basel SBB
+953,166,3933,Basel SBB
+953,169,3938,Basel SBB
+953,2126,4675,Karlsruhe Hbf
+953,386,4677,Offenburg
+953,566,5530,Freiburg(Breisgau) Hbf
+953,2775,5532,Offenburg
+955,1999,3811,Kiel Hbf
+955,28,3855,Hamburg Hbf
+955,50,3865,Kiel Hbf
+955,643,3875,Kiel Hbf
+955,715,3903,Kiel Hbf
+955,2049,3912,Kiel Hbf
+956,2000,3812,Köln Hbf
+956,2025,3845,Dortmund Hbf
+956,146,3883,Dortmund Hbf
+956,162,3936,Dortmund Hbf
+956,168,3939,Köln Hbf
+956,1340,4847,Dortmund Hbf
+956,566,5093,Köln Hbf
+956,2312,5790,Köln Hbf
+958,942,3814,Hamburg-Altona
+958,2038,3887,Hamburg-Altona
+958,28,5924,Hamburg Hbf
+958,50,5925,Hamburg-Altona
+958,643,5927,Hamburg-Altona
+958,715,5932,Hamburg-Altona
+958,2049,5933,Hamburg-Altona
+959,2002,3815,Köln Hbf
+959,2138,5786,Köln Hbf
+959,167,5936,Köln Hbf
+959,22,6059,Köln Hbf
+960,2003,3816,Berlin Ostbahnhof
+960,2039,3892,Berlin Ostbahnhof
+960,72,5358,Berlin Ostbahnhof
+960,2704,5359,Berlin Ostbahnhof
+960,2746,5447,Berlin Ostbahnhof
+960,75,5452,Berlin Ostbahnhof
+960,168,5454,Berlin Ostbahnhof
+960,2715,5458,Berlin Ostbahnhof
+960,52,5926,Berlin Ostbahnhof
+960,147,5928,Berlin Ostbahnhof
+960,148,5929,Berlin Hbf (tief)
+961,2004,3817,Basel SBB
+961,2460,4811,Basel SBB
+961,2842,5745,Freiburg(Breisgau) Hbf
+961,21,5748,Basel SBB
+961,22,5753,Freiburg(Breisgau) Hbf
+961,2126,5757,Karlsruhe Hbf
+961,655,5759,Basel SBB
+961,105,5760,Basel SBB
+961,2846,5764,Offenburg
+961,484,5771,Basel SBB
+961,2848,5772,Basel SBB
+961,2849,5774,Basel SBB
+961,2852,5785,Basel SBB
+962,2005,3818,Zürich HB
+962,133,5302,Zürich HB
+962,930,5322,Zürich HB
+962,849,5563,Zürich HB
+962,235,5573,Zürich HB
+962,2795,5593,Zürich HB
+962,2798,5605,Zürich HB
+963,1994,3819,Hamburg-Altona
+963,28,5999,Hamburg Hbf
+963,643,6001,Hamburg-Altona
+963,715,6002,Hamburg-Altona
+963,2049,6004,Hamburg-Altona
+964,2006,3820,Dortmund Hbf
+965,2007,3821,Amsterdam Centraal
+965,478,5770,Amsterdam Centraal
+965,2846,5787,Amsterdam Centraal
+965,2467,5950,Amsterdam Centraal
+965,2126,5951,Amsterdam Centraal
+965,1005,5955,Amsterdam Centraal
+965,2849,5957,Amsterdam Centraal
+967,2009,3823,Berlin Ostbahnhof
+967,2747,5448,Berlin Ostbahnhof
+967,73,5450,Berlin Ostbahnhof
+967,76,5453,Berlin Ostbahnhof
+967,2749,5456,Berlin Ostbahnhof
+967,2750,5457,Berlin Ostbahnhof
+967,1340,5788,Berlin Ostbahnhof
+968,884,3824,Basel SBB
+968,2467,4812,Freiburg(Breisgau) Hbf
+968,2470,4820,Basel SBB
+968,1762,4848,Offenburg
+968,169,4878,Basel SBB
+968,294,4886,Basel SBB
+969,2010,3825,Chur
+969,133,5303,Chur
+969,235,5902,Chur
+969,52,6000,Chur
+969,930,6003,Chur
+969,2795,6005,Chur
+969,2798,6008,Chur
+970,2011,3826,Hannover Hbf
+970,1517,4830,Hannover Hbf
+970,2731,5410,Hannover Hbf
+970,2885,5885,Hannover Hbf
+970,2659,5888,Hannover Hbf
+970,2887,5891,Hannover Hbf
+971,2012,3827,Hamburg-Altona
+971,743,4512,Hamburg Hbf
+971,1047,4517,Hamburg-Altona
+971,2336,4519,Hamburg-Altona
+971,2338,4522,Hamburg-Altona
+971,171,4590,Hamburg-Altona
+972,884,3828,Basel SBB
+972,2468,4814,Basel SBB
+972,2182,4833,Freiburg(Breisgau) Hbf
+972,1762,4849,Offenburg
+972,169,4879,Basel SBB
+973,1992,3829,Zürich HB
+973,33,5298,Zürich HB
+973,643,5574,Zürich HB
+974,2013,3830,Dortmund Hbf
+974,2182,4199,Dortmund Hbf
+974,1199,4223,Dortmund Hbf
+974,167,4245,Dortmund Hbf
+974,2654,5214,Dortmund Hbf
+975,2014,3831,Frankfurt(Main)Hbf
+976,2015,3832,Basel SBB
+977,2009,3833,Zürich HB
+977,1237,5654,Zürich HB
+977,487,5657,Zürich HB
+977,294,5663,Zürich HB
+978,1364,3834,Basel SBB
+979,2017,3836,Köln Hbf
+979,171,3941,Köln Hbf
+979,2773,5524,Köln Hbf
+979,22,5526,Köln Hbf
+979,163,5538,Köln Hbf
+981,2019,3839,Köln Hbf
+981,166,3927,Köln Hbf
+981,2774,5525,Köln Hbf
+981,22,5527,Köln Hbf
+981,386,5531,Köln Hbf
+982,2020,3840,Zürich HB
+983,2021,3841,Basel SBB
+983,166,3931,Basel SBB
+984,2023,3843,Basel SBB
+984,27,3857,Basel SBB
+984,235,3876,Basel SBB
+984,99,3877,Basel SBB
+984,2034,3879,Basel SBB
+984,2044,3904,Basel SBB
+984,2050,3914,Basel SBB
+984,2052,3922,Basel SBB
+984,2564,5035,Karlsruhe Hbf
+985,2026,3851,Berlin Ostbahnhof
+985,2032,3870,Berlin Ostbahnhof
+985,1204,3898,Berlin Ostbahnhof
+985,2555,5018,Berlin Ostbahnhof
+985,2575,5054,Berlin Ostbahnhof
+985,2583,5072,Berlin Ostbahnhof
+985,760,5080,Berlin Ostbahnhof
+985,148,5170,Berlin Hbf (tief)
+986,2028,3853,Basel SBB
+986,2042,3896,Basel SBB
+986,2097,4027,Freiburg(Breisgau) Hbf
+986,1296,4081,Basel SBB
+986,2126,4087,Karlsruhe Hbf
+986,2138,4104,Offenburg
+986,2152,4143,Basel SBB
+986,2153,4144,Basel SBB
+986,22,4672,Freiburg(Breisgau) Hbf
+986,655,4676,Basel SBB
+987,2035,3884,Chur
+987,2037,3886,Chur
+987,1090,4509,Chur
+987,558,4518,Chur
+987,743,5300,Chur
+987,49,5307,Chur
+987,643,5309,Chur
+987,2713,5378,Chur
+987,2716,5386,Chur
+988,2040,3893,Zürich HB
+988,1237,5326,Zürich HB
+988,140,5900,Zürich HB
+988,144,5903,Zürich HB
+988,487,5906,Zürich HB
+988,294,5912,Zürich HB
+988,33,5913,Zürich HB
+997,2070,3959,Hamburg-Altona
+997,21,3961,Hamburg-Altona
+997,2076,3967,Hannover Hbf
+997,849,3973,Hamburg-Altona
+997,60,3986,Kassel-Wilhelmshöhe
+997,68,3993,Kassel-Wilhelmshöhe
+1005,2088,3988,Karlsruhe Hbf
+1005,69,3996,Heidelberg Hbf
+1007,67,3991,Kassel-Wilhelmshöhe
+1007,71,4002,Kassel-Wilhelmshöhe
+1008,68,3998,Heidelberg Hbf
+1009,73,4005,Heidelberg Hbf
+1009,76,4016,Karlsruhe Hbf
+1010,73,4006,Kassel-Wilhelmshöhe
+1010,76,4017,Kassel-Wilhelmshöhe
+1011,73,4009,Karlsruhe Hbf
+1013,2093,4014,Frankfurt(Main)Hbf
+1013,736,5463,Frankfurt(Main)Hbf
+1016,2098,4028,Berlin Gesundbrunnen
+1016,1933,4067,Berlin Ostbahnhof
+1016,1949,4092,Berlin Ostbahnhof
+1016,1953,4107,Berlin Ostbahnhof
+1016,1397,4118,Berlin Gesundbrunnen
+1016,366,4134,Berlin Gesundbrunnen
+1016,655,4206,Berlin Ostbahnhof
+1017,2099,4029,Berlin Gesundbrunnen
+1017,1933,4068,Berlin Ostbahnhof
+1018,2101,4031,Berlin Gesundbrunnen
+1018,2122,4069,Berlin Ostbahnhof
+1018,2133,4098,Berlin Ostbahnhof
+1018,1953,4109,Berlin Ostbahnhof
+1018,2144,4124,Berlin Gesundbrunnen
+1018,655,4210,Berlin Ostbahnhof
+1019,2102,4032,Berlin Gesundbrunnen
+1019,1934,4070,Berlin Ostbahnhof
+1019,159,4138,Berlin Gesundbrunnen
+1020,2099,4033,Berlin Gesundbrunnen
+1020,1933,4071,Berlin Ostbahnhof
+1021,2103,4034,Berlin Gesundbrunnen
+1021,1934,4072,Berlin Ostbahnhof
+1021,1949,4094,Berlin Ostbahnhof
+1021,1953,4110,Berlin Ostbahnhof
+1021,1396,4120,Berlin Gesundbrunnen
+1021,655,5348,Berlin Ostbahnhof
+1022,2104,4035,Berlin Gesundbrunnen
+1022,2122,4073,Berlin Ostbahnhof
+1022,2130,4095,Berlin Ostbahnhof
+1022,470,4099,Berlin Ostbahnhof
+1022,1676,4111,Berlin Ostbahnhof
+1022,1200,4114,Berlin Hbf (tief)
+1022,2141,4121,Berlin Gesundbrunnen
+1022,157,4136,Berlin Gesundbrunnen
+1022,159,4139,Berlin Gesundbrunnen
+1022,2151,4142,Berlin Gesundbrunnen
+1022,448,4154,Berlin Gesundbrunnen
+1022,1808,4701,Berlin Ostbahnhof
+1022,655,4710,Berlin Ostbahnhof
+1023,2105,4036,Berlin Gesundbrunnen
+1023,2123,4074,Berlin Ostbahnhof
+1024,2107,4039,Berlin Gesundbrunnen
+1024,2136,4102,Berlin Ostbahnhof
+1024,2137,4103,Berlin Ostbahnhof
+1024,1200,4116,Berlin Ostbahnhof
+1024,2147,4128,Berlin Gesundbrunnen
+1024,2149,4131,Berlin Gesundbrunnen
+1024,366,4140,Berlin Gesundbrunnen
+1024,2119,4683,Berlin Gesundbrunnen
+1024,1938,4693,Berlin Ostbahnhof
+1024,1942,4703,Berlin Ostbahnhof
+1024,148,4711,Berlin Ostbahnhof
+1024,576,4716,Berlin Ostbahnhof
+1024,1676,4733,Berlin Ostbahnhof
+1025,2099,4041,Berlin Gesundbrunnen
+1025,1933,4694,Berlin Ostbahnhof
+1026,438,4043,Berlin Gesundbrunnen
+1027,2110,4044,Berlin Gesundbrunnen
+1027,366,4227,Berlin Gesundbrunnen
+1027,52,4689,Berlin Ostbahnhof
+1027,2418,4695,Berlin Ostbahnhof
+1027,147,4705,Berlin Ostbahnhof
+1027,655,4712,Berlin Ostbahnhof
+1027,1949,4722,Berlin Ostbahnhof
+1027,1953,4734,Berlin Ostbahnhof
+1027,1397,4746,Berlin Gesundbrunnen
+1028,2110,4045,Berlin Gesundbrunnen
+1028,52,4690,Berlin Hbf (tief)
+1028,2418,4696,Berlin Ostbahnhof
+1028,147,4706,Berlin Ostbahnhof
+1029,334,4047,Berlin Gesundbrunnen
+1030,2111,4048,Berlin Gesundbrunnen
+1030,157,4228,Berlin Gesundbrunnen
+1030,159,4233,Berlin Hbf (tief)
+1030,2416,4684,Berlin Hbf (tief)
+1030,52,4691,Berlin Gesundbrunnen
+1030,2419,4697,Berlin Ostbahnhof
+1030,147,4707,Berlin Ostbahnhof
+1030,655,4713,Berlin Ostbahnhof
+1030,1949,4723,Berlin Ostbahnhof
+1030,1953,4735,Berlin Ostbahnhof
+1030,2149,4747,Berlin Gesundbrunnen
+1030,2147,4753,Berlin Hbf (tief)
+1032,2014,4050,Berlin Gesundbrunnen
+1033,2113,4051,Berlin Gesundbrunnen
+1033,1938,4698,Berlin Ostbahnhof
+1034,2115,4053,Berlin Gesundbrunnen
+1034,21,4908,Berlin Gesundbrunnen
+1034,2514,4921,Berlin Ostbahnhof
+1034,238,4936,Berlin Ostbahnhof
+1035,2116,4054,Berlin Gesundbrunnen
+1035,2127,4089,Berlin Ostbahnhof
+1035,366,4230,Berlin Gesundbrunnen
+1035,576,4718,Berlin Ostbahnhof
+1035,1676,4737,Berlin Ostbahnhof
+1035,1200,4741,Berlin Hbf (tief)
+1035,2428,4749,Berlin Gesundbrunnen
+1035,1938,4922,Berlin Ostbahnhof
+1036,2009,4055,Köln Hbf
+1036,576,4720,Köln Hbf
+1036,2425,4731,Köln Hbf
+1036,1200,4744,Köln Hbf
+1036,2433,4755,Köln Hbf
+1037,884,4056,Köln Hbf
+1037,1517,5271,Köln Hbf
+1037,2679,5276,Köln Hbf
+1037,2874,5851,Koblenz Hbf
+1037,2875,5853,Koblenz Hbf
+1038,438,4057,Berlin Gesundbrunnen
+1038,366,4232,Berlin Gesundbrunnen
+1038,2417,4687,Berlin Gesundbrunnen
+1038,148,4714,Berlin Ostbahnhof
+1038,576,4719,Berlin Ostbahnhof
+1038,2424,4727,Berlin Ostbahnhof
+1038,1433,4730,Berlin Ostbahnhof
+1038,1676,4739,Berlin Ostbahnhof
+1038,1200,4743,Berlin Hbf (tief)
+1038,2431,4752,Berlin Gesundbrunnen
+1039,2117,4058,Köln Hbf
+1039,52,4692,Köln Hbf
+1039,2420,4700,Köln Hbf
+1039,147,4708,Köln Hbf
+1039,572,4709,Köln Hbf
+1039,655,4715,Köln Hbf
+1039,1949,4725,Köln Hbf
+1039,1953,4740,Köln Hbf
+1039,2429,4750,Köln Hbf
+1039,1152,4756,Köln Hbf
+1039,718,4797,Köln Hbf
+1040,2118,4059,Berlin Hbf (tief)
+1040,1942,4076,Berlin Ostbahnhof
+1040,1948,4091,Berlin Ostbahnhof
+1040,1676,4106,Berlin Ostbahnhof
+1040,1395,4117,Berlin Hbf (tief)
+1040,157,4133,Berlin Hbf (tief)
+1040,148,4205,Berlin Hbf (tief)
+1041,2118,4060,Berlin Gesundbrunnen
+1041,1284,4077,Berlin Ostbahnhof
+1042,2109,4061,Berlin Gesundbrunnen
+1042,21,4062,Berlin Gesundbrunnen
+1042,1943,4079,Berlin Ostbahnhof
+1042,99,4080,Berlin Ostbahnhof
+1042,2129,4093,Berlin Ostbahnhof
+1042,2134,4100,Berlin Ostbahnhof
+1042,1676,4108,Berlin Ostbahnhof
+1042,1200,4113,Berlin Ostbahnhof
+1042,2140,4119,Berlin Gesundbrunnen
+1042,2145,4125,Berlin Gesundbrunnen
+1042,655,5347,Berlin Ostbahnhof
+1043,2119,4063,Berlin Gesundbrunnen
+1043,1938,4084,Berlin Ostbahnhof
+1043,2156,4155,Berlin Gesundbrunnen
+1043,52,4688,Berlin Ostbahnhof
+1043,1942,4702,Berlin Ostbahnhof
+1049,2159,4160,Hamburg-Altona
+1049,743,4170,Hamburg-Harburg
+1049,645,4190,Hamburg-Altona
+1049,2187,4226,Hamburg-Altona
+1049,2415,4681,Hamburg-Altona
+1053,2195,4243,München Hbf
+1056,2202,4256,Frankfurt(Main)Hbf
+1056,30,4288,Frankfurt(Main)Hbf
+1056,753,4298,Frankfurt(Main)Hbf
+1056,2414,4680,Frankfurt(Main)Hbf
+1056,721,4682,Frankfurt(Main)Hbf
+1056,359,5311,Frankfurt(Main)Hbf
+1056,185,5314,Frankfurt(Main)Hbf
+1058,2205,4259,Frankfurt(Main)Hbf
+1058,2227,4310,Frankfurt(Main)Hbf
+1058,30,4823,Frankfurt(Main)Hbf
+1058,473,4841,Frankfurt(Main)Hbf
+1058,2477,4852,Frankfurt(Main)Hbf
+1058,2483,4864,Frankfurt(Main)Hbf
+1058,290,4882,Frankfurt(Main)Hbf
+1058,359,5312,Frankfurt(Main)Hbf
+1058,2729,5791,Frankfurt(Main)Hbf
+1060,2207,4262,Hamburg-Altona
+1060,83,4816,Hamburg Hbf
+1060,378,4822,Hamburg-Harburg
+1060,2473,4832,Hamburg-Altona
+1060,655,4837,Hamburg-Altona
+1060,2474,4845,Hamburg-Altona
+1060,2476,4855,Hamburg-Altona
+1060,725,4874,Hamburg-Altona
+1060,294,4888,Hamburg-Altona
+1061,2208,4263,Hamburg-Altona
+1085,17,4421,Berlin Südkreuz
+1085,40,4423,Berlin Südkreuz
+1085,2288,4424,Berlin Südkreuz
+1096,2311,4476,Hamburg-Altona
+1096,272,4486,Hamburg-Altona
+1096,2317,4487,Hamburg-Altona
+1097,2318,4488,Hamburg-Altona
+1100,2323,4493,Kassel-Wilhelmshöhe
+1100,1978,4510,Kassel-Wilhelmshöhe
+1100,980,4897,Kassel-Wilhelmshöhe
+1102,2324,4495,Hamburg-Altona
+1104,2327,4499,Wolfsburg Hbf
+1105,2328,4500,Hamburg-Altona
+1105,743,4895,Hannover Hbf
+1106,2329,4501,Göttingen
+1106,36,4896,Göttingen
+1106,2502,4898,Göttingen
+1109,2331,4504,Stuttgart Hbf
+1111,1051,4520,München Hbf
+1111,583,4524,München Hbf
+1114,2344,4533,Hamburg-Altona
+1114,2357,4563,Hamburg-Altona
+1115,2345,4534,München Hbf
+1115,723,4578,Nürnberg Hbf
+1115,2601,5110,München Hbf
+1115,378,5149,München Hbf
+1115,30,5150,München Hbf
+1115,2633,5161,München Hbf
+1115,462,5162,München Hbf
+1116,109,4535,München Hbf
+1116,2626,5143,München Hbf
+1116,2628,5148,München Hbf
+1116,2629,5152,München Hbf
+1116,41,5159,München Hbf
+1116,384,5171,Nürnberg Hbf
+1116,461,5304,München Hbf
+1116,466,5310,München Hbf
+1116,906,5317,Nürnberg Hbf
+1117,715,4536,München Hbf
+1117,2358,4564,München Hbf
+1117,723,4579,Nürnberg Hbf
+1117,2604,5113,München Hbf
+1117,33,5154,München Hbf
+1117,50,5167,München Hbf
+1117,2689,5306,München Hbf
+1118,109,4537,Hamburg-Altona
+1118,2571,5044,Hamburg-Altona
+1118,1223,5051,Hamburg-Harburg
+1119,2344,4538,Hamburg-Altona
+1119,2359,4565,Hamburg-Altona
+1119,2361,4569,Hamburg-Altona
+1119,2367,4580,Hamburg-Altona
+1119,2372,4589,Hamburg-Altona
+1119,2373,4591,Hamburg-Altona
+1119,2627,5147,Hamburg-Altona
+1119,743,5156,Hamburg-Harburg
+1119,51,5163,Hamburg-Altona
+1119,2634,5168,Hamburg-Altona
+1119,1748,5169,Hamburg-Altona
+1120,2345,4539,München Hbf
+1120,723,4581,Nürnberg Hbf
+1120,2683,5288,München Hbf
+1120,34,5477,München Hbf
+1121,930,4540,Hamburg-Altona
+1121,1237,4553,Hamburg-Altona
+1121,932,4566,Hamburg-Altona
+1121,1245,4572,Hamburg-Altona
+1121,2602,5111,Hamburg-Altona
+1121,2625,5142,Hamburg-Altona
+1121,34,5151,Hannover Hbf
+1121,2631,5158,Hannover Hbf
+1121,849,5165,Hamburg-Altona
+1121,140,5166,Hamburg-Altona
+1122,110,4541,München Hbf
+1122,2610,5119,München Hbf
+1122,30,5295,München Hbf
+1123,2346,4542,Hamburg-Altona
+1123,2348,4548,Hamburg-Harburg
+1123,2360,4567,Hamburg-Altona
+1123,2603,5112,Hamburg-Altona
+1123,30,5153,Hamburg-Harburg
+1124,2345,4544,Hamburg-Altona
+1124,723,4583,Hamburg-Altona
+1124,2606,5115,Lübeck Hbf
+1124,85,5145,Hamburg Hbf
+1124,30,5155,Hannover Hbf
+1125,110,4545,München Hbf
+1125,2687,5292,München Hbf
+1125,33,5297,München Hbf
+1126,110,4546,Hamburg-Altona
+1126,2607,5116,Kiel Hbf
+1126,30,5431,Hamburg-Harburg
+1126,2758,5474,Hamburg Hbf
+1126,461,5486,Kiel Hbf
+1126,900,5501,Kiel Hbf
+1127,2345,4547,München Hbf
+1127,723,4584,Nürnberg Hbf
+1127,884,5125,München Hbf
+1128,2350,4550,Hamburg-Altona
+1128,2354,4559,Hamburg-Altona
+1128,2768,5510,Hamburg-Altona
+1129,2351,4551,München Hbf
+1129,2617,5128,München Hbf
+1129,30,5650,München Hbf
+1130,2352,4552,Hamburg-Altona
+1130,721,4571,Hamburg-Altona
+1130,2611,5120,Hamburg-Altona
+1130,30,5432,Hamburg-Harburg
+1131,2353,4554,Hamburg-Altona
+1131,2363,4573,Hamburg-Altona
+1131,2371,4588,Hamburg-Altona
+1131,2613,5122,Hamburg-Altona
+1131,1090,5476,Hannover Hbf
+1132,1237,4555,München Hbf
+1132,2364,4574,München Hbf
+1132,2210,5133,München Hbf
+1132,52,6034,München Hbf
+1133,2045,4556,Hamburg-Altona
+1133,2365,4575,Hamburg-Altona
+1133,2614,5123,Hamburg-Altona
+1133,2739,5428,Hamburg-Harburg
+1134,1237,4557,München Hbf
+1134,2366,4576,München Hbf
+1134,2009,5135,München Hbf
+1134,52,6036,München Hbf
+1135,2370,4587,München Hbf
+1135,2697,5331,München Hbf
+1137,2377,4597,München Hbf
+1137,147,4613,München Hbf
+1137,361,4614,München Hbf
+1137,813,5485,München Hbf
+1137,2763,5492,München Hbf
+1137,2764,5496,München Hbf
+1138,2379,4599,München Hbf
+1138,2382,4604,München Hbf
+1138,849,4605,München Hbf
+1138,2383,4606,München Hbf
+1138,900,4608,München Hbf
+1142,2388,4627,München Hbf
+1142,34,4633,München Hbf
+1142,566,4646,München Hbf
+1142,576,4654,München Hbf
+1142,1122,4658,München Hbf
+1142,1826,5240,München Hbf
+1147,2413,4671,Berlin Gesundbrunnen
+1150,2444,4774,Frankfurt(Main)Hbf
+1150,85,5750,Frankfurt(Main)Hbf
+1150,105,5761,Frankfurt(Main)Hbf
+1150,478,5766,Frankfurt(Main)Hbf
+1150,289,5779,Frankfurt(Main)Hbf
+1152,2447,4778,Frankfurt(Main)Hbf
+1152,85,5756,Frankfurt(Main)Hbf
+1152,478,5769,Frankfurt(Main)Hbf
+1152,289,5783,Frankfurt(Main)Hbf
+1152,1005,5946,Frankfurt(Main)Hbf
+1154,2449,4780,Mönchengladbach Hbf
+1154,1451,5734,Mönchengladbach Hbf
+1154,2841,5735,Mönchengladbach Hbf
+1155,2450,4781,Frankfurt(Main)Hbf
+1155,85,5623,Frankfurt(Main)Hbf
+1155,1005,5947,Frankfurt(Main)Hbf
+1155,478,5948,Frankfurt(Main)Hbf
+1155,289,5949,Frankfurt(Main)Hbf
+1156,21,4782,Dortmund Hbf
+1156,2724,5399,Hannover Hbf
+1156,1120,5886,Hannover Hbf
+1156,2886,5887,Hannover Hbf
+1156,1340,5889,Hannover Hbf
+1156,114,5890,Hannover Hbf
+1157,2451,4784,Köln Hbf
+1157,31,4787,Köln Hbf
+1157,2456,4794,Köln Hbf
+1157,2461,4801,Köln Hbf
+1157,2462,4803,Köln Hbf
+1157,2464,4806,Köln Hbf
+1160,2465,4807,Hamburg-Altona
+1162,2503,4899,Berlin Gesundbrunnen
+1162,2510,4913,Berlin Ostbahnhof
+1162,1200,4959,Berlin Ostbahnhof
+1167,2506,4905,Berlin Ostbahnhof
+1167,1177,4911,Berlin Hbf (tief)
+1167,2515,4923,Berlin Ostbahnhof
+1167,464,4927,Berlin Ostbahnhof
+1167,235,4931,Berlin Ostbahnhof
+1167,2520,4933,Berlin Hbf (tief)
+1168,2507,4906,Berlin Gesundbrunnen
+1168,1745,4924,Berlin Ostbahnhof
+1169,2509,4910,Berlin Ostbahnhof
+1169,1938,4920,Berlin Ostbahnhof
+1169,2521,4946,Berlin Ostbahnhof
+1169,1954,4961,Berlin Ostbahnhof
+1169,2526,4965,Berlin Ostbahnhof
+1169,1258,4966,Berlin Ostbahnhof
+1172,576,4947,Hannover Hbf
+1173,2532,4973,Hamburg-Altona
+1173,2539,4982,Hamburg-Altona
+1173,22,4983,Hamburg-Altona
+1173,30,4984,Hamburg Hbf
+1173,50,4986,Hamburg-Altona
+1173,643,4987,Hamburg-Altona
+1173,2541,4989,Hamburg-Altona
+1173,2543,4992,Hamburg-Altona
+1174,2533,4974,Hamburg-Altona
+1174,2540,4985,Hamburg Hbf
+1174,144,4988,Hamburg-Altona
+1174,2544,4995,Hamburg-Altona
+1175,435,4975,Hamburg-Altona
+1176,1457,4976,Hamburg-Altona
+1176,52,6033,Hamburg-Altona
+1177,2534,4977,Kiel Hbf
+1180,2537,4980,Hamburg-Altona
+1181,2538,4981,Köln Hbf
+1184,1314,4994,Hamburg-Altona
+1184,294,4997,Hamburg-Altona
+1186,83,5017,Hamburg-Altona
+1186,2568,5041,Hamburg-Altona
+1186,1838,5047,Hamburg Hbf
+1186,50,5053,Hamburg-Altona
+1186,643,5057,Hamburg-Altona
+1186,2578,5062,Hamburg-Altona
+1186,715,5070,Hamburg-Altona
+1186,2587,5077,Hamburg-Altona
+1186,290,5084,Hamburg-Altona
+1186,22,5144,Hamburg-Altona
+1187,2557,5020,Paris Est
+1188,1542,5021,Stuttgart Hbf
+1188,133,5299,Stuttgart Hbf
+1188,235,5308,Stuttgart Hbf
+1188,2690,5318,Stuttgart Hbf
+1189,2005,5022,Stuttgart Hbf
+1189,133,5301,Stuttgart Hbf
+1189,930,5321,Stuttgart Hbf
+1189,849,5562,Stuttgart Hbf
+1189,235,5572,Stuttgart Hbf
+1189,2794,5592,Stuttgart Hbf
+1190,2558,5024,Stuttgart Hbf
+1190,30,5294,Stuttgart Hbf
+1190,2693,5324,Stuttgart Hbf
+1190,643,5901,Stuttgart Hbf
+1190,2894,5905,Stuttgart Hbf
+1191,2559,5025,Stuttgart Hbf
+1191,1090,5296,Stuttgart Hbf
+1192,2560,5026,Köln Messe/Deutz Gl.11-12
+1192,461,5937,Köln Messe/Deutz Gl.11-12
+1192,1819,5938,Köln Messe/Deutz Gl.11-12
+1194,439,5028,Stuttgart Hbf
+1194,49,6030,Stuttgart Hbf
+1195,2562,5029,Stuttgart Hbf
+1195,886,5672,München Hbf
+1195,51,6032,München Hbf
+1195,464,6039,Stuttgart Hbf
+1196,1991,5031,Basel SBB
+1196,2707,5363,Karlsruhe Hbf
+1196,49,5564,Karlsruhe Hbf
+1196,558,5566,Basel SBB
+1196,643,5575,Basel SBB
+1196,153,5589,Karlsruhe Hbf
+1196,2045,5590,Basel SBB
+1196,2051,5596,Basel SBB
+1197,22,5032,Hamburg-Altona
+1197,34,5651,Hamburg Hbf
+1197,2814,5652,Hamburg-Altona
+1197,2815,5656,Hamburg-Altona
+1198,2563,5033,Stuttgart Hbf
+1198,52,6037,Stuttgart Hbf
+1199,22,5034,Berlin Ostbahnhof
+1199,2744,5437,Berlin Ostbahnhof
+1199,2748,5449,Berlin Ostbahnhof
+1199,74,5451,Berlin Ostbahnhof
+1199,77,5455,Berlin Ostbahnhof
+1199,2544,5459,Berlin Ostbahnhof
+1199,2883,5875,Berlin Ostbahnhof
+1200,22,5038,Wiesbaden Hbf
+1200,2566,5039,Wiesbaden Hbf
+1200,2570,5043,Wiesbaden Hbf
+1200,131,5048,Wiesbaden Hbf
+1200,2582,5071,Wiesbaden Hbf
+1200,2592,5086,Wiesbaden Hbf
+1201,2567,5040,Kiel Hbf
+1201,743,5050,Hamburg-Harburg
+1202,2569,5042,Berlin Ostbahnhof
+1202,2577,5056,Berlin Ostbahnhof
+1203,2572,5045,Wiesbaden Hbf
+1203,2573,5046,Wiesbaden Hbf
+1204,2574,5049,Karlsruhe Hbf
+1204,2576,5055,Karlsruhe Hbf
+1204,2579,5064,Karlsruhe Hbf
+1204,2580,5068,Karlsruhe Hbf
+1204,828,5073,Karlsruhe Hbf
+1204,22,5146,Karlsruhe Hbf
+1205,1809,5058,Amsterdam Centraal
+1205,303,5089,Amsterdam Centraal
+1205,2806,5625,Amsterdam Centraal
+1207,2605,5114,Bremen Hbf
+1207,2632,5160,Hannover Hbf
+1208,2608,5117,Hamburg-Altona
+1208,36,5479,Hannover Hbf
+1208,461,5487,Hamburg-Altona
+1208,466,5502,Hamburg-Altona
+1208,2767,5507,Hamburg-Altona
+1209,2612,5121,Bremen Hbf
+1209,1165,5482,Hannover Hbf
+1210,884,5124,München Hbf
+1210,105,5965,Nürnberg Hbf
+1211,2615,5126,Bremen Hbf
+1211,809,5483,Hannover Hbf
+1211,2766,5505,Bremen Hbf
+1212,2616,5127,Hamburg-Altona
+1212,1386,5475,Hamburg Hbf
+1212,2766,5506,Hamburg-Altona
+1212,2769,5511,Hamburg-Altona
+1212,1642,5513,Hamburg-Altona
+1213,441,5129,München Hbf
+1213,49,6031,München Hbf
+1214,2618,5130,München Hbf
+1214,50,5639,München Hbf
+1215,2619,5131,Lübeck Hbf
+1216,2620,5132,Oldenburg(Oldb)
+1217,2537,5134,München Hbf
+1217,52,6035,München Hbf
+1218,441,5136,Hamburg-Altona
+1219,2621,5137,Hamburg Hbf
+1219,2709,5368,Hamburg Hbf
+1219,109,5653,Hamburg Hbf
+1219,828,5655,Hamburg Hbf
+1220,1368,5138,Nürnberg Hbf
+1220,2754,5470,München Hbf
+1220,554,5481,München Hbf
+1220,2761,5484,München Hbf
+1220,2762,5489,München Hbf
+1220,357,5493,München Hbf
+1220,2765,5497,München Hbf
+1220,237,5499,München Hbf
+1221,2622,5139,Nürnberg Hbf
+1221,2544,5340,Nürnberg Hbf
+1221,2702,5345,München Hbf
+1221,2755,5471,München Hbf
+1221,2759,5478,München Hbf
+1221,2762,5490,München Hbf
+1221,357,5494,München Hbf
+1221,237,5500,München Hbf
+1221,2771,5515,München Hbf
+1222,2624,5141,Bremen Hbf
+1222,2630,5157,Hannover Hbf
+1222,849,5164,Hannover Hbf
+1229,2657,5220,Frankfurt(Main)Hbf
+1229,944,5221,Frankfurt(Main)Hbf
+1229,2658,5223,Frankfurt(Main)Hbf
+1229,1120,5225,Frankfurt(Main)Hbf
+1229,2659,5230,Berlin Hbf (tief)
+1229,736,5234,Frankfurt(Main)Hbf
+1229,2662,5236,Frankfurt(Main)Hbf
+1230,2679,5274,Berlin Ostbahnhof
+1230,2703,5346,Berlin Gesundbrunnen
+1233,2684,5289,München Hbf
+1233,2701,5337,München Hbf
+1233,2740,5429,München Hbf
+1233,51,5565,München Hbf
+1233,558,5567,München Hbf
+1233,464,5569,München Hbf
+1233,1095,5570,München Hbf
+1233,2789,5571,München Hbf
+1233,710,5578,München Hbf
+1234,2685,5290,München Hbf
+1234,2686,5291,München Hbf
+1234,2688,5305,München Hbf
+1235,33,5293,Stuttgart Hbf
+1235,1237,5325,Stuttgart Hbf
+1235,2040,5360,Stuttgart Hbf
+1235,140,5373,Stuttgart Hbf
+1235,144,5374,Stuttgart Hbf
+1235,2714,5380,Stuttgart Hbf
+1236,2691,5319,Darmstadt Hbf
+1236,297,5344,Frankfurt(Main)Hbf
+1236,2712,5377,Darmstadt Hbf
+1236,743,5916,Darmstadt Hbf
+1238,1237,5327,Zürich HB
+1238,2783,5554,Zürich HB
+1238,2787,5559,Chur
+1238,144,5576,Zürich HB
+1238,487,5597,Zürich HB
+1238,294,5618,Zürich HB
+1238,34,5914,Chur
+1238,809,5918,Zürich HB
+1240,2699,5335,Basel SBB
+1240,2700,5336,Basel SBB
+1240,288,5342,Basel SBB
+1240,294,5343,Basel SBB
+1241,760,5338,Stuttgart Hbf
+1241,292,5911,Stuttgart Hbf
+1242,2322,5351,Frankfurt(Main)Hbf
+1242,34,5353,Frankfurt(Main)Hbf
+1243,886,5364,Frankfurt(Main)Hbf
+1244,2708,5365,Hamburg-Altona
+1244,378,5649,Hamburg Hbf
+1245,2708,5366,Hamburg-Altona
+1245,52,6038,Hamburg-Altona
+1246,702,5367,Berlin Gesundbrunnen
+1247,22,5369,Berlin Gesundbrunnen
+1247,2882,5873,Berlin Gesundbrunnen
+1247,2512,5874,Berlin Ostbahnhof
+1247,358,5876,Berlin Ostbahnhof
+1247,238,5877,Berlin Ostbahnhof
+1247,576,5879,Berlin Ostbahnhof
+1247,1196,5880,Berlin Ostbahnhof
+1247,1200,5881,Berlin Hbf (tief)
+1247,1957,5882,Berlin Gesundbrunnen
+1250,2704,5379,Hamburg-Altona
+1250,72,5382,Hamburg-Altona
+1250,75,5384,Hamburg-Altona
+1250,2715,5385,Hamburg-Altona
+1250,2738,5427,Hamburg-Altona
+1250,2741,5430,Hamburg Hbf
+1250,2742,5434,Hamburg-Altona
+1251,1314,5383,Stuttgart Hbf
+1251,294,5387,Stuttgart Hbf
+1259,2734,5420,Berlin Südkreuz
+1259,30,5915,Berlin Südkreuz
+1260,2736,5423,Berlin Südkreuz
+1260,2893,5899,Berlin Südkreuz
+1260,36,5917,Berlin Südkreuz
+1261,1998,5425,Frankfurt(Main)Hbf
+1262,2330,5426,Frankfurt(Main)Hbf
+1262,40,5433,Frankfurt(Main)Hbf
+1263,2743,5435,Berlin Ostbahnhof
+1263,1944,5440,Berlin Ostbahnhof
+1263,148,5443,Berlin Hbf (tief)
+1263,109,5445,Berlin Ostbahnhof
+1264,2026,5436,Berlin Ostbahnhof
+1264,2032,5441,Berlin Ostbahnhof
+1264,1204,5446,Berlin Ostbahnhof
+1268,333,5468,Nürnberg Hbf
+1269,2753,5469,München Hbf
+1270,2756,5472,München Hbf
+1270,2757,5473,München Hbf
+1270,52,5491,München Hbf
+1270,99,5495,München Hbf
+1270,100,5498,München Hbf
+1270,147,5504,München Hbf
+1270,288,5522,München Hbf
+1271,1237,5512,Hamburg-Altona
+1271,2770,5514,Hamburg-Altona
+1272,272,5516,Düsseldorf Hbf
+1272,281,5518,Dortmund Hbf
+1273,272,5517,Dortmund Hbf
+1273,281,5519,Dortmund Hbf
+1273,263,5773,Dortmund Hbf
+1274,736,5599,Stuttgart Hbf
+1274,729,5616,Stuttgart Hbf
+1275,73,5602,Basel SBB
+1275,162,5613,Basel SBB
+1275,171,5615,Karlsruhe Hbf
+1276,169,5614,Basel SBB
+1286,265,5658,Zürich HB
+1286,2800,5660,Zürich HB
+1286,77,5661,Zürich HB
+1286,2544,5662,Zürich HB
+1287,1314,5659,Hamburg-Altona
+1287,294,5664,Hamburg-Altona
+1289,2821,5684,Basel SBB
+1289,2829,5698,Basel SBB
+1290,1809,5685,Frankfurt(Main)Hbf
+1290,2826,5694,Frankfurt(Main)Hbf
+1290,303,5699,Frankfurt(Main)Hbf
+1290,2830,5704,Frankfurt(Main)Hbf
+1291,1810,5686,Amsterdam Centraal
+1291,302,5700,Amsterdam Centraal
+1292,2822,5687,Frankfurt(Main)Hbf
+1293,1810,5688,Amsterdam Centraal
+1293,302,5701,Amsterdam Centraal
+1294,2823,5689,Frankfurt(Main)Hbf
+1294,302,5702,Frankfurt(Main)Hbf
+1295,1810,5691,Frankfurt(Main)Hbf
+1295,302,5703,Frankfurt(Main)Hbf
+1296,2822,5692,Amsterdam Centraal
+1297,2825,5693,Köln Hbf
+1297,2827,5696,Frankfurt(Main)Hbf
+1297,2828,5697,Frankfurt(Main)Hbf
+1297,2830,5706,Frankfurt(Main)Hbf
+1299,886,5725,Nürnberg Hbf
+1300,22,5728,Köln Hbf
+1301,1055,5730,Kiel Hbf
+1302,2691,5731,Kiel Hbf
+1303,297,5733,Kiel Hbf
+1304,21,5744,Frankfurt(Main)Hbf
+1305,2844,5747,Amsterdam Centraal
+1305,2902,5956,Amsterdam Centraal
+1305,2903,5958,Amsterdam Centraal
+1323,411,5872,Hannover Hbf
+1331,2343,5904,Hannover Hbf
+1332,2465,5910,Köln Hbf
+1335,655,5953,Utrecht Centraal
+1336,576,5954,Utrecht Centraal
+1337,2904,5962,Hamburg-Altona
+1337,743,5963,Hamburg-Harburg
+1337,2357,5968,Hamburg-Altona
+1347,73,6006,Hamburg-Altona
+1347,76,6010,Hamburg-Altona
+1347,170,6013,Hamburg-Altona
+1348,169,6012,Basel Bad Bf
