@@ -1,8 +1,11 @@
 import os
+import re
 import sys
+from time import sleep
 
 import networkx as nx
 import math
+from geopy.geocoders import Nominatim
 
 from src.elements.node_list import NodeList
 from src.elements.route import Route
@@ -22,7 +25,7 @@ class ScheduleConverter:
         stations = self.gtfs_parser.get_stops().values()
         self.write_stationary_nodes(stations, "stations")
 
-    def extract_switches(self):
+    def extract_switches(self, country_filter=None):
         ways = self.osm_parser.get_ways()
 
         graph = nx.Graph()
@@ -38,6 +41,29 @@ class ScheduleConverter:
             if len(graph[node]) > 2:  # switch nodes with <2 neighbors are not used as switches
                 switches.add(NodeList().find_by_osm_id(node))
 
+        if country_filter:
+            geolocator = Nominatim(user_agent="one_ptc")
+            false_switches = set()
+            r = re.compile(country_filter)
+            for node in switches:
+                # todo use a progressbar like tqdm
+                country = node.get_country()
+                if country is not None:
+                    if not r.match(country):
+                        false_switches.add(node)
+                else:
+                    query = node.get_gps()
+                    location = geolocator.reverse(query, language='en')
+                    try:
+                        country = location.raw['address']['country']
+                    except KeyError:
+                        print("This location has no associated country: " + str(location))
+                        country = ""
+                    if not r.match(country):
+                        false_switches.add(node)
+                    node.set_country(country)
+                    sleep(1)  # rate limiting
+            switches.difference_update(false_switches)
         self.write_stationary_nodes(switches, "switches")
 
     def write_stationary_nodes(self, nodes, node_type):

@@ -11,6 +11,7 @@ class Node:
         self.y = y
         self.stop_positions = [] # osm ids
         self.station = None # gtfs id
+        self.country = None
 
     @classmethod
     def from_osm(cls, osm_id, lat, lon):
@@ -26,6 +27,13 @@ class Node:
 
     def get_gps(self):
         return self.lat, self.lon
+
+    def get_country(self):
+        return self.country
+
+    def set_country(self, country):
+        if country != '':
+            self.country = country
 
     def add_stop_position(self, stop_id):
         self.stop_positions.append(stop_id)

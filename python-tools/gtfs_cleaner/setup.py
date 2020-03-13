@@ -7,7 +7,7 @@ setup(
 
     description="This cleaner filter and reduces a gtfs dataset. "
                 "It is able to filter for specific set of routes within the data "
-                "and to limit stops to a specific geographic region",
+                "and to limit stops to a specific country",
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine

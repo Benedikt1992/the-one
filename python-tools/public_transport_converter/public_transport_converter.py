@@ -34,6 +34,8 @@ class PublicTransportConverter:
                                  "Defaults to the first sunday after the first monday. "
                                  "If set --begin has to be set as well.")
         parser.add_argument('-a', '--analyze', action='store_true', default=False, help="Enable analyze module for the data.")
+        parser.add_argument('-c', '--country-filter', metavar='<regex>', nargs='?', default='Germany',
+                            help="Regular expression describing which countries should be kept for simulation.")
         self.args = parser.parse_args()
 
         if not self.args.output:
@@ -49,10 +51,8 @@ class PublicTransportConverter:
             with open(os.path.join(self.cache_dir, "file_dates.json"), 'r') as dates_file:
                 self.file_dates = json.load(dates_file)
             osm_date = self.file_dates.get(os.path.basename(self.args.osm), None)
-            # gtfs_date = self.file_dates.get(os.path.basename(self.args.gtfs), None)
             if osm_date: # and gtfs_date:
                 latest_osm_date = os.stat(self.args.osm).st_mtime
-                # latest_gtfs_date = os.stat(self.args.gtfs).st_mtime
                 if GTFSParser.update_db(self.args.gtfs, self.file_dates) or latest_osm_date > osm_date:
                     self.cached = False
                 else:
@@ -80,7 +80,7 @@ class PublicTransportConverter:
             schedule_converter = ScheduleConverter(self.output, self.gtfs_parser, self.osm_parser)
             # todo: do we really need the extraction of switches and stations every time?
             schedule_converter.extract_stations()
-            schedule_converter.extract_switches()
+            schedule_converter.extract_switches(self.args.country_filter)
             schedule_converter.extract_routes()
         else:
             station_ids = OSMExtender(self.osm_parser).extend_with_gtfs_station(self.gtfs_parser, self.args.filter, self.args.distance)
@@ -90,7 +90,7 @@ class PublicTransportConverter:
             wkt_converter.osm2wkt(station_ids)
             schedule_converter = ScheduleConverter(self.output, self.gtfs_parser, self.osm_parser)
             schedule_converter.extract_stations()
-            schedule_converter.extract_switches()
+            schedule_converter.extract_switches(self.args.country_filter)
             schedule_converter.extract_routes()
             self._write_date_cache()
             self._write_node_cache()
