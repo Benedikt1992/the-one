@@ -10,7 +10,7 @@ class ONESettingsReader:
     """
     def __init__(self, file_path, simulation_wd):
         self.current_run = None
-        self.simulation_working_dir = simulation_wd
+        self.simulation_base_dir = simulation_wd
 
         with open(file_path, 'r') as file:
             self.settings_runs = []
@@ -64,7 +64,7 @@ class ONESettingsReader:
             if current_settings[movement_model] == "StationaryListMovement":
                 group_id = "Group" + str(i) + ".groupID"
                 location_file = "Group" + str(i) + ".nodeLocationsFile"
-                location_file_path = os.path.join(self.simulation_working_dir, current_settings[location_file])
+                location_file_path = os.path.join(self.simulation_base_dir, os.path.basename(current_settings[location_file]))
                 nodes[current_settings[group_id]] = {'start': start_id, 'location': location_file_path}
             amount = "Group" + str(i) + ".nrofHosts"
             start_id += int(current_settings[amount])

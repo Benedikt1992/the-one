@@ -25,7 +25,7 @@ class Visualizer:
                             help="Define for which nodes a heatmap should be created showing the duplicate processing on these nodes."
                                  " Default is all nodes in on graph. Can have a list of different node prefixes.")
         parser.add_argument('-s', '--simulation', required=True,
-                            help="Path of the simulation working directory. "
+                            help="Path of the directory containing all files referenced by the settings (flat hierarchy). "
                                  "This is used read files referenced withing the simulation configuration.")
         self.args = parser.parse_args()
 
