@@ -68,4 +68,5 @@ class NodeLoad:
         outputpath = os.path.join(output, scenario + "_" + type + "." + format)
         plt.savefig(outputpath, format=format)
         plt.clf()  # clear plot window
+        plt.close('all')
 

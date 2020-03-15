@@ -57,4 +57,5 @@ class HopDistribution:
         outputpath = os.path.join(output, scenario + "_" + type + "_" + destination + '.' + format)
         plt.savefig(outputpath, format=format)
         plt.clf()  # clear plot window
+        plt.close('all')
 

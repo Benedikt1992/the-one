@@ -61,6 +61,7 @@ class Duplicates:
         outputpath = os.path.join(output, scenario + "_duplicates_heatmap_" + prefix + '.' + format)
         plt.savefig(outputpath, format=format)
         plt.clf()  # clear plot window
+        plt.close('all')
 
 
 

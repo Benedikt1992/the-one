@@ -43,3 +43,4 @@ class DistanceDeliverytimeGraph:
         outputpath = os.path.join(output, scenario + "_delivery_distance_graph." + format)
         plt.savefig(outputpath, format=format)
         plt.clf()  # clear plot window
+        plt.close('all')

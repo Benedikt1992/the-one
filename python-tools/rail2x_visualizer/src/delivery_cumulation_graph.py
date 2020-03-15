@@ -63,6 +63,7 @@ class DeliveryCumulationGraph:
         outputpath = os.path.join(output, scenario + "_delivery-cumulation_" + destination + '.' + format)
         plt.savefig(outputpath, format=format)
         plt.clf()  # clear plot window
+        plt.close('all')
 
 
 
