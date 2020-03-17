@@ -16,15 +16,24 @@ class DeliveryCumulationGraph:
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader
         self.settings = settings
+        self.toplist = {}
 
     def create_all_from_scenario(self, output_path, scenario):
         destinations = self.created_messages_reader.get_messages_grouped_by_destination()
         for destination, messages in destinations.items():
             self.create_station_from_scenario(output_path, scenario, destination, messages)
+        self.__store_toplist(output_path, scenario)
 
     def create_station_from_scenario(self, output_path, scenario, destination, messages):
         array = self.__get_cumulation_array(destination)
         maximum = len(messages)
+
+        for i in range(0, len(array)):
+            # TODO make threashold configurable
+            if array[i] > 0.85 * maximum:
+                self.__add_to_toplist(destination, i)
+                break
+
         x_axis = [0] * len(array)
         for i in range(len(array)):
             x_axis[i] = i / (60.0)
@@ -51,7 +60,7 @@ class DeliveryCumulationGraph:
             cumulative_array[int(delivery[0])] = cumulation
 
         cumulation = cumulative_array[0]
-        for i in range (1, max_time):
+        for i in range(1, max_time):
             if cumulative_array[i] > cumulative_array[i-1]:
                 cumulation = cumulative_array[i]
             cumulative_array[i] = cumulation
@@ -64,6 +73,15 @@ class DeliveryCumulationGraph:
         plt.savefig(outputpath, format=format)
         plt.clf()  # clear plot window
         plt.close('all')
+
+    def __add_to_toplist(self, station, time):
+        self.toplist[station] = time
+
+    def __store_toplist(self, output, scenario):
+        outputpath = os.path.join(output, scenario + "_delivery-toplist.txt")
+        with open(outputpath, "w") as file:
+            for key, value in self.toplist.items():
+                file.write("{},{}\n".format(key, str(value)))
 
 
 
