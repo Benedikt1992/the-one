@@ -20,7 +20,7 @@ class NodeList:
         if not cls.__instance:
             return
         with open(os.path.join(cache_dir, project_name + '_nodelist.json'), 'w') as file:
-            json.dump(cls.nodes, file, cls=NodeSerializer)
+            json.dump(cls.nodes, file, cls=NodeSerializer, indent=1)
 
     @classmethod
     def load_from_cache(cls, cache_dir, project_name):
