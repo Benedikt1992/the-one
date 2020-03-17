@@ -16,7 +16,8 @@ class DeliveryCumulationGraph:
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader
         self.settings = settings
-        self.toplist = {}
+        self.threshold_toplist = {}
+        self.area_toplist = {}
 
     def create_all_from_scenario(self, output_path, scenario):
         destinations = self.created_messages_reader.get_messages_grouped_by_destination()
@@ -28,11 +29,13 @@ class DeliveryCumulationGraph:
         array = self.__get_cumulation_array(destination)
         maximum = len(messages)
 
+        area = 0
         for i in range(0, len(array)):
             # TODO make threashold configurable
+            area += maximum - array[i]
             if array[i] > 0.85 * maximum:
-                self.__add_to_toplist(destination, i)
-                break
+                self.__add_to_toplist(destination, i, 'threshold')
+        self.__add_to_toplist(destination, area, 'area')
 
         x_axis = [0] * len(array)
         for i in range(len(array)):
@@ -74,13 +77,21 @@ class DeliveryCumulationGraph:
         plt.clf()  # clear plot window
         plt.close('all')
 
-    def __add_to_toplist(self, station, time):
-        self.toplist[station] = time
+    def __add_to_toplist(self, station, value, type):
+        if type == 'threshold':
+            self.threshold_toplist[station] = value
+        elif type == 'area':
+            self.area_toplist[station] = value
 
     def __store_toplist(self, output, scenario):
-        outputpath = os.path.join(output, scenario + "_delivery-toplist.txt")
+        outputpath = os.path.join(output, scenario + "_delivery-toplist-threshold.txt")
         with open(outputpath, "w") as file:
-            for key, value in self.toplist.items():
+            for key, value in self.threshold_toplist.items():
+                file.write("{},{}\n".format(key, str(value)))
+
+        outputpath = os.path.join(output, scenario + "_delivery-toplist-area.txt")
+        with open(outputpath, "w") as file:
+            for key, value in self.area_toplist.items():
                 file.write("{},{}\n".format(key, str(value)))
 
 
