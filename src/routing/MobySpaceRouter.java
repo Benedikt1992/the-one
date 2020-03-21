@@ -20,19 +20,12 @@ import java.util.*;
 /**
  * GeOpps message router from
  */
-public class GeOppsRouter extends ActiveRouter {
+public class MobySpaceRouter extends ActiveRouter {
 	/** GeOpps router's settings name space ({@value})*/
-	public static final String GEOPPS_NS = "GeOppsRouter";
-	/** identifier for the message keeping setting ({@value})*/
-	public static final String KEEP_MSG = "keepMessages";
-	public static final String DIRECT_DISTANCE = "directDistance";
-	public static final String STOPS_ONLY = "stopsOnly";
-    public static final String STOP_BUFER = "stopBuffer";
+	public static final String MobySpace_NS = "MobySpaceRouter";
+	// TODO setting dimensions (defining which nodes are a dimension via ranges)
+	// TODO setting defining which MobySpace should be used
 
-	protected boolean keepMessages;
-	protected boolean directDistance;
-	protected boolean stopsOnly;
-	protected boolean stopBuffer;
 
 	protected Map<String, Double> estimatedDeliveryTimes;
 	protected DijkstraPathFinder pathFinder;
@@ -46,14 +39,9 @@ public class GeOppsRouter extends ActiveRouter {
 	 * the given Settings object.
 	 * @param s The settings object
 	 */
-	public GeOppsRouter(Settings s) {
+	public MobySpaceRouter(Settings s) {
 		super(s);
-		Settings geoppsSettings = new Settings(GEOPPS_NS);
-
-		keepMessages = geoppsSettings.getBoolean(KEEP_MSG);
-		directDistance = geoppsSettings.getBoolean(DIRECT_DISTANCE);
-		stopsOnly = geoppsSettings.getBoolean(STOPS_ONLY);
-        stopBuffer = geoppsSettings.getBoolean(STOP_BUFER);
+		Settings mobySettings = new Settings(MobySpace_NS);
 		estimatedDeliveryTimes = new HashMap<>();
 		pathFinder = new DijkstraPathFinder(null);
 		distanceCache = new HashMap<>();
@@ -65,12 +53,8 @@ public class GeOppsRouter extends ActiveRouter {
 	 * Copy constructor.
 	 * @param r The router prototype where setting values are copied from
 	 */
-	protected GeOppsRouter(GeOppsRouter r) {
+	protected MobySpaceRouter(MobySpaceRouter r) {
 		super(r);
-		this.keepMessages = r.keepMessages;
-		this.directDistance = r.directDistance;
-		this.stopsOnly = r.stopsOnly;
-        this.stopBuffer = r.stopBuffer;
 		this.estimatedDeliveryTimes = new HashMap<>();
 		this.pathFinder = r.pathFinder;
 		this.distanceCache = r.distanceCache;
@@ -80,18 +64,8 @@ public class GeOppsRouter extends ActiveRouter {
 	}
 
 	@Override
-	public boolean createNewMessage(Message m) {
-		boolean succeeded = super.createNewMessage(m);
-		if (succeeded) {
-            Tuple<Double, Double> deliveryTime = findDeliveryEstimation(m);
-			estimatedDeliveryTimes.put(m.getTo().toString(), deliveryTime.getValue());
-			messageDeadlines.put(m.getTo().toString(), deliveryTime.getKey());
-		}
-		return succeeded;
-	}
-
-	@Override
 	public void update() {
+		// TODO
 		super.update();
 		if (isTransferring() || !canStartTransfer()) {
 			return; // transferring, don't try other connections yet
@@ -105,24 +79,6 @@ public class GeOppsRouter extends ActiveRouter {
 		List<Tuple<Message, Connection>> sendableMessages = sortByQueueMode(getSendableMessages());
 		if (this.tryMessagesForConnected(sendableMessages) != null) {
 		    return; // started a transfer, don't try others (yet)
-        }
-
-		if (stopBuffer) {
-		    // Look if some messages exceeded their deadline (not TTL)
-            List<Message> messages = getExceededMessages();
-            if( messages.size() == 0) {
-                return;
-            }
-
-			for (Message m : messages) {
-				keepMessage.add(m.getId());
-			}
-
-            List<Connection> connections = getStationaryNodeConnections();
-            Connection con = tryMessagesToConnections(messages, connections);
-            if (con!= null) {
-                List<Message> started = con.getMessage();
-            }
         }
 
 	}
@@ -161,8 +117,8 @@ public class GeOppsRouter extends ActiveRouter {
 				DTNHost otherNode = c.getOtherNode(getHost());
 				MessageRouter router = otherNode.getRouter();
 				Tuple<Double, Double> deliveryTime;
-				if (router instanceof GeOppsRouter) {
-					deliveryTime = ((GeOppsRouter) router).findDeliveryEstimation(m);
+				if (router instanceof MobySpaceRouter) {
+					deliveryTime = ((MobySpaceRouter) router).findDeliveryEstimation(m);
 				} else {
 					deliveryTime = new Tuple<>(Double.MAX_VALUE, Double.MAX_VALUE);
 				}
@@ -340,8 +296,8 @@ public class GeOppsRouter extends ActiveRouter {
 	}
 
 	@Override
-	public GeOppsRouter replicate() {
-		return new GeOppsRouter(this);
+	public MobySpaceRouter replicate() {
+		return new MobySpaceRouter(this);
 	}
 
 }
