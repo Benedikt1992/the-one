@@ -176,7 +176,9 @@ public class SimScenario implements Serializable {
 		return myinstance;
 	}
 
-
+	public static boolean isInstantiated() {
+		return SimScenario.myinstance != null;
+	}
 
 	/**
 	 * Returns the name of the simulation run
