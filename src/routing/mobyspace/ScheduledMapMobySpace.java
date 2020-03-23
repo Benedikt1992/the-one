@@ -71,44 +71,80 @@ public class ScheduledMapMobySpace {
         return Math.sqrt(sum);
     }
 
-    public void updatePoint(Integer address, MapNode changingStop, Double nextVisit) {
-        if (nextVisit == null) {
-            nextVisit = 0.0;
-        }
-
-        this.points.get(address).update(changingStop, nextVisit);
-    }
-
     public void addPoint(Integer address, MapScheduledRoute route) {
-        List<MapScheduledNode> stops = route.getStops();
-        HashMap<MapNode, Double> visits = new HashMap<>();
-        for (int i = stops.size() - 1; i < 0; i--) {
-            double time = stops.get(i).getTime();
-            MapNode key = stops.get(i).getNode();
-            visits.put(key, time);
-        }
-        MobyPoint point = new MobyPoint(visits);
+        MobyPoint point = new MobyPoint(route);
         points.put(address, point);
     }
 
+    public void addPoint(Integer address, MapNode node) {
+        MobyPoint point = new MobyPoint(node);
+        points.put(address, point);
+    }
 
     private static class MobyPoint {
         private HashMap<MapNode, Double> visits;
-        public MobyPoint(HashMap<MapNode, Double> visits) {
+        private MapScheduledRoute route;
+        private int lastIndex;
+
+        public MobyPoint(MapScheduledRoute route) {
+            lastIndex = 0;
+            this.route = route;
+            List<MapScheduledNode> stops = route.getStops();
+            HashMap<MapNode, Double> visits = new HashMap<>();
+            for (int i = stops.size() - 1; i < 0; i--) {
+                double time = stops.get(i).getTime();
+                MapNode key = stops.get(i).getNode();
+                visits.put(key, time);
+            }
             this.visits = visits;
         }
 
-        public void update(MapNode node, double time) {
+        public MobyPoint(MapNode node) {
+            HashMap<MapNode, Double> visits = new HashMap<>();
+            visits.put(node, null);
+            this.visits = visits;
+        }
+
+        private void update(MapNode node, double time) {
             visits.put(node, time);
         }
 
         public double getValue(MapNode node) {
-            double time = visits.getOrDefault(node, 0.0);
-            double value = 1 / (time - SimClock.getTime());
+            Double time = visits.getOrDefault(node, 0.0);
+            if (time == null) {
+                // we have a stationary node
+                return 1;
+            }
+
+            double cTime = SimClock.getTime();
+            if (time < cTime) {
+                updatePoint(node);
+                time = visits.get(node);
+            }
+
+            double value = 1 / (time - cTime);
 
             value = value < 0 ? 0 : value;
 
             return value;
+        }
+
+        private void updatePoint(MapNode changingDimension) {
+            this.route.setNextIndex(this.lastIndex);
+            MapScheduledNode nextNode = this.route.nextStop();
+            double cTime = SimClock.getTime();
+            while (nextNode != null) {
+                if (nextNode.getTime() < cTime) {
+                    lastIndex++;
+                    nextNode = this.route.nextStop();
+                    continue;
+                }
+                if (nextNode.getNode() == changingDimension) {
+                    update(changingDimension, nextNode.getTime());
+                    return;
+                }
+            }
+            update(changingDimension, 0);
         }
     }
 }
