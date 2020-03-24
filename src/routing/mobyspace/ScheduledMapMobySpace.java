@@ -32,10 +32,9 @@ public class ScheduledMapMobySpace {
     }
 
     public void setDimensions(List<Integer> dimensions) {
-        if (this.dimensions == null) {
-            this.dimensions = dimensions;
-        } else {
-            throw new RuntimeException("Dimension of the MobySpace can't be changed.");
+        this.dimensions = dimensions;
+        if(this.dimensionNodes != null) {
+            convertDimensions();
         }
     }
 
@@ -91,7 +90,7 @@ public class ScheduledMapMobySpace {
             this.route = route;
             List<MapScheduledNode> stops = route.getStops();
             HashMap<MapNode, Double> visits = new HashMap<>();
-            for (int i = stops.size() - 1; i < 0; i--) {
+            for (int i = stops.size() - 1; i >= 0; i--) {
                 double time = stops.get(i).getTime();
                 MapNode key = stops.get(i).getNode();
                 visits.put(key, time);
@@ -112,14 +111,19 @@ public class ScheduledMapMobySpace {
         public double getValue(MapNode node) {
             Double time = visits.getOrDefault(node, 0.0);
             if (time == null) {
-                // we have a stationary node
+                // we have a stationary node and itself as dimension
                 return 1;
             }
 
+            if (visits.size() <= 1) {
+                // we have a stationary node and something else as dimension
+                return 0;
+            }
+
             double cTime = SimClock.getTime();
-            if (time < cTime) {
+            if ( time > 0 && time < cTime) {
                 updatePoint(node);
-                time = visits.get(node);
+                time = visits.getOrDefault(node, 0.0);
             }
 
             double value = 1 / (time - cTime);
@@ -143,8 +147,9 @@ public class ScheduledMapMobySpace {
                     update(changingDimension, nextNode.getTime());
                     return;
                 }
+                nextNode = this.route.nextStop();
             }
-            update(changingDimension, 0);
+            visits.remove(changingDimension);
         }
     }
 }

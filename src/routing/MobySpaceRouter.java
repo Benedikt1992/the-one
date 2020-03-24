@@ -65,6 +65,11 @@ public class MobySpaceRouter extends ActiveRouter {
 	protected MobySpaceRouter(MobySpaceRouter r) {
 		super(r);
 		this.space = r.space;
+	}
+
+	@Override
+	public void init(DTNHost host, List<MessageListener> mListeners) {
+		super.init(host, mListeners);
 		MovementModel mModel = this.getHost().getMovement();
 		if (mModel instanceof MapScheduledMovement) {
 			this.space.addPoint(this.getHost().getAddress(),
@@ -76,6 +81,8 @@ public class MobySpaceRouter extends ActiveRouter {
 			throw new RuntimeException("The simulation scenario contains unsupported movement models for MobySpace.");
 		}
 	}
+
+
 
 	@Override
 	public void update() {
