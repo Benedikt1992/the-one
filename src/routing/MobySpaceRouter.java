@@ -29,15 +29,8 @@ public class MobySpaceRouter extends ActiveRouter {
 	public static final String MobySpace_NS = "MobySpaceRouter";
 	/** identifier which nodes should work as dimension in the MobySpace */
 	public static final String DIMENSIONS = "dimensions";
-	// TODO setting dimensions (defining which nodes are a dimension via ranges)
-
 
 	protected ScheduledMapMobySpace space;
-//	protected DijkstraPathFinder pathFinder;
-//	protected Map<String, Double> distanceCache;
-//	protected Map<String, Double> messageDeadlines;
-//	protected Set<String> keepMessage;
-
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -54,7 +47,7 @@ public class MobySpaceRouter extends ActiveRouter {
 				dimensions.add(NodeId);
 			}
 		}
-		space = ScheduledMapMobySpace.getInstance(); // TODO doesn't need to be singleton
+		space = ScheduledMapMobySpace.getInstance();
 		space.setDimensions(dimensions);
 	}
 
@@ -103,29 +96,6 @@ public class MobySpaceRouter extends ActiveRouter {
         }
 
 	}
-
-//    private List<Connection> getStationaryNodeConnections() {
-//        List<Connection> connections = new ArrayList<>();
-//        for (Connection con : getConnections()) {
-//            MovementModel mm = con.getOtherNode(getHost()).getMovement();
-//            if (mm instanceof StationaryListMovement ||
-//                mm instanceof StationaryMovement) {
-//                connections.add(con);
-//            }
-//        }
-//        return connections;
-//    }
-
-//    private List<Message> getExceededMessages() {
-//        List<Message> messages = new ArrayList<>();
-//        double cTime = SimClock.getTime();
-//        for (Message m : getMessageCollection()) {
-//            if (messageDeadlines.get(m.getTo().toString()) < cTime) {
-//                messages.add(m);
-//            }
-//        }
-//        return messages;
-//    }
 
     private List<Tuple<Message, Connection>> getSendableMessages() {
 		Collection<Message> messages = getMessageCollection();
