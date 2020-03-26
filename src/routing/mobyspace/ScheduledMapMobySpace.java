@@ -10,10 +10,7 @@ import movement.map.MapNode;
 import movement.map.MapScheduledNode;
 import movement.map.MapScheduledRoute;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ScheduledMapMobySpace {
     private static ScheduledMapMobySpace instance;
@@ -59,6 +56,9 @@ public class ScheduledMapMobySpace {
         double sum = 0;
         MobyPoint point1 = points.get(node1);
         MobyPoint point2 = points.get(node2);
+//        point1.update();
+//        point2.update();
+//        double cTime = SimClock.getTime();
         if (dimensionNodes == null)  {
             convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
         }
@@ -83,7 +83,9 @@ public class ScheduledMapMobySpace {
     private static class MobyPoint {
         private HashMap<MapNode, Double> visits;
         private MapScheduledRoute route;
+        private MapNode node;
         private int lastIndex;
+        private boolean isStationary;
 
         public MobyPoint(MapScheduledRoute route) {
             lastIndex = 0;
@@ -96,12 +98,12 @@ public class ScheduledMapMobySpace {
                 visits.put(key, time);
             }
             this.visits = visits;
+            this.isStationary = false;
         }
 
         public MobyPoint(MapNode node) {
-            HashMap<MapNode, Double> visits = new HashMap<>();
-            visits.put(node, null);
-            this.visits = visits;
+            this.node = node;
+            this.isStationary = true;
         }
 
         private void update(MapNode node, double time) {
@@ -109,19 +111,17 @@ public class ScheduledMapMobySpace {
         }
 
         public double getValue(MapNode node) {
+            if (isStationary) {
+                return getStationaryValue(node);
+            } else {
+                return getRouteValue(node);
+            }
+        }
+
+        private double getRouteValue(MapNode node) {
             Double time = visits.getOrDefault(node, 0.0);
-            if (time == null) {
-                // we have a stationary node and itself as dimension
-                return 1;
-            }
-
-            if (visits.size() <= 1) {
-                // we have a stationary node and something else as dimension
-                return 0;
-            }
-
             double cTime = SimClock.getTime();
-            if ( time > 0 && time < cTime) {
+            if (time < cTime) {
                 updatePoint(node);
                 time = visits.getOrDefault(node, 0.0);
             }
@@ -131,6 +131,23 @@ public class ScheduledMapMobySpace {
             value = value < 0 ? 0 : value;
 
             return value;
+        }
+
+        private double getStationaryValue(MapNode node) {
+            if (node == this.node) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        public void update() {
+            if (!isStationary) {
+                HashSet<MapNode> nodes = new HashSet<>(visits.keySet());
+                for (MapNode n : nodes) {
+                    updatePoint(n);
+                }
+            }
         }
 
         private void updatePoint(MapNode changingDimension) {
