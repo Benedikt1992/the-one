@@ -134,30 +134,31 @@ public class ScheduledMapMobySpace {
 
         public void update() {
             if (!isStationary) {
-                this.route.setNextIndex(this.lastIndex);
-                MapScheduledNode nextNode = this.route.nextStop();
+                List <MapScheduledNode> stops = this.route.getStops();
                 double cTime = SimClock.getTime();
-                while (nextNode != null) {
+                if (lastIndex >= stops.size()) {
+                    return;
+                }
+                for (int i = this.lastIndex; i < stops.size(); i++) {
+                    MapScheduledNode nextNode = stops.get(i);
                     if (nextNode.getTime() >= cTime) {
                         return;
                     }
                     updatePoint(nextNode.getNode());
                     lastIndex++;
-                    this.route.setNextIndex(this.lastIndex);
-                    nextNode = this.route.nextStop();
                 }
             }
         }
 
         private void updatePoint(MapNode outdatedStop) {
-            MapScheduledNode nextNode = this.route.nextStop();
+            List <MapScheduledNode> stops = this.route.getStops();
             double cTime = SimClock.getTime();
-            while (nextNode != null) {
+            for (int i = this.lastIndex; i < stops.size(); i++) {
+                MapScheduledNode nextNode = stops.get(i);
                 if (nextNode.getNode() == outdatedStop && nextNode.getTime() > cTime) {
                     visits.put(outdatedStop, nextNode.getTime());
                     return;
                 }
-                nextNode = this.route.nextStop();
             }
             visits.remove(outdatedStop);
         }
