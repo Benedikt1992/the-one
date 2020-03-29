@@ -129,7 +129,11 @@ public class ScheduledMapMobySpace {
             sum += Math.pow(value2 * value1, this.k);
         }
         // TODO replace this with an version without precision errors.
-        return 1 / sum;
+        if (sum != 0) {
+            return 1 / sum;
+        } else {
+            return Double.MAX_VALUE;
+        }
     }
 
     public void addPoint(Integer address, MapScheduledRoute route) {
