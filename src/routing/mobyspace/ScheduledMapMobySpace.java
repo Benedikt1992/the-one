@@ -1,15 +1,14 @@
 package routing.mobyspace;
 
-import core.DTNHost;
-import core.SimClock;
-import core.SimScenario;
-import core.World;
+import core.*;
 import movement.MovementModel;
 import movement.StationaryListMovement;
 import movement.map.MapNode;
 import movement.map.MapScheduledNode;
 import movement.map.MapScheduledRoute;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class ScheduledMapMobySpace {
@@ -17,6 +16,11 @@ public class ScheduledMapMobySpace {
     private Map<Integer, MobyPoint> points;
     private List<Integer> dimensions;
     private List<MapNode> dimensionNodes;
+
+    /** The method used to calculate distances within the space */
+    private Method distanceMetric;
+    /** For Lk-norm metrics */
+    private double k;
 
     private ScheduledMapMobySpace() {
         points = new HashMap<>();
@@ -33,6 +37,18 @@ public class ScheduledMapMobySpace {
         if(this.dimensionNodes != null) {
             convertDimensions();
         }
+    }
+
+    public void setDistanceMetric(String methodName, Double k) {
+        try {
+            if (k == 2.0) {
+                this.distanceMetric = this.getClass().getMethod("euclideanDistance", Integer.class, Integer.class);
+            } else {
+                this.distanceMetric = this.getClass().getMethod(methodName, Integer.class, Integer.class);
+            }
+        } catch (NoSuchMethodException e) {throw new RuntimeException(e); }
+
+        this.k = k;
     }
 
     private void convertDimensions() {
@@ -52,6 +68,14 @@ public class ScheduledMapMobySpace {
         }
     }
 
+    public double distance(Integer node1, Integer node2) {
+        try {
+            return (double) this.distanceMetric.invoke(this, node1, node2);
+        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public double euclideanDistance(Integer node1, Integer node2) {
         double sum = 0;
         MobyPoint point1 = points.get(node1);
@@ -68,6 +92,44 @@ public class ScheduledMapMobySpace {
             sum += (value2 - value1) * (value2 - value1);
         }
         return Math.sqrt(sum);
+    }
+
+    public double LNormDistance(Integer node1, Integer node2) {
+        double sum = 0;
+        MobyPoint point1 = points.get(node1);
+        MobyPoint point2 = points.get(node2);
+        point1.update();
+        point2.update();
+        double cTime = SimClock.getTime();
+        if (dimensionNodes == null)  {
+            convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
+        }
+        for (MapNode dimension: dimensionNodes) {
+            double value1 = point1.getValue(dimension, cTime);
+            double value2 = point2.getValue(dimension, cTime);
+            sum += Math.pow(value2 - value1, this.k);
+        }
+        // TODO replace this with an version without precision errors.
+        return Math.pow(sum, 1 / this.k);
+    }
+
+    public double productDistance(Integer node1, Integer node2) {
+        double sum = 0;
+        MobyPoint point1 = points.get(node1);
+        MobyPoint point2 = points.get(node2);
+        point1.update();
+        point2.update();
+        double cTime = SimClock.getTime();
+        if (dimensionNodes == null)  {
+            convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
+        }
+        for (MapNode dimension: dimensionNodes) {
+            double value1 = point1.getValue(dimension, cTime);
+            double value2 = point2.getValue(dimension, cTime);
+            sum += Math.pow(value2 * value1, this.k);
+        }
+        // TODO replace this with an version without precision errors.
+        return 1 / sum;
     }
 
     public void addPoint(Integer address, MapScheduledRoute route) {

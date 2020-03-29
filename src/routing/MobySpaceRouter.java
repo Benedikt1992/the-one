@@ -29,6 +29,11 @@ public class MobySpaceRouter extends ActiveRouter {
 	public static final String MobySpace_NS = "MobySpaceRouter";
 	/** identifier which nodes should work as dimension in the MobySpace */
 	public static final String DIMENSIONS = "dimensions";
+	/** The method used to calculate distances within the space */
+	public static final String DISTANCE_METRIC = "distanceMetric";
+	/** constant k used by distance metrics */
+	public static final String DISTANCE_METRIC_K = "distanceMetricK";
+
 
 	protected ScheduledMapMobySpace space;
 
@@ -47,8 +52,12 @@ public class MobySpaceRouter extends ActiveRouter {
 				dimensions.add(NodeId);
 			}
 		}
+
+		String distanceMetric = mobySettings.getSetting(DISTANCE_METRIC);
+		double k = mobySettings.getDouble(DISTANCE_METRIC_K);
 		space = ScheduledMapMobySpace.getInstance();
 		space.setDimensions(dimensions);
+		space.setDistanceMetric(distanceMetric, k);
 	}
 
 	/**
@@ -109,7 +118,7 @@ public class MobySpaceRouter extends ActiveRouter {
 			for (Connection c : connections) {
 				DTNHost otherNode = c.getOtherNode(getHost());
 				Double distance;
-				distance = this.space.euclideanDistance(otherNode.getAddress(),
+				distance = this.space.distance(otherNode.getAddress(),
 						m.getTo().getAddress());
 				if (distance < minDistance) {
 					minConnection = c;
@@ -123,7 +132,7 @@ public class MobySpaceRouter extends ActiveRouter {
 		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
 		for (HashMap.Entry<Message, Tuple<Double, Connection>> entry :
 				distances.entrySet()) {
-			double distance = this.space.euclideanDistance(getHost().getAddress(), entry.getKey().getTo().getAddress());
+			double distance = this.space.distance(getHost().getAddress(), entry.getKey().getTo().getAddress());
 			if (entry.getValue().getKey() < distance) {
 				sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
 			}
