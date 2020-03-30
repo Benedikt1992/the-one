@@ -42,9 +42,9 @@ public class ScheduledMapMobySpace {
     public void setDistanceMetric(String methodName, Double k) {
         try {
             if (k == 2.0) {
-                this.distanceMetric = this.getClass().getMethod("euclideanDistance", Integer.class, Integer.class);
+                this.distanceMetric = this.getClass().getMethod("euclideanDistance", MobyPoint.class, MobyPoint.class);
             } else {
-                this.distanceMetric = this.getClass().getMethod(methodName, Integer.class, Integer.class);
+                this.distanceMetric = this.getClass().getMethod(methodName, MobyPoint.class, MobyPoint.class);
             }
         } catch (NoSuchMethodException e) {throw new RuntimeException(e); }
 
@@ -69,23 +69,23 @@ public class ScheduledMapMobySpace {
     }
 
     public double distance(Integer node1, Integer node2) {
+        MobyPoint point1 = points.get(node1);
+        MobyPoint point2 = points.get(node2);
+        point1.update();
+        point2.update();
+        if (dimensionNodes == null)  {
+            convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
+        }
         try {
-            return (double) this.distanceMetric.invoke(this, node1, node2);
+            return (double) this.distanceMetric.invoke(this, point1, point2);
         } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public double euclideanDistance(Integer node1, Integer node2) {
+    public double euclideanDistance(MobyPoint point1, MobyPoint point2) {
         double sum = 0;
-        MobyPoint point1 = points.get(node1);
-        MobyPoint point2 = points.get(node2);
-        point1.update();
-        point2.update();
         double cTime = SimClock.getTime();
-        if (dimensionNodes == null)  {
-            convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
-        }
         for (MapNode dimension: dimensionNodes) {
             double value1 = point1.getValue(dimension, cTime);
             double value2 = point2.getValue(dimension, cTime);
@@ -94,39 +94,25 @@ public class ScheduledMapMobySpace {
         return Math.sqrt(sum);
     }
 
-    public double LNormDistance(Integer node1, Integer node2) {
+    public double LNormDistance(MobyPoint point1, MobyPoint point2) {
         double sum = 0;
-        MobyPoint point1 = points.get(node1);
-        MobyPoint point2 = points.get(node2);
-        point1.update();
-        point2.update();
         double cTime = SimClock.getTime();
-        if (dimensionNodes == null)  {
-            convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
-        }
         for (MapNode dimension: dimensionNodes) {
             double value1 = point1.getValue(dimension, cTime);
             double value2 = point2.getValue(dimension, cTime);
-            sum += Math.pow(value2 - value1, this.k);
+            sum += pow(value2 - value1, this.k);
         }
         // TODO replace this with an version without precision errors.
-        return Math.pow(sum, 1 / this.k);
+        return pow(sum, 1 / this.k);
     }
 
-    public double productDistance(Integer node1, Integer node2) {
+    public double productDistance(MobyPoint point1, MobyPoint point2) {
         double sum = 0;
-        MobyPoint point1 = points.get(node1);
-        MobyPoint point2 = points.get(node2);
-        point1.update();
-        point2.update();
         double cTime = SimClock.getTime();
-        if (dimensionNodes == null)  {
-            convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
-        }
         for (MapNode dimension: dimensionNodes) {
             double value1 = point1.getValue(dimension, cTime);
             double value2 = point2.getValue(dimension, cTime);
-            sum += Math.pow(value2 * value1, this.k);
+            sum += pow(value2 * value1, this.k);
         }
         // TODO replace this with an version without precision errors.
         if (sum != 0) {
@@ -136,6 +122,12 @@ public class ScheduledMapMobySpace {
         }
     }
 
+    private double pow(double x, double y) {
+        if (y == 1) {
+            return x;
+        }
+        return Math.pow(x,y);
+    }
     public void addPoint(Integer address, MapScheduledRoute route) {
         MobyPoint point = new MobyPoint(route);
         points.put(address, point);
