@@ -33,9 +33,15 @@ public class MobySpaceRouter extends ActiveRouter {
 	public static final String DISTANCE_METRIC = "distanceMetric";
 	/** constant k used by distance metrics */
 	public static final String DISTANCE_METRIC_K = "distanceMetricK";
+	/** identifier for the number of copies per hop setting ({@value})*/
+	public static final String NROF_FORWARDINGS = "nrofForwardings";
+
+	/** Message property key */
+	public static final String MSG_FORWARD_PROPERTY = MobySpace_NS + "." + "forwardings";
 
 
 	protected ScheduledMapMobySpace space;
+	protected int initialNrofForwardings;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -53,6 +59,8 @@ public class MobySpaceRouter extends ActiveRouter {
 			}
 		}
 
+		initialNrofForwardings = mobySettings.getInt(NROF_FORWARDINGS);
+
 		String distanceMetric = mobySettings.getSetting(DISTANCE_METRIC);
 		double k = mobySettings.getDouble(DISTANCE_METRIC_K);
 		space = ScheduledMapMobySpace.getInstance();
@@ -67,6 +75,7 @@ public class MobySpaceRouter extends ActiveRouter {
 	protected MobySpaceRouter(MobySpaceRouter r) {
 		super(r);
 		this.space = r.space;
+		this.initialNrofForwardings = r.initialNrofForwardings;
 	}
 
 	@Override
@@ -84,7 +93,12 @@ public class MobySpaceRouter extends ActiveRouter {
 		}
 	}
 
-
+	@Override
+	public Message messageTransferred(String id, DTNHost from) {
+		Message m = super.messageTransferred(id, from);
+		m.updateProperty(MSG_FORWARD_PROPERTY, initialNrofForwardings);
+		return m;
+	}
 
 	@Override
 	public void update() {
@@ -106,7 +120,13 @@ public class MobySpaceRouter extends ActiveRouter {
 
 	}
 
-    private List<Tuple<Message, Connection>> getSendableMessages() {
+	@Override
+	public boolean createNewMessage(Message m) {
+		m.addProperty(MSG_FORWARD_PROPERTY, initialNrofForwardings);
+		return super.createNewMessage(m);
+	}
+
+	private List<Tuple<Message, Connection>> getSendableMessages() {
 		Collection<Message> messages = getMessageCollection();
 		List<Connection> connections = getConnections();
 		HashMap<Message, Tuple<Double, Connection>> distances = new HashMap<>();
@@ -114,18 +134,20 @@ public class MobySpaceRouter extends ActiveRouter {
 		/* Find shortest possible delivery time for each message */
 		for (Message m : messages) {
 			double minDistance = Double.MAX_VALUE;
-			Connection minConnection = null;
-			for (Connection c : connections) {
-				DTNHost otherNode = c.getOtherNode(getHost());
-				Double distance;
-				distance = this.space.distance(otherNode.getAddress(),
-						m.getTo().getAddress());
-				if (distance < minDistance) {
-					minConnection = c;
-					minDistance = distance;
+			if((int)m.getProperty(MSG_FORWARD_PROPERTY) > 0) {
+				Connection minConnection = null;
+				for (Connection c : connections) {
+					DTNHost otherNode = c.getOtherNode(getHost());
+					Double distance;
+					distance = this.space.distance(otherNode.getAddress(),
+							m.getTo().getAddress());
+					if (distance < minDistance) {
+						minConnection = c;
+						minDistance = distance;
+					}
 				}
+				distances.put(m, new Tuple<>(minDistance, minConnection));
 			}
-			distances.put(m, new Tuple<>(minDistance, minConnection));
 		}
 
 		/* check if shortest possible delivery times are shorter than the own estimation */
@@ -146,7 +168,12 @@ public class MobySpaceRouter extends ActiveRouter {
 	protected void transferDone(Connection con) {
 		List<Message> messages = con.getMessage();
 		for (Message m : messages) {
-			deleteMessage(m.getId(), false);
+			int nrofCopies = (int)m.getProperty(MSG_FORWARD_PROPERTY);
+			if (--nrofCopies <= 0) {
+				deleteMessage(m.getId(), false);
+			} else {
+				m.updateProperty(MSG_FORWARD_PROPERTY, nrofCopies);
+			}
 		}
 	}
 
