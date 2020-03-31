@@ -35,13 +35,18 @@ public class MobySpaceRouter extends ActiveRouter {
 	public static final String DISTANCE_METRIC_K = "distanceMetricK";
 	/** identifier for the number of copies per hop setting ({@value})*/
 	public static final String NROF_FORWARDINGS = "nrofForwardings";
+	/** identifier for the number of copies per hop setting ({@value})*/
+	public static final String KEEP_MESSAGE = "keepMessage";
+
 
 	/** Message property key */
 	public static final String MSG_FORWARD_PROPERTY = MobySpace_NS + "." + "forwardings";
+	public static final String MSG_DELIVERY_PROPERTY = MobySpace_NS + "." + "delivery";
 
 
 	protected ScheduledMapMobySpace space;
 	protected int initialNrofForwardings;
+	protected boolean keepMessage;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -59,6 +64,7 @@ public class MobySpaceRouter extends ActiveRouter {
 			}
 		}
 
+		keepMessage = mobySettings.getBoolean(KEEP_MESSAGE);
 		initialNrofForwardings = mobySettings.getInt(NROF_FORWARDINGS);
 
 		String distanceMetric = mobySettings.getSetting(DISTANCE_METRIC);
@@ -76,6 +82,7 @@ public class MobySpaceRouter extends ActiveRouter {
 		super(r);
 		this.space = r.space;
 		this.initialNrofForwardings = r.initialNrofForwardings;
+		this.keepMessage = r.keepMessage;
 	}
 
 	@Override
@@ -97,13 +104,20 @@ public class MobySpaceRouter extends ActiveRouter {
 	public Message messageTransferred(String id, DTNHost from) {
 		Message m = super.messageTransferred(id, from);
 		m.updateProperty(MSG_FORWARD_PROPERTY, initialNrofForwardings);
+		if (keepMessage) {
+			double deliveryTime = this.space.getDeliveryTime(getHost().getAddress(), m.getTo().getAddress());
+			m.updateProperty(MSG_DELIVERY_PROPERTY, deliveryTime);
+		}
 		return m;
 	}
 
 	@Override
 	public void update() {
-		// TODO
 		super.update();
+		if (keepMessage) {
+			dropOutdatedMessages();
+		}
+
 		if (isTransferring() || !canStartTransfer()) {
 			return; // transferring, don't try other connections yet
 		}
@@ -120,9 +134,24 @@ public class MobySpaceRouter extends ActiveRouter {
 
 	}
 
+	private void dropOutdatedMessages() {
+		Message[] messages = getMessageCollection().toArray(new Message[0]);
+		double cTime = SimClock.getTime();
+		for (int i=0; i<messages.length; i++) {
+			double deliveryTime = (double)messages[i].getProperty(MSG_DELIVERY_PROPERTY);
+			if (deliveryTime < cTime) {
+				deleteMessage(messages[i].getId(), true);
+			}
+		}
+	}
+
 	@Override
 	public boolean createNewMessage(Message m) {
 		m.addProperty(MSG_FORWARD_PROPERTY, initialNrofForwardings);
+		if(keepMessage) {
+			double deliveryTime = this.space.getDeliveryTime(getHost().getAddress(), m.getTo().getAddress());
+			m.addProperty(MSG_DELIVERY_PROPERTY, deliveryTime);
+		}
 		return super.createNewMessage(m);
 	}
 
@@ -134,7 +163,7 @@ public class MobySpaceRouter extends ActiveRouter {
 		/* Find shortest possible delivery time for each message */
 		for (Message m : messages) {
 			double minDistance = Double.MAX_VALUE;
-			if((int)m.getProperty(MSG_FORWARD_PROPERTY) > 0) {
+			if(keepMessage || (int)m.getProperty(MSG_FORWARD_PROPERTY) > 0) {
 				Connection minConnection = null;
 				for (Connection c : connections) {
 					DTNHost otherNode = c.getOtherNode(getHost());
@@ -156,7 +185,13 @@ public class MobySpaceRouter extends ActiveRouter {
 				distances.entrySet()) {
 			double distance = this.space.distance(getHost().getAddress(), entry.getKey().getTo().getAddress());
 			if (entry.getValue().getKey() < distance) {
-				sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
+				Message m = entry.getKey();
+				DTNHost h = entry.getValue().getValue().getOtherNode(getHost());
+				if ( 	(int)m.getProperty(MSG_FORWARD_PROPERTY) > 0 ||
+						(keepMessage && space.getDeliveryTime(h.getAddress(), m.getTo().getAddress()) < (double)m.getProperty(MSG_DELIVERY_PROPERTY))
+				) {
+					sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
+				}
 			}
 		}
 
@@ -167,9 +202,14 @@ public class MobySpaceRouter extends ActiveRouter {
 	@Override
 	protected void transferDone(Connection con) {
 		List<Message> messages = con.getMessage();
+		DTNHost h = con.getOtherNode(getHost());
 		for (Message m : messages) {
 			int nrofCopies = (int)m.getProperty(MSG_FORWARD_PROPERTY);
-			if (--nrofCopies <= 0) {
+			if(keepMessage) {
+				double deliveryTime = space.getDeliveryTime(h.getAddress(), m.getTo().getAddress());
+				m.updateProperty(MSG_DELIVERY_PROPERTY, deliveryTime);
+			}
+			if (--nrofCopies <= 0 && !keepMessage) {
 				deleteMessage(m.getId(), false);
 			} else {
 				m.updateProperty(MSG_FORWARD_PROPERTY, nrofCopies);

@@ -16,6 +16,7 @@ public class ScheduledMapMobySpace {
     private Map<Integer, MobyPoint> points;
     private List<Integer> dimensions;
     private List<MapNode> dimensionNodes;
+    private Map<Integer, MapNode> dimensionsMapping;
 
     /** The method used to calculate distances within the space */
     private Method distanceMetric;
@@ -53,6 +54,7 @@ public class ScheduledMapMobySpace {
 
     private void convertDimensions() {
         if ( SimScenario.isInstantiated()) {
+            Map<Integer, MapNode> dimensionsMap = new HashMap<>();
             dimensionNodes = new ArrayList<>();
             World world = SimScenario.getInstance().getWorld();
             for (Integer i: dimensions) {
@@ -61,10 +63,12 @@ public class ScheduledMapMobySpace {
                 if (mModel instanceof StationaryListMovement) {
                     MapNode mapNode = ((StationaryListMovement) mModel).getMapLocation();
                     dimensionNodes.add(mapNode);
+                    dimensionsMap.put(i, mapNode);
                 } else {
                     throw new RuntimeException("Dimension is not a stationary node");
                 }
             }
+            this.dimensionsMapping = dimensionsMap;
         }
     }
 
@@ -138,6 +142,18 @@ public class ScheduledMapMobySpace {
         points.put(address, point);
     }
 
+    public double getDeliveryTime(int node1, Integer destination) {
+        if (dimensionsMapping == null) {
+            convertDimensions();
+        }
+        MobyPoint point1 = points.get(node1);
+        MapNode dimension = dimensionsMapping.getOrDefault(destination, null);
+        if (dimension == null) {
+            throw new RuntimeException(destination.toString() + " is not a dimension.");
+        }
+        return point1.getTime(dimension);
+    }
+
     private static class MobyPoint {
         private HashMap<MapNode, Double> visits;
         private MapScheduledRoute route;
@@ -170,6 +186,14 @@ public class ScheduledMapMobySpace {
             } else {
                 return getRouteValue(node, cTime);
             }
+        }
+
+        public double getTime(MapNode node) {
+            double result = Double.MAX_VALUE;
+            if (!isStationary) {
+                result = visits.getOrDefault(node, Double.MAX_VALUE);
+            }
+            return result;
         }
 
         private double getRouteValue(MapNode node, double cTime) {
