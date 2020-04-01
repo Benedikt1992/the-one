@@ -22,9 +22,13 @@ public class ScheduledMapMobySpace {
     private Method distanceMetric;
     /** For Lk-norm metrics */
     private double k;
+    private double cacheTime;
+    private Map<String,Double> distanceCache;
 
     private ScheduledMapMobySpace() {
         points = new HashMap<>();
+        distanceCache = new HashMap<>();
+        cacheTime = SimClock.getTime();
     }
     public static ScheduledMapMobySpace getInstance() {
         if (ScheduledMapMobySpace.instance == null) {
@@ -73,6 +77,18 @@ public class ScheduledMapMobySpace {
     }
 
     public double distance(Integer node1, Integer node2) {
+        double cTime = SimClock.getTime();
+        Double distance = null;
+        if (cTime == cacheTime) {
+            distance = distanceCache.getOrDefault(node1.toString() + node2.toString(), null);
+        } else {
+            cacheTime = cTime;
+            distanceCache = new HashMap<>();
+        }
+
+        if (distance != null) {
+            return distance;
+        }
         MobyPoint point1 = points.get(node1);
         MobyPoint point2 = points.get(node2);
         point1.update();
@@ -81,7 +97,9 @@ public class ScheduledMapMobySpace {
             convertDimensions(); // Conversion from node address to MapNodes can only be made once the simulation started.
         }
         try {
-            return (double) this.distanceMetric.invoke(this, point1, point2);
+            distance =  (double) this.distanceMetric.invoke(this, point1, point2);
+            distanceCache.put(node1.toString() + node2.toString(), distance);
+            return distance;
         } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
