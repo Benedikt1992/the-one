@@ -19,6 +19,17 @@ class DeliveryCumulationGraph:
         self.threshold_toplist = {}
         self.area_toplist = {}
 
+    def list_missing_messages(self, output_path, scenario):
+        messages = self.created_messages_reader.get_messages()
+        message_origin_map = self.created_messages_reader.get_message_origins()
+        delivered_messages = self.delivered_messages_reader.get_delivered_messages()
+
+        missing_msg = messages - delivered_messages
+        with open(os.path.join(output_path, scenario + '_missing-messages.txt'), 'w') as file:
+            file.write("# Missing {} messages out of {}:\n".format(len(missing_msg), len(messages)))
+            for message in missing_msg:
+                file.write("{} {}\n".format(message, message_origin_map[message]))
+
     def create_all_from_scenario(self, output_path, scenario):
         destinations = self.created_messages_reader.get_messages_grouped_by_destination()
         for destination, messages in destinations.items():

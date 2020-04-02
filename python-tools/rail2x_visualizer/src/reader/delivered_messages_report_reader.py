@@ -51,6 +51,13 @@ class DeliveredMessagesReportReader:
                 deliveries.append((float(row[self.delivery_time]), row[self.id]))
         return deliveries
 
+    def get_delivered_messages(self):
+        delivered_messages = set()
+        for row in self.rows:
+            delivered_messages.add(row[self.id])
+
+        return delivered_messages
+
     def get_hops(self, destination=None):
         """
         Get amount of hops for messages. Optionally only for messages with a specific destination

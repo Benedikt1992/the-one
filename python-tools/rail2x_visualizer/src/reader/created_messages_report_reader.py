@@ -70,3 +70,15 @@ class CreatedMessagesReportReader:
             messages.add(row[self.id])
 
         return messages
+
+    def get_message_origins(self):
+        """
+        Find which messages were generated for which destination
+        :return: {<destinantion name> : [Message Names]}
+        """
+        origins = {}
+
+        for row in self.rows:
+            origins[row[self.id]] = row[self.from_host]
+
+        return origins
