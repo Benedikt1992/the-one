@@ -1,6 +1,10 @@
 import os
-
+import re
+from decimal import *
+import networkx as nx
+import math
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
@@ -20,15 +24,61 @@ class DeliveryCumulationGraph:
         self.area_toplist = {}
 
     def list_missing_messages(self, output_path, scenario):
-        messages = self.created_messages_reader.get_messages()
-        message_origin_map = self.created_messages_reader.get_message_origins()
-        delivered_messages = self.delivered_messages_reader.get_delivered_messages()
-
-        missing_msg = messages - delivered_messages
+        message_origin_map, messages, missing_msg = self.__calculate_missing_messages()
         with open(os.path.join(output_path, scenario + '_missing-messages.txt'), 'w') as file:
             file.write("# Missing {} messages out of {}:\n".format(len(missing_msg), len(messages)))
             for message in missing_msg:
                 file.write("{} {}\n".format(message, message_origin_map[message]))
+
+    def __calculate_missing_messages(self):
+        messages = self.created_messages_reader.get_messages()
+        message_origin_map = self.created_messages_reader.get_message_origins()
+        delivered_messages = self.delivered_messages_reader.get_delivered_messages()
+        missing_msg = messages - delivered_messages
+        return message_origin_map, messages, missing_msg
+
+    def analyze_missing_messages(self):
+        origins, _, missing_messages = self.__calculate_missing_messages()
+        missing_senders = {}
+        pattern = r'^(?P<group>[a-zA-Z]+)(?P<address>[0-9]+)$'
+        for message in missing_messages:
+            matches = re.match(pattern, origins[message])
+            group = matches.group('group')
+            address = matches.group('address')
+            addresses = missing_senders.get(group, [])
+            addresses.append(int(address))
+            missing_senders[group] = addresses
+        wkt_maps = self.settings.get_simulation_maps()
+        schedule_files = self.settings.get_schedules()
+        stationary_nodes = self.settings.get_stationary_nodes()
+
+        locations = set()
+        for group, addresses in missing_senders.items():
+            locations = locations.union(self.__get_locations(addresses, stationary_nodes[group]['start'], stationary_nodes[group]['location']))
+        graph = self.__build_graph(wkt_maps)
+        routes = self.__build_routes(schedule_files)
+
+        print("start searching for switch occurences...\n")
+        results = {}
+        for route in tqdm(routes):
+            for i in range(1, len(route)):
+                way = set(nx.dijkstra_path(graph, route[i - 1], route[i], lambda u, v, _: u.distance(v)))
+                contained_locations = way.intersection(locations)
+                if len(contained_locations) > 0:
+                    for location in contained_locations:
+                        occurences = results.get(location, set())
+                        occurences.add((route[i - 1], route[i]))
+                        results[location] = occurences
+                    # print("Path from {} to {} contains switches {}\n".format(route[i - 1], route[i],
+                    #                                                          {str(x) for x in contained_locations}))
+        if len(results) > 0:
+            print("Some of the missing messages can be received. The following list shows which routes contain the sending node:\n\n")
+            for sender in results.keys():
+                print("Messages sent from {} are contained in the path between the following stop positions:\n".format(sender))
+                for fromNode, toNode in results[sender]:
+                    print("\tFrom {} to {}\n".format(fromNode, toNode))
+        else:
+            print("It is not possible to receive any of the missing messages.\n")
 
     def create_all_from_scenario(self, output_path, scenario):
         destinations = self.created_messages_reader.get_messages_grouped_by_destination()
@@ -105,5 +155,62 @@ class DeliveryCumulationGraph:
             for key, value in self.area_toplist.items():
                 file.write("{},{}\n".format(key, str(value)))
 
+    def __build_graph(self, wkt_maps):
+        graph = nx.Graph()
+        for wkt_map in wkt_maps:
+            with open(wkt_map, 'r') as file:
+                for line in file:
+                    waypoints = line.strip()[12:-1].split(', ')
+                    waynodes = []
+                    for point in waypoints:
+                        x, y = point.split(' ')
+                        waynodes.append(self.Node(x, y))
 
+                    for i in range(1, len(waynodes)):
+                        graph.add_edge(waynodes[i - 1], waynodes[i])
+        return graph
 
+    def __build_routes(self, schedule_files):
+        routes = []
+        for schedule in schedule_files:
+            with open(schedule, 'r') as file:
+                for line in file:
+                    route = []
+                    for stop in line.strip()[7:-1].split(', '):
+                        t, x, y = stop.split(' ')
+                        route.append(self.Node(x, y))
+                    routes.append(route)
+        return routes
+
+    def __get_locations(self, addresses, first_address, address_locations):
+        addresses = sorted(addresses)
+        lines = [address - first_address for address in addresses]
+        locations = set()
+        with open(address_locations, 'r') as file:
+            for i, line in enumerate(file):
+                if i in lines:
+                    x, y = line.strip()[7:-1].split(' ')
+                    locations.add(self.Node(x, y))
+        return locations
+
+    class Node:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+            self.xv = Decimal(x)
+            self.yv = Decimal(y)
+
+        def distance(self, other):
+            return math.sqrt((self.yv - other.yv) ** 2 + (self.xv - other.xv) ** 2)
+
+        def __hash__(self):
+            return hash(self.x + self.y)
+
+        def __eq__(self, other):
+            return self.x == other.x and self.y == other.y
+
+        def __ne__(self, other):
+            return not self.__eq__(other)
+
+        def __str__(self):
+            return "Node({} {})".format(self.x, self.y)

@@ -81,6 +81,29 @@ class ONESettingsReader:
         scenario = t.safe_substitute(self.settings_runs[self.current_run])
         return scenario
 
+    def get_simulation_maps(self):
+        current_settings = self.settings_runs[self.current_run]
+        no_maps = int(current_settings['MapBasedMovement.nrofMapFiles'])
+        maps = []
+        for i in range(1, no_maps +1):
+            map = current_settings['MapBasedMovement.mapFile' + str(i)]
+            map = os.path.join(self.simulation_base_dir, os.path.basename(map))
+            maps.append(map)
+        return maps
+
+    def get_schedules(self):
+        current_settings = self.settings_runs[self.current_run]
+        host_groups = int(current_settings['Scenario.nrofHostGroups'])
+
+        schedules = []
+        for i in range(1, host_groups + 1):
+            movement_model = "Group" + str(i) + ".movementModel"
+            if current_settings[movement_model] == "MapScheduledMovement":
+                route_file = current_settings["Group" + str(i) + ".routeFile"]
+                route_file_path = os.path.join(self.simulation_base_dir, os.path.basename(route_file))
+                schedules.append(route_file_path)
+        return schedules
+
     class ScenarioTemplate(Template):
         pattern = r"""
         (?:

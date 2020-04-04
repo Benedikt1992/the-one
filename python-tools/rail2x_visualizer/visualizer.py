@@ -26,7 +26,8 @@ class Visualizer:
                                  " Default is all nodes in on graph. Can have a list of different node prefixes.")
         parser.add_argument('-s', '--simulation', required=True,
                             help="Path of the directory containing all files referenced by the settings (flat hierarchy). "
-                                 "This is used read files referenced withing the simulation configuration.")
+                                 "This is used read files referenced within the simulation configuration.")
+        parser.add_argument('-a', '--analyze', action='store_true', help="Analyze if missed messages are theoretically deliverable.")
         self.args = parser.parse_args()
 
         if not os.path.isdir(self.args.reports):
@@ -74,6 +75,8 @@ class Visualizer:
             delivery = DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader)
             delivery.create_all_from_scenario(self.output, scenario)
             delivery.list_missing_messages(self.output, scenario)
+            if self.args.analyze:
+                delivery.analyze_missing_messages()
             hops = HopDistribution(delivered_messages_reader, created_messages_reader)
             hops.create_histogram_from_scenario(self.output, scenario)
             hops.create_boxplots_from_scenario(self.output, scenario)
