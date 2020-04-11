@@ -46,7 +46,7 @@ public class ScheduledMapMobySpace {
 
     public void setDistanceMetric(String methodName, Double k) {
         try {
-            if (k == 2.0) {
+            if (k == 2.0 && methodName.equals("LNormDistance")) {
                 this.distanceMetric = this.getClass().getMethod("euclideanDistance", MobyPoint.class, MobyPoint.class);
             } else {
                 this.distanceMetric = this.getClass().getMethod(methodName, MobyPoint.class, MobyPoint.class);
