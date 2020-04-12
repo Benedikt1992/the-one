@@ -8,13 +8,25 @@ public class ContactGraphEdge {
     private  Integer address;
     private double departure;
     private double arrival;
+    private ContactGraphEdge previousEdge;
+    private ContactGraphEdge nextEdge;
 
-    public ContactGraphEdge(MapNode from, double departure, MapNode to, double arrival, Integer address) {
+    public ContactGraphEdge(MapNode from, double departure, MapNode to, double arrival, Integer address, ContactGraphEdge previousEdge) {
+        // TODO arrival and departure can be Integer?
         this.from = from;
         this.to = to;
         this.address = address;
         this.departure = departure;
         this.arrival = arrival;
+        this.previousEdge = previousEdge;
+        this.nextEdge = null;
+        if (previousEdge != null) {
+            previousEdge.setNextEdge(this);
+        }
+    }
+
+    private void setNextEdge(ContactGraphEdge nextEdge) {
+        this.nextEdge = nextEdge;
     }
 
     public MapNode getFrom() {

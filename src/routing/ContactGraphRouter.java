@@ -8,7 +8,11 @@ import core.*;
 import movement.MapScheduledMovement;
 import movement.MovementModel;
 import movement.StationaryListMovement;
+import movement.map.MapScheduledNode;
+import movement.map.MapScheduledRoute;
 import routing.contactgraph.ContactGraph;
+import routing.contactgraph.ContactGraphEdge;
+import routing.contactgraph.ContactGraphNode;
 import routing.mobyspace.ScheduledMapMobySpace;
 import util.Range;
 import util.Tuple;
@@ -56,7 +60,27 @@ public class ContactGraphRouter extends ActiveRouter {
 	@Override
 	public void init(DTNHost host, List<MessageListener> mListeners) {
 		super.init(host, mListeners);
-		//TODO probably add nodes/edges in this method
+		MovementModel mModel = this.getHost().getMovement();
+		if (mModel instanceof MapScheduledMovement) {
+			List<MapScheduledNode> schedule = ((MapScheduledMovement) mModel).getSchedule().getStops();
+			ContactGraphEdge previousEdge = null;
+			for (int i = 1; i < schedule.size(); i++) {
+				MapScheduledNode prevEntry = schedule.get(i-1);
+				MapScheduledNode cEntry = schedule.get(i);
+				if (!prevEntry.getNode().equals(cEntry.getNode())) {
+					// TODO maybe replace null with `new Object[]{ null }`
+					ContactGraphEdge newEdge = new ContactGraphEdge(prevEntry.getNode(), prevEntry.getTime(),
+							cEntry.getNode(), cEntry.getTime(), host.getAddress(), previousEdge);
+					this.graph.addEdge(newEdge);
+					previousEdge = newEdge;
+				}
+			}
+		} else if (mModel instanceof StationaryListMovement) {
+			ContactGraphNode newNode = new ContactGraphNode(host.getAddress(), ((StationaryListMovement) mModel).getMapLocation());
+			this.graph.addNode(newNode);
+		} else {
+			throw new RuntimeException("The simulation scenario contains unsupported movement models for ContactGraphRouting.");
+		}
 	}
 
 	@Override
