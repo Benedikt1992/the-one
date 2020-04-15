@@ -12,7 +12,6 @@ public class ContactGraphEdge {
     private ContactGraphEdge nextEdge;
 
     public ContactGraphEdge(MapNode from, double departure, MapNode to, double arrival, Integer address, ContactGraphEdge previousEdge) {
-        // TODO arrival and departure can be Integer?
         this.from = from;
         this.to = to;
         this.address = address;

@@ -68,7 +68,6 @@ public class ContactGraphRouter extends ActiveRouter {
 				MapScheduledNode prevEntry = schedule.get(i-1);
 				MapScheduledNode cEntry = schedule.get(i);
 				if (!prevEntry.getNode().equals(cEntry.getNode())) {
-					// TODO maybe replace null with `new Object[]{ null }`
 					ContactGraphEdge newEdge = new ContactGraphEdge(prevEntry.getNode(), prevEntry.getTime(),
 							cEntry.getNode(), cEntry.getTime(), host.getAddress(), previousEdge);
 					this.graph.addEdge(newEdge);

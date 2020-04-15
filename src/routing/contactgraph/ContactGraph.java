@@ -3,17 +3,21 @@ package routing.contactgraph;
 import movement.map.MapNode;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ContactGraph {
     private static ContactGraph instance;
 
     private Map<MapNode, ContactGraphNode> nodesByLocation;
     private Map<Integer, ContactGraphNode> nodesByAddress;
+    private Set<Integer> availableRoutes;
 
     private ContactGraph() {
         this.nodesByLocation = new HashMap<>();
         this.nodesByAddress = new HashMap<>();
+        this.availableRoutes = new HashSet<>();
     }
 
     public static ContactGraph getInstance() {
@@ -72,5 +76,19 @@ public class ContactGraph {
             this.nodesByLocation.put(to, toNode);
         }
         toNode.addIncomingEdge(edge);
+    }
+
+    public void calculateRoutesTo(Integer address) {
+        if (availableRoutes.contains(address)) {
+            return;
+        }
+        ContactGraphNode destination = this.nodesByAddress.getOrDefault(address, null);
+        if (destination == null) {
+            throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
+        }
+
+
+        // TODO calculate...
+        availableRoutes.add(address);
     }
 }

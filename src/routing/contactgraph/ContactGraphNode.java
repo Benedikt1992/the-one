@@ -2,17 +2,14 @@ package routing.contactgraph;
 
 import movement.map.MapNode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ContactGraphNode {
-    Integer address;
-    MapNode location;
+    private Integer address;
+    private MapNode location;
     //TODO make the storage of edges faster searchable
-    List<ContactGraphEdge> incomingEdges;
-    List<ContactGraphEdge> outgoingEdges;
+    private List<ContactGraphEdge> incomingEdges;
+    private List<ContactGraphEdge> outgoingEdges;
 
     public ContactGraphNode(Integer address, MapNode location) {
         this.address = address;
@@ -49,9 +46,26 @@ public class ContactGraphNode {
 
     public void addOutgoingEdge(ContactGraphEdge edge) {
         outgoingEdges.add(edge);
+        Collections.sort(incomingEdges, (e1, e2) -> (int) Math.floor(e1.getDeparture() - e2.getDeparture()));
     }
 
     public void addIncomingEdge(ContactGraphEdge edge) {
         incomingEdges.add(edge);
+        Collections.sort(incomingEdges, (e1, e2) -> (int) Math.floor(e1.getArrival() - e2.getArrival()));
+    }
+
+    public Iterator<ContactGraphEdge> incomingEdges(boolean ascending) {
+        // TODO
+        return new Iterator<ContactGraphEdge>() {
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public ContactGraphEdge next() {
+                return null;
+            }
+        };
     }
 }
