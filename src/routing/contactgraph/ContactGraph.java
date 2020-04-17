@@ -91,7 +91,6 @@ public class ContactGraph {
             finalizeRoutes(address);
         }
 
-        // TODO sort available routes according to delivery time. or check if it is already sorted (note: it can be that a route starts early and arrives later)
         availableRoutes.add(address);
     }
 

@@ -12,6 +12,8 @@ public class ContactGraphNode {
     private List<ContactGraphEdge> outgoingEdges;
     private LinkedList<ContactGraphEdge> routeCandidate;
     private Map<Integer, LinkedList<LinkedList<ContactGraphEdge>>> routes;
+    private boolean incomingSorted;
+    private boolean outgoingSorted;
 
 
     public ContactGraphNode(Integer address, MapNode location) {
@@ -21,6 +23,8 @@ public class ContactGraphNode {
         this.outgoingEdges = new ArrayList<>();
         this.routeCandidate = null;
         this.routes = new HashMap<>();
+        this.incomingSorted = false;
+        this.outgoingSorted = false;
     }
 
     public ContactGraphNode(MapNode location) {
@@ -29,6 +33,8 @@ public class ContactGraphNode {
         this.outgoingEdges = new ArrayList<>();
         this.routeCandidate = null;
         this.routes = new HashMap<>();
+        this.incomingSorted = false;
+        this.outgoingSorted = false;
     }
 
     public void setRouteCandidate(LinkedList<ContactGraphEdge> routeCandidate) {
@@ -74,15 +80,30 @@ public class ContactGraphNode {
 
     public void addOutgoingEdge(ContactGraphEdge edge) {
         outgoingEdges.add(edge);
-        Collections.sort(incomingEdges, (e1, e2) -> (int) Math.floor(e1.getDeparture() - e2.getDeparture()));
+        outgoingSorted = false;
     }
 
     public void addIncomingEdge(ContactGraphEdge edge) {
         incomingEdges.add(edge);
-        Collections.sort(incomingEdges, (e1, e2) -> (int) Math.floor(e1.getArrival() - e2.getArrival()));
+        incomingSorted = false;
+    }
+
+    private void sortIncomingEdges() {
+        if (!incomingSorted) {
+            Collections.sort(incomingEdges, (e1, e2) -> (int) Math.floor(e1.getArrival() - e2.getArrival()));
+            incomingSorted = true;
+        }
+    }
+
+    private void sortOutgoingEdges() {
+        if (!outgoingSorted) {
+            Collections.sort(incomingEdges, (e1, e2) -> (int) Math.floor(e1.getArrival() - e2.getArrival()));
+            outgoingSorted = true;
+        }
     }
 
     public Iterator<ContactGraphEdge> incomingEdges(boolean ascending) {
+        sortIncomingEdges();
         if (ascending) {
             return new AscendingEdgeIterator<>(this.incomingEdges);
         } else {
@@ -96,7 +117,7 @@ public class ContactGraphNode {
         if (min == null) {
             min = max;
         }
-        // TODO make this more efficient with better datastructures
+        // TODO make this more efficient with better datastructures - it is already pretty fast.
         Set<ContactGraphEdge> contacts = new HashSet<>();
         for (ContactGraphEdge e : incomingEdges) {
             if (e.getArrival() > max) {
