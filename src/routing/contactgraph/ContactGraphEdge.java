@@ -24,6 +24,13 @@ public class ContactGraphEdge {
         }
     }
 
+    public Double getArrivalAtFrom() {
+        if (previousEdge == null) {
+            return null;
+        }
+        return previousEdge.getArrival();
+    }
+
     private void setNextEdge(ContactGraphEdge nextEdge) {
         this.nextEdge = nextEdge;
     }
@@ -46,5 +53,12 @@ public class ContactGraphEdge {
 
     public double getArrival() {
         return arrival;
+    }
+
+    public Double getDepartureToTo() {
+        if (nextEdge == null) {
+            return null;
+        }
+        return nextEdge.getDeparture();
     }
 }

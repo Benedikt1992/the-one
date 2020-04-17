@@ -10,18 +10,46 @@ public class ContactGraphNode {
     //TODO make the storage of edges faster searchable
     private List<ContactGraphEdge> incomingEdges;
     private List<ContactGraphEdge> outgoingEdges;
+    private LinkedList<ContactGraphEdge> routeCandidate;
+    private Map<Integer, LinkedList<LinkedList<ContactGraphEdge>>> routes;
+
 
     public ContactGraphNode(Integer address, MapNode location) {
         this.address = address;
         this.location = location;
         this.incomingEdges = new ArrayList<>();
         this.outgoingEdges = new ArrayList<>();
+        this.routeCandidate = null;
+        this.routes = new HashMap<>();
     }
 
     public ContactGraphNode(MapNode location) {
         this.location = location;
         this.incomingEdges = new ArrayList<>();
         this.outgoingEdges = new ArrayList<>();
+        this.routeCandidate = null;
+        this.routes = new HashMap<>();
+    }
+
+    public void setRouteCandidate(LinkedList<ContactGraphEdge> routeCandidate) {
+        this.routeCandidate = routeCandidate;
+    }
+
+    public Double getRouteCandidateStart() {
+        if (routeCandidate == null) {
+            return null;
+        }
+
+        return routeCandidate.peek().getDeparture();
+    }
+
+    public void persistRouteCandidate(Integer destination) {
+        if (routeCandidate != null) {
+            LinkedList<LinkedList<ContactGraphEdge>> availableRoutes = this.routes.getOrDefault(destination, new LinkedList<>());
+            availableRoutes.push(routeCandidate);
+            this.routes.put(destination, availableRoutes);
+            routeCandidate = null;
+        }
     }
 
     public void setLocation(MapNode location) {
@@ -55,17 +83,70 @@ public class ContactGraphNode {
     }
 
     public Iterator<ContactGraphEdge> incomingEdges(boolean ascending) {
-        // TODO
-        return new Iterator<ContactGraphEdge>() {
-            @Override
-            public boolean hasNext() {
-                return false;
-            }
+        if (ascending) {
+            return new AscendingEdgeIterator<>(this.incomingEdges);
+        } else {
+            return new DescendingEdgeIterator<>(this.incomingEdges);
+        }
+    }
 
-            @Override
-            public ContactGraphEdge next() {
-                return null;
+    public Set<ContactGraphEdge> getContacts(ContactGraphEdge edge) {
+        Double min = edge.getArrivalAtFrom();
+        double max = edge.getDeparture();
+        if (min == null) {
+            min = max;
+        }
+        // TODO make this more efficient with better datastructures
+        Set<ContactGraphEdge> contacts = new HashSet<>();
+        for (ContactGraphEdge e : incomingEdges) {
+            if (e.getArrival() > max) {
+                break;
             }
-        };
+            Double leaveTime = e.getDepartureToTo();
+            if (leaveTime != null && leaveTime >= min) {
+                contacts.add(e);
+            }
+        }
+        return contacts;
+    }
+}
+
+class AscendingEdgeIterator<ContactGraphEdge> implements Iterator<ContactGraphEdge> {
+    private int index;
+    private List<ContactGraphEdge> list;
+
+    AscendingEdgeIterator(List<ContactGraphEdge> list) {
+        this.list = list;
+        index = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index < list.size();
+    }
+
+    @Override
+    public ContactGraphEdge next() {
+        return list.get(index++);
+    }
+}
+
+class DescendingEdgeIterator<ContactGraphEdge> implements Iterator<ContactGraphEdge> {
+    private int index;
+    private List<ContactGraphEdge> list;
+
+    DescendingEdgeIterator(List<ContactGraphEdge> list) {
+        this.list = list;
+        index = list.size() - 1;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index >= 0;
+    }
+
+    @Override
+    public ContactGraphEdge next() {
+        return list.get(index--);
     }
 }

@@ -17,10 +17,7 @@ import routing.mobyspace.ScheduledMapMobySpace;
 import util.Range;
 import util.Tuple;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * MobySpace message router.
@@ -116,6 +113,7 @@ public class ContactGraphRouter extends ActiveRouter {
 //			double deliveryTime = this.space.getDeliveryTime(getHost().getAddress(), m.getTo().getAddress());
 //			m.addProperty(MSG_DELIVERY_PROPERTY, deliveryTime);
 //		}
+		this.graph.calculateRoutesTo(m.getTo().getAddress());
 		return super.createNewMessage(m);
 	}
 

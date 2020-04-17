@@ -1,11 +1,9 @@
 package routing.contactgraph;
 
 import movement.map.MapNode;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ContactGraph {
     private static ContactGraph instance;
@@ -87,8 +85,35 @@ public class ContactGraph {
             throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
         }
 
+        for (Iterator<ContactGraphEdge> it = destination.incomingEdges(false); it.hasNext(); ) {
+            ContactGraphEdge edge = it.next();
+            deepSearch(edge, new LinkedList<>());
+            finalizeRoutes(address);
+        }
 
-        // TODO calculate...
+        // TODO sort available routes according to delivery time. or check if it is already sorted (note: it can be that a route starts early and arrives later)
         availableRoutes.add(address);
+    }
+
+    private void finalizeRoutes(Integer destination) {
+        for (Map.Entry<Integer, ContactGraphNode> entry :
+                nodesByAddress.entrySet()) {
+            entry.getValue().persistRouteCandidate(destination);
+        }
+    }
+
+    private void deepSearch(ContactGraphEdge edge, LinkedList<ContactGraphEdge> routeState) {
+        routeState.push(edge);
+        ContactGraphNode node = nodesByLocation.get(edge.getFrom());
+        Double lastStart = node.getRouteCandidateStart();
+        if (lastStart == null || lastStart < edge.getDeparture()) {
+            LinkedList<ContactGraphEdge> clone = ( LinkedList<ContactGraphEdge>) routeState.clone();
+            node.setRouteCandidate(clone);
+            Set<ContactGraphEdge> contacts = node.getContacts(edge);
+            for (ContactGraphEdge contact : contacts) {
+                deepSearch(contact, routeState);
+            }
+        }
+        routeState.pop();
     }
 }
