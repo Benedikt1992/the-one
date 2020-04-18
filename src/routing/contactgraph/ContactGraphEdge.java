@@ -56,6 +56,7 @@ public class ContactGraphEdge {
     }
 
     public Double getDepartureToTo() {
+        //TODO is this really what should happen? Maybe rename it then?
         if (nextEdge == null) {
             return null;
         }

@@ -1,5 +1,6 @@
 package routing.contactgraph;
 
+import core.SimClock;
 import movement.map.MapNode;
 
 import java.util.*;
@@ -7,11 +8,10 @@ import java.util.*;
 public class ContactGraphNode {
     private Integer address;
     private MapNode location;
-    //TODO make the storage of edges faster searchable
     private List<ContactGraphEdge> incomingEdges;
     private List<ContactGraphEdge> outgoingEdges;
     private LinkedList<ContactGraphEdge> routeCandidate;
-    private Map<Integer, LinkedList<LinkedList<ContactGraphEdge>>> routes;
+    private  Map<Integer, LinkedList<LinkedList<ContactGraphEdge>>> routes;
     private boolean incomingSorted;
     private boolean outgoingSorted;
 
@@ -129,6 +129,34 @@ public class ContactGraphNode {
             }
         }
         return contacts;
+    }
+
+    public LinkedList<ContactGraphEdge> getNearestRoute(int to, double startTime) {
+        LinkedList<LinkedList<ContactGraphEdge>> routes = this.routes.getOrDefault(to, null);
+        if (routes == null) {
+            return null;
+        }
+
+        // TODO check if this effects the objekt within this.routes (it should!)
+        removeObsoleteRoutes(routes);
+        for (LinkedList<ContactGraphEdge> route: routes){
+            if (route.getFirst().getDeparture() >= startTime) {
+                return route;
+            }
+        }
+        return null;
+    }
+
+    private void removeObsoleteRoutes(LinkedList<LinkedList<ContactGraphEdge>> routes) {
+        LinkedList<ContactGraphEdge> candidate = routes.peek();
+        double cTime = SimClock.getTime();
+        while (candidate != null) {
+            if (candidate.peek().getDeparture() >= cTime) {
+                break;
+            }
+            routes.pop();
+            candidate = routes.peek();
+        }
     }
 }
 

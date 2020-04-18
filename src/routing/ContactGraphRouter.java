@@ -30,9 +30,11 @@ public class ContactGraphRouter extends ActiveRouter {
 
 	/** Message property key */
 	public static final String MSG_ROUTE_PROPERTY = CONTACT_GRAPH_NS + "." + "route";
+	public static final String MSG_ROUTE_INDEX_PROPERTY = CONTACT_GRAPH_NS + "." + "routeIndex";
 
 
 	protected ContactGraph graph;
+	private boolean isStationary;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -59,6 +61,7 @@ public class ContactGraphRouter extends ActiveRouter {
 		super.init(host, mListeners);
 		MovementModel mModel = this.getHost().getMovement();
 		if (mModel instanceof MapScheduledMovement) {
+			this.isStationary = false;
 			List<MapScheduledNode> schedule = ((MapScheduledMovement) mModel).getSchedule().getStops();
 			ContactGraphEdge previousEdge = null;
 			for (int i = 1; i < schedule.size(); i++) {
@@ -72,6 +75,7 @@ public class ContactGraphRouter extends ActiveRouter {
 				}
 			}
 		} else if (mModel instanceof StationaryListMovement) {
+			this.isStationary = true;
 			ContactGraphNode newNode = new ContactGraphNode(host.getAddress(), ((StationaryListMovement) mModel).getMapLocation());
 			this.graph.addNode(newNode);
 		} else {
@@ -82,8 +86,34 @@ public class ContactGraphRouter extends ActiveRouter {
 	@Override
 	public Message messageTransferred(String id, DTNHost from) {
 		Message m = super.messageTransferred(id, from);
-		// TODO?
+		Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
+		if (isStationary) {
+			List<Tuple<Double,Integer>> newRoute = findRoute(m);
+			Integer newIndex = 0;
+			if (newRoute == null) {
+				newIndex = null;
+			}
+			m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
+			m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
+		} else {
+			if (routeIndex != null) {
+				m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
+			}
+		}
 		return m;
+	}
+
+	private List<Tuple<Double, Integer>> findRoute(Message m) {
+		LinkedList<ContactGraphEdge> route = this.graph.getNearestRoute(getHost().getAddress(), m.getTo().getAddress(), SimClock.getTime());
+
+		if (route == null) {
+			return null;
+		}
+		List<Tuple<Double,Integer>> simpleRoute = new ArrayList<>();
+		for (ContactGraphEdge hop : route) {
+			simpleRoute.add(new Tuple<>(hop.getDeparture(), hop.getAddress()));
+		}
+		return simpleRoute;
 	}
 
 	@Override
@@ -107,18 +137,12 @@ public class ContactGraphRouter extends ActiveRouter {
 
 	@Override
 	public boolean createNewMessage(Message m) {
-		//TODO?
-//		m.addProperty(MSG_FORWARD_PROPERTY, initialNrofForwardings);
-//		if(keepMessage) {
-//			double deliveryTime = this.space.getDeliveryTime(getHost().getAddress(), m.getTo().getAddress());
-//			m.addProperty(MSG_DELIVERY_PROPERTY, deliveryTime);
-//		}
 		this.graph.calculateRoutesTo(m.getTo().getAddress());
 		return super.createNewMessage(m);
 	}
 
 	private List<Tuple<Message, Connection>> getSendableMessages() {
-		// TODO!
+		// TODO find messages which can be transferredto the next hop
 //		Collection<Message> messages = getMessageCollection();
 //		List<Connection> connections = getConnections();
 //		HashMap<Message, Tuple<Double, Connection>> distances = new HashMap<>();
@@ -164,7 +188,7 @@ public class ContactGraphRouter extends ActiveRouter {
 
 	@Override
 	protected void transferDone(Connection con) {
-		//TODO?
+		//TODO on the sending note. probabyl just remove the message
 //		List<Message> messages = con.getMessage();
 //		DTNHost h = con.getOtherNode(getHost());
 //		for (Message m : messages) {

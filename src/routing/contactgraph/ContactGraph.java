@@ -115,4 +115,12 @@ public class ContactGraph {
         }
         routeState.pop();
     }
+
+    public LinkedList<ContactGraphEdge> getNearestRoute(int from, int to, double startTime) {
+        ContactGraphNode fromNode = this.nodesByAddress.getOrDefault(from, null);
+        if (fromNode == null) {
+            return null;
+        }
+        return fromNode.getNearestRoute(to, startTime);
+    }
 }
