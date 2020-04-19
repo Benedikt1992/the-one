@@ -35,6 +35,7 @@ public class ContactGraphRouter extends ActiveRouter {
 
 	protected ContactGraph graph;
 	private boolean isStationary;
+	private Set<Message> unroutedMessages;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -45,6 +46,7 @@ public class ContactGraphRouter extends ActiveRouter {
 		super(s);
 		Settings contactSettings = new Settings(CONTACT_GRAPH_NS);
 		this.graph = ContactGraph.getInstance();
+		this.unroutedMessages = new HashSet<>();
 	}
 
 	/**
@@ -54,6 +56,7 @@ public class ContactGraphRouter extends ActiveRouter {
 	protected ContactGraphRouter(ContactGraphRouter r) {
 		super(r);
 		this.graph = r.graph;
+		this.unroutedMessages = new HashSet<>();
 	}
 
 	@Override
@@ -92,12 +95,15 @@ public class ContactGraphRouter extends ActiveRouter {
 			Integer newIndex = 0;
 			if (newRoute == null) {
 				newIndex = null;
+				unroutedMessages.add(m);
 			}
 			m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
 			m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
 		} else {
 			if (routeIndex != null) {
 				m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
+			} else {
+				unroutedMessages.add(m);
 			}
 		}
 		return m;
@@ -138,71 +144,64 @@ public class ContactGraphRouter extends ActiveRouter {
 	@Override
 	public boolean createNewMessage(Message m) {
 		this.graph.calculateRoutesTo(m.getTo().getAddress());
+		this.unroutedMessages.add(m);
 		return super.createNewMessage(m);
 	}
 
 	private List<Tuple<Message, Connection>> getSendableMessages() {
-		// TODO find messages which can be transferredto the next hop
-//		Collection<Message> messages = getMessageCollection();
-//		List<Connection> connections = getConnections();
-//		HashMap<Message, Tuple<Double, Connection>> distances = new HashMap<>();
-//
-//		/* Find shortest possible delivery time for each message */
-//		for (Message m : messages) {
-//			double minDistance = Double.MAX_VALUE;
-//			if(keepMessage || (int)m.getProperty(MSG_FORWARD_PROPERTY) > 0) {
-//				Connection minConnection = null;
-//				for (Connection c : connections) {
-//					DTNHost otherNode = c.getOtherNode(getHost());
-//					Double distance;
-//					distance = this.space.distance(otherNode.getAddress(),
-//							m.getTo().getAddress());
-//					if (distance < minDistance) {
-//						minConnection = c;
-//						minDistance = distance;
-//					}
-//				}
-//				distances.put(m, new Tuple<>(minDistance, minConnection));
-//			}
-//		}
-
-		/* check if shortest possible delivery times are shorter than the own estimation */
-		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
-//		for (HashMap.Entry<Message, Tuple<Double, Connection>> entry :
-//				distances.entrySet()) {
-//			double distance = this.space.distance(getHost().getAddress(), entry.getKey().getTo().getAddress());
-//			if (entry.getValue().getKey() < distance) {
-//				Message m = entry.getKey();
-//				DTNHost h = entry.getValue().getValue().getOtherNode(getHost());
-//				if ( 	(int)m.getProperty(MSG_FORWARD_PROPERTY) > 0 ||
-//						(keepMessage && space.getDeliveryTime(h.getAddress(), m.getTo().getAddress()) < (double)m.getProperty(MSG_DELIVERY_PROPERTY))
-//				) {
-//					sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
-//				}
-//			}
-//		}
-
-		return sendableMessages;
+		double cTime = SimClock.getTime();
+		if (isStationary) {
+			List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
+			for (Connection c : getConnections()) {
+				MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
+				if (otherRouter instanceof ContactGraphRouter) {
+					// TODO delete set of unrouted Messages?
+					for (Message m : getMessageCollection()) {
+						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
+						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
+						if (route == null && !((ContactGraphRouter) otherRouter).isStationary) {
+							// TODO is this really useful? The train will return the message immediately and there shouldn't be any other route anymore (thats what we calculate beforehand)
+							sendableMessages.add(new Tuple<>(m,c));
+						} else if (route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
+							// TODO check if the first hop is already missed??
+							sendableMessages.add(new Tuple<>(m,c));
+						}
+					}
+				}
+			}
+			return sendableMessages;
+		} else {
+			List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
+			for (Connection c: getConnections()) {
+				MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
+				if (otherRouter instanceof ContactGraphRouter) {
+					for (Message m: getMessageCollection()) {
+						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
+						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
+						if ((route == null || route.get(routeIndex).getKey() < cTime) && ((ContactGraphRouter) otherRouter).isStationary) {
+							sendableMessages.add(new Tuple<>(m,c));
+						}
+						if (route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
+							sendableMessages.add(new Tuple<>(m,c));
+						}
+					}
+				}
+			}
+			return  sendableMessages;
+		}
 	}
 
+	public boolean isStationary() {
+		return isStationary;
+	}
 
 	@Override
 	protected void transferDone(Connection con) {
-		//TODO on the sending note. probabyl just remove the message
-//		List<Message> messages = con.getMessage();
-//		DTNHost h = con.getOtherNode(getHost());
-//		for (Message m : messages) {
-//			int nrofCopies = (int)m.getProperty(MSG_FORWARD_PROPERTY);
-//			if(keepMessage) {
-//				double deliveryTime = space.getDeliveryTime(h.getAddress(), m.getTo().getAddress());
-//				m.updateProperty(MSG_DELIVERY_PROPERTY, deliveryTime);
-//			}
-//			if (--nrofCopies <= 0 && !keepMessage) {
-//				deleteMessage(m.getId(), false);
-//			} else {
-//				m.updateProperty(MSG_FORWARD_PROPERTY, nrofCopies);
-//			}
-//		}
+		List<Message> messages = con.getMessage();
+		for (Message m : messages) {
+			deleteMessage(m.getId(), false);
+			this.unroutedMessages.remove(m);
+		}
 	}
 
 	@Override
