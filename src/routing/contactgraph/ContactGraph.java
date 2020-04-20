@@ -11,11 +11,13 @@ public class ContactGraph {
     private Map<MapNode, ContactGraphNode> nodesByLocation;
     private Map<Integer, ContactGraphNode> nodesByAddress;
     private Set<Integer> availableRoutes;
+    private Set<ContactGraphEdge> visitedEdges;
 
     private ContactGraph() {
         this.nodesByLocation = new HashMap<>();
         this.nodesByAddress = new HashMap<>();
         this.availableRoutes = new HashSet<>();
+        this.visitedEdges = new HashSet<>();
     }
 
     public static ContactGraph getInstance() {
@@ -99,13 +101,16 @@ public class ContactGraph {
                 nodesByAddress.entrySet()) {
             entry.getValue().persistRouteCandidate(destination);
         }
+        this.visitedEdges = new HashSet<>();
     }
 
     private void deepSearch(ContactGraphEdge edge, LinkedList<ContactGraphEdge> routeState) {
+        if (visitedEdges.contains(edge)) { return; }
         routeState.push(edge);
         ContactGraphNode node = nodesByLocation.get(edge.getFrom());
         LinkedList<ContactGraphEdge> clone = ( LinkedList<ContactGraphEdge>) routeState.clone();
         node.setRouteCandidate(clone);
+        visitedEdges.add(edge);
         Set<ContactGraphEdge> contacts = node.getContacts(edge);
         for (ContactGraphEdge contact : contacts) {
             deepSearch(contact, routeState);
