@@ -38,7 +38,10 @@ public class ContactGraphNode {
     }
 
     public void setRouteCandidate(LinkedList<ContactGraphEdge> routeCandidate) {
-        this.routeCandidate = routeCandidate;
+        Double lastStart = getRouteCandidateStart();
+        if (lastStart == null || lastStart < routeCandidate.peek().getDeparture()) {
+            this.routeCandidate = routeCandidate;
+        }
     }
 
     public Double getRouteCandidateStart() {
@@ -119,6 +122,7 @@ public class ContactGraphNode {
         }
         // TODO make this more efficient with better datastructures - it is already pretty fast.
         Set<ContactGraphEdge> contacts = new HashSet<>();
+        sortIncomingEdges();
         for (ContactGraphEdge e : incomingEdges) {
             if (e.getArrival() > max) {
                 break;
@@ -137,7 +141,7 @@ public class ContactGraphNode {
             return null;
         }
 
-        // TODO check if this effects the objekt within this.routes (it should!)
+        // TODO check if this effects the object within this.routes (it should!)
         removeObsoleteRoutes(routes);
         for (LinkedList<ContactGraphEdge> route: routes){
             if (route.getFirst().getDeparture() >= startTime) {

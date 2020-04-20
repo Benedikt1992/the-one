@@ -104,14 +104,11 @@ public class ContactGraph {
     private void deepSearch(ContactGraphEdge edge, LinkedList<ContactGraphEdge> routeState) {
         routeState.push(edge);
         ContactGraphNode node = nodesByLocation.get(edge.getFrom());
-        Double lastStart = node.getRouteCandidateStart();
-        if (lastStart == null || lastStart < edge.getDeparture()) {
-            LinkedList<ContactGraphEdge> clone = ( LinkedList<ContactGraphEdge>) routeState.clone();
-            node.setRouteCandidate(clone);
-            Set<ContactGraphEdge> contacts = node.getContacts(edge);
-            for (ContactGraphEdge contact : contacts) {
-                deepSearch(contact, routeState);
-            }
+        LinkedList<ContactGraphEdge> clone = ( LinkedList<ContactGraphEdge>) routeState.clone();
+        node.setRouteCandidate(clone);
+        Set<ContactGraphEdge> contacts = node.getContacts(edge);
+        for (ContactGraphEdge contact : contacts) {
+            deepSearch(contact, routeState);
         }
         routeState.pop();
     }

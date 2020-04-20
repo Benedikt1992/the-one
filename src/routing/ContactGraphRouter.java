@@ -116,8 +116,12 @@ public class ContactGraphRouter extends ActiveRouter {
 			return null;
 		}
 		List<Tuple<Double,Integer>> simpleRoute = new ArrayList<>();
+		Integer previousAddress = null;
 		for (ContactGraphEdge hop : route) {
-			simpleRoute.add(new Tuple<>(hop.getDeparture(), hop.getAddress()));
+			if (previousAddress == null || previousAddress != hop.getAddress()) {
+				simpleRoute.add(new Tuple<>(hop.getDeparture(), hop.getAddress()));
+			}
+			previousAddress = hop.getAddress();
 		}
 		return simpleRoute;
 	}
@@ -178,11 +182,12 @@ public class ContactGraphRouter extends ActiveRouter {
 					for (Message m: getMessageCollection()) {
 						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
 						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
-						if ((route == null || route.get(routeIndex).getKey() < cTime) && ((ContactGraphRouter) otherRouter).isStationary) {
-							sendableMessages.add(new Tuple<>(m,c));
-						}
-						if (route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
-							sendableMessages.add(new Tuple<>(m,c));
+						if (route == null || routeIndex < route.size()) {
+							if ((route == null || route.get(routeIndex).getKey() < cTime) && ((ContactGraphRouter) otherRouter).isStationary) {
+								sendableMessages.add(new Tuple<>(m, c));
+							} else if (route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
+								sendableMessages.add(new Tuple<>(m, c));
+							}
 						}
 					}
 				}

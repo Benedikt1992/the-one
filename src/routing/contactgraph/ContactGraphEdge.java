@@ -25,6 +25,7 @@ public class ContactGraphEdge {
     }
 
     public Double getArrivalAtFrom() {
+        // TODO rename from from
         if (previousEdge == null) {
             return null;
         }
@@ -61,5 +62,9 @@ public class ContactGraphEdge {
             return null;
         }
         return nextEdge.getDeparture();
+    }
+
+    public ContactGraphEdge getPrevious() {
+        return previousEdge;
     }
 }
