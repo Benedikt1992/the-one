@@ -90,16 +90,7 @@ public class ContactGraphRouter extends ActiveRouter {
 	public Message messageTransferred(String id, DTNHost from) {
 		Message m = super.messageTransferred(id, from);
 		Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
-		if (isStationary) {
-			List<Tuple<Double,Integer>> newRoute = findRoute(m);
-			Integer newIndex = 0;
-			if (newRoute == null) {
-				newIndex = null;
-				unroutedMessages.add(m);
-			}
-			m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
-			m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
-		} else {
+		if (!isStationary) {
 			if (routeIndex != null) {
 				m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
 			} else {
@@ -109,8 +100,8 @@ public class ContactGraphRouter extends ActiveRouter {
 		return m;
 	}
 
-	private List<Tuple<Double, Integer>> findRoute(Message m) {
-		LinkedList<ContactGraphEdge> route = this.graph.getNearestRoute(getHost().getAddress(), m.getTo().getAddress(), SimClock.getTime());
+	private List<Tuple<Double, Integer>> findRoute(Message m, Integer from) {
+		LinkedList<ContactGraphEdge> route = this.graph.getNearestRoute(from, m.getTo().getAddress(), SimClock.getTime());
 
 		if (route == null) {
 			return null;
@@ -163,11 +154,11 @@ public class ContactGraphRouter extends ActiveRouter {
 					for (Message m : getMessageCollection()) {
 						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
 						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
-						if (route == null || routeIndex < route.size()) {
-							if (route == null && !((ContactGraphRouter) otherRouter).isStationary) {
-								// TODO is this really useful? The train will return the message immediately and there shouldn't be any other route anymore (thats what we calculate beforehand)
-								sendableMessages.add(new Tuple<>(m, c));
-							} else if (route != null && route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
+						if (route == null) {
+							sendableMessages.add(new Tuple<>(m, c));
+						}
+						if (routeIndex != null && routeIndex < route.size()) {
+							if (route != null && route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
 								// TODO check if the first hop is already missed??
 								sendableMessages.add(new Tuple<>(m, c));
 							}
@@ -186,7 +177,17 @@ public class ContactGraphRouter extends ActiveRouter {
 						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
 						if (route == null || routeIndex < route.size()) {
 							if ((route == null || route.get(routeIndex).getKey() < cTime) && ((ContactGraphRouter) otherRouter).isStationary) {
-								sendableMessages.add(new Tuple<>(m, c));
+								List<Tuple<Double,Integer>> newRoute = findRoute(m, c.getOtherNode(getHost()).getAddress());
+								Integer newIndex = 0;
+								if (newRoute != null) {
+									m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
+									m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
+									if (newRoute.get(0).getValue() != getHost().getAddress()) {
+										sendableMessages.add(new Tuple<>(m, c));
+									} else {
+										m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++newIndex);
+									}
+								}
 							} else if (route != null && route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
 								sendableMessages.add(new Tuple<>(m, c));
 							}
