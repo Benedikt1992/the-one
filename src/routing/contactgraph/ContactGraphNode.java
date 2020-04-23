@@ -115,7 +115,7 @@ public class ContactGraphNode {
     }
 
     public Set<ContactGraphEdge> getContacts(ContactGraphEdge edge) {
-        Double min = edge.getArrivalAtFrom();
+        Double min = edge.getArrivalFromFrom();
         double max = edge.getDeparture();
         if (min == null) {
             min = max;

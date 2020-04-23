@@ -35,7 +35,6 @@ public class ContactGraphRouter extends ActiveRouter {
 
 	protected ContactGraph graph;
 	private boolean isStationary;
-	private Set<Message> unroutedMessages;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -46,7 +45,6 @@ public class ContactGraphRouter extends ActiveRouter {
 		super(s);
 		Settings contactSettings = new Settings(CONTACT_GRAPH_NS);
 		this.graph = ContactGraph.getInstance();
-		this.unroutedMessages = new HashSet<>();
 	}
 
 	/**
@@ -56,7 +54,6 @@ public class ContactGraphRouter extends ActiveRouter {
 	protected ContactGraphRouter(ContactGraphRouter r) {
 		super(r);
 		this.graph = r.graph;
-		this.unroutedMessages = new HashSet<>();
 	}
 
 	@Override
@@ -93,8 +90,6 @@ public class ContactGraphRouter extends ActiveRouter {
 		if (!isStationary) {
 			if (routeIndex != null) {
 				m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
-			} else {
-				unroutedMessages.add(m);
 			}
 		}
 		return m;
@@ -139,7 +134,6 @@ public class ContactGraphRouter extends ActiveRouter {
 	@Override
 	public boolean createNewMessage(Message m) {
 		this.graph.calculateRoutesTo(m.getTo().getAddress());
-		this.unroutedMessages.add(m);
 		return super.createNewMessage(m);
 	}
 
@@ -150,7 +144,6 @@ public class ContactGraphRouter extends ActiveRouter {
 			for (Connection c : getConnections()) {
 				MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
 				if (otherRouter instanceof ContactGraphRouter) {
-					// TODO delete set of unrouted Messages?
 					for (Message m : getMessageCollection()) {
 						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
 						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
@@ -159,9 +152,15 @@ public class ContactGraphRouter extends ActiveRouter {
 						}
 						if (routeIndex != null && routeIndex < route.size()) {
 							if (route != null && route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
-								// TODO check if the first hop is already missed??
 								sendableMessages.add(new Tuple<>(m, c));
-							}
+							} else if ( route != null && route.get(routeIndex).getKey() < SimClock.getTime()) {
+                                List<Tuple<Double,Integer>> newRoute = findRoute(m, getHost().getAddress());
+                                Integer newIndex = 0;
+                                if (newRoute != null) {
+                                    m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
+                                    m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
+                                }
+                            }
 						}
 					}
 				}
@@ -208,7 +207,6 @@ public class ContactGraphRouter extends ActiveRouter {
 		List<Message> messages = con.getMessage();
 		for (Message m : messages) {
 			deleteMessage(m.getId(), false);
-			this.unroutedMessages.remove(m);
 		}
 	}
 

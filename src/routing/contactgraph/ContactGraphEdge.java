@@ -24,8 +24,7 @@ public class ContactGraphEdge {
         }
     }
 
-    public Double getArrivalAtFrom() {
-        // TODO rename from from
+    public Double getArrivalFromFrom() {
         if (previousEdge == null) {
             return null;
         }
@@ -57,7 +56,6 @@ public class ContactGraphEdge {
     }
 
     public Double getDepartureToTo() {
-        //TODO is this really what should happen? Maybe rename it then?
         if (nextEdge == null) {
             return null;
         }
