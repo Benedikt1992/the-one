@@ -104,7 +104,7 @@ public class ContactGraphRouter extends ActiveRouter {
 		List<Tuple<Double,Integer>> simpleRoute = new ArrayList<>();
 		Integer previousAddress = null;
 		for (ContactGraphEdge hop : route) {
-			if (previousAddress == null || previousAddress != hop.getAddress()) {
+			if (previousAddress == null || !previousAddress.equals(hop.getAddress())) {
 				simpleRoute.add(new Tuple<>(hop.getDeparture(), hop.getAddress()));
 			}
 			previousAddress = hop.getAddress();

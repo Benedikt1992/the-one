@@ -120,7 +120,6 @@ public class ContactGraphNode {
         if (min == null) {
             min = max;
         }
-        // TODO make this more efficient with better datastructures - it is already pretty fast.
         Set<ContactGraphEdge> contacts = new HashSet<>();
         sortIncomingEdges();
         for (ContactGraphEdge e : incomingEdges) {
@@ -141,7 +140,6 @@ public class ContactGraphNode {
             return null;
         }
 
-        // TODO check if this effects the object within this.routes (it should!)
         removeObsoleteRoutes(routes);
         for (LinkedList<ContactGraphEdge> route: routes){
             if (route.getFirst().getDeparture() >= startTime) {
