@@ -2,6 +2,7 @@ package routing.contactgraph;
 
 import movement.map.MapNode;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import util.Tuple;
 
 import java.util.*;
 
@@ -104,11 +105,11 @@ public class ContactGraph {
         this.visitedEdges = new HashSet<>();
     }
 
-    private void deepSearch(ContactGraphEdge edge, LinkedList<ContactGraphEdge> routeState) {
+    private void deepSearch(ContactGraphEdge edge, LinkedList<Tuple<Double, Integer>> routeState) {
         if (visitedEdges.contains(edge)) { return; }
-        routeState.push(edge);
+        routeState.push(new Tuple<>(edge.getDeparture(), edge.getAddress()));
         ContactGraphNode node = nodesByLocation.get(edge.getFrom());
-        LinkedList<ContactGraphEdge> clone = ( LinkedList<ContactGraphEdge>) routeState.clone();
+        LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
         visitedEdges.add(edge);
         Set<ContactGraphEdge> contacts = node.getContacts(edge);
@@ -118,7 +119,7 @@ public class ContactGraph {
         routeState.pop();
     }
 
-    public LinkedList<ContactGraphEdge> getNearestRoute(int from, int to, double startTime) {
+    public LinkedList<Tuple<Double, Integer>> getNearestRoute(int from, int to, double startTime) {
         ContactGraphNode fromNode = this.nodesByAddress.getOrDefault(from, null);
         if (fromNode == null) {
             return null;

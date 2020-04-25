@@ -96,18 +96,18 @@ public class ContactGraphRouter extends ActiveRouter {
 	}
 
 	private List<Tuple<Double, Integer>> findRoute(Message m, Integer from) {
-		LinkedList<ContactGraphEdge> route = this.graph.getNearestRoute(from, m.getTo().getAddress(), SimClock.getTime());
+		LinkedList<Tuple<Double, Integer>> route = this.graph.getNearestRoute(from, m.getTo().getAddress(), SimClock.getTime());
 
 		if (route == null) {
 			return null;
 		}
 		List<Tuple<Double,Integer>> simpleRoute = new ArrayList<>();
 		Integer previousAddress = null;
-		for (ContactGraphEdge hop : route) {
-			if (previousAddress == null || !previousAddress.equals(hop.getAddress())) {
-				simpleRoute.add(new Tuple<>(hop.getDeparture(), hop.getAddress()));
+		for (Tuple<Double, Integer> hop : route) {
+			if (previousAddress == null || !previousAddress.equals(hop.getValue())) {
+				simpleRoute.add(hop);
 			}
-			previousAddress = hop.getAddress();
+			previousAddress = hop.getValue();
 		}
 		return simpleRoute;
 	}

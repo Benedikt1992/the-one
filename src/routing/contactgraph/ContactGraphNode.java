@@ -2,6 +2,7 @@ package routing.contactgraph;
 
 import core.SimClock;
 import movement.map.MapNode;
+import util.Tuple;
 
 import java.util.*;
 
@@ -10,8 +11,8 @@ public class ContactGraphNode {
     private MapNode location;
     private List<ContactGraphEdge> incomingEdges;
     private List<ContactGraphEdge> outgoingEdges;
-    private LinkedList<ContactGraphEdge> routeCandidate;
-    private  Map<Integer, LinkedList<LinkedList<ContactGraphEdge>>> routes;
+    private LinkedList<Tuple<Double, Integer>> routeCandidate;
+    private  Map<Integer, LinkedList<LinkedList<Tuple<Double, Integer>>>> routes;
     private boolean incomingSorted;
     private boolean outgoingSorted;
 
@@ -37,9 +38,9 @@ public class ContactGraphNode {
         this.outgoingSorted = false;
     }
 
-    public void setRouteCandidate(LinkedList<ContactGraphEdge> routeCandidate) {
+    public void setRouteCandidate(LinkedList<Tuple<Double, Integer>> routeCandidate) {
         Double lastStart = getRouteCandidateStart();
-        if (lastStart == null || lastStart < routeCandidate.peek().getDeparture()) {
+        if (lastStart == null || lastStart < routeCandidate.peek().getKey()) {
             this.routeCandidate = routeCandidate;
         }
     }
@@ -49,12 +50,12 @@ public class ContactGraphNode {
             return null;
         }
 
-        return routeCandidate.peek().getDeparture();
+        return routeCandidate.peek().getKey();
     }
 
     public void persistRouteCandidate(Integer destination) {
         if (routeCandidate != null) {
-            LinkedList<LinkedList<ContactGraphEdge>> availableRoutes = this.routes.getOrDefault(destination, new LinkedList<>());
+            LinkedList<LinkedList<Tuple<Double, Integer>>> availableRoutes = this.routes.getOrDefault(destination, new LinkedList<>());
             availableRoutes.push(routeCandidate);
             this.routes.put(destination, availableRoutes);
             routeCandidate = null;
@@ -134,26 +135,39 @@ public class ContactGraphNode {
         return contacts;
     }
 
-    public LinkedList<ContactGraphEdge> getNearestRoute(int to, double startTime) {
-        LinkedList<LinkedList<ContactGraphEdge>> routes = this.routes.getOrDefault(to, null);
+    public Set<ContactGraphEdge> getBufferedContacts(ContactGraphEdge edge) {
+        double max = edge.getDeparture();
+        Set<ContactGraphEdge> contacts = new HashSet<>();
+        sortIncomingEdges();
+        for (ContactGraphEdge e : incomingEdges) {
+            if (e.getArrival() > max) {
+                break;
+            }
+            contacts.add(e);
+        }
+        return contacts;
+    }
+
+    public LinkedList<Tuple<Double, Integer>> getNearestRoute(int to, double startTime) {
+        LinkedList<LinkedList<Tuple<Double, Integer>>> routes = this.routes.getOrDefault(to, null);
         if (routes == null) {
             return null;
         }
 
         removeObsoleteRoutes(routes);
-        for (LinkedList<ContactGraphEdge> route: routes){
-            if (route.getFirst().getDeparture() >= startTime) {
+        for (LinkedList<Tuple<Double, Integer>> route: routes){
+            if (route.getFirst().getKey() >= startTime) {
                 return route;
             }
         }
         return null;
     }
 
-    private void removeObsoleteRoutes(LinkedList<LinkedList<ContactGraphEdge>> routes) {
-        LinkedList<ContactGraphEdge> candidate = routes.peek();
+    private void removeObsoleteRoutes(LinkedList<LinkedList<Tuple<Double, Integer>>> routes) {
+        LinkedList<Tuple<Double, Integer>> candidate = routes.peek();
         double cTime = SimClock.getTime();
         while (candidate != null) {
-            if (candidate.peek().getDeparture() >= cTime) {
+            if (candidate.peek().getKey() >= cTime) {
                 break;
             }
             routes.pop();
