@@ -3,6 +3,7 @@ package routing.contactgraph;
 import movement.map.MapNode;
 
 public class ContactGraphEdge {
+    // TODO rename this. It only matches the schedule based graph
     private MapNode from;
     private MapNode to;
     private  Integer address;

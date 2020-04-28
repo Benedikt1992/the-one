@@ -25,12 +25,15 @@ import java.util.*;
  * and {@link StationaryListMovement} model.
  */
 public class ContactGraphRouter extends ActiveRouter {
-	/** GeOpps router's settings name space ({@value})*/
+	/** CGR router's settings name space ({@value})*/
 	public static final String CONTACT_GRAPH_NS = "ContactGraphRouter";
+	/** which graph type should be used for calculating routes */
+	public static final String CONTACT_GRAPH_TYPE = "graph";
 
 	/** Message property key */
 	public static final String MSG_ROUTE_PROPERTY = CONTACT_GRAPH_NS + "." + "route";
 	public static final String MSG_ROUTE_INDEX_PROPERTY = CONTACT_GRAPH_NS + "." + "routeIndex";
+
 
 
 	protected ContactGraph graph;
@@ -44,7 +47,7 @@ public class ContactGraphRouter extends ActiveRouter {
 	public ContactGraphRouter(Settings s) {
 		super(s);
 		Settings contactSettings = new Settings(CONTACT_GRAPH_NS);
-		this.graph = ContactGraph.getInstance();
+		this.graph = ContactGraph.instantiate(contactSettings);
 	}
 
 	/**
@@ -62,18 +65,8 @@ public class ContactGraphRouter extends ActiveRouter {
 		MovementModel mModel = this.getHost().getMovement();
 		if (mModel instanceof MapScheduledMovement) {
 			this.isStationary = false;
-			List<MapScheduledNode> schedule = ((MapScheduledMovement) mModel).getSchedule().getStops();
-			ContactGraphEdge previousEdge = null;
-			for (int i = 1; i < schedule.size(); i++) {
-				MapScheduledNode prevEntry = schedule.get(i-1);
-				MapScheduledNode cEntry = schedule.get(i);
-				if (!prevEntry.getNode().equals(cEntry.getNode())) {
-					ContactGraphEdge newEdge = new ContactGraphEdge(prevEntry.getNode(), prevEntry.getTime(),
-							cEntry.getNode(), cEntry.getTime(), host.getAddress(), previousEdge);
-					this.graph.addEdge(newEdge);
-					previousEdge = newEdge;
-				}
-			}
+			ContactGraphNode newNode = new ContactGraphNode(host.getAddress());
+			this.graph.addNode(newNode);
 		} else if (mModel instanceof StationaryListMovement) {
 			this.isStationary = true;
 			ContactGraphNode newNode = new ContactGraphNode(host.getAddress(), ((StationaryListMovement) mModel).getMapLocation());
@@ -139,6 +132,7 @@ public class ContactGraphRouter extends ActiveRouter {
 
 	private List<Tuple<Message, Connection>> getSendableMessages() {
 		double cTime = SimClock.getTime();
+		// TODO check if this is really general applicable or rather specific to the schedule approach
 		if (isStationary) {
 			List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
 			for (Connection c : getConnections()) {

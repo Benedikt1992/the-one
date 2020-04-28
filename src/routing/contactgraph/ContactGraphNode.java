@@ -20,16 +20,21 @@ public class ContactGraphNode {
     public ContactGraphNode(Integer address, MapNode location) {
         this.address = address;
         this.location = location;
-        this.incomingEdges = new ArrayList<>();
-        this.outgoingEdges = new ArrayList<>();
-        this.routeCandidate = null;
-        this.routes = new HashMap<>();
-        this.incomingSorted = false;
-        this.outgoingSorted = false;
+        initializeFields();
+
     }
 
     public ContactGraphNode(MapNode location) {
         this.location = location;
+        initializeFields();
+    }
+
+    public ContactGraphNode(Integer address) {
+        this.address = address;
+        initializeFields();
+    }
+
+    private void initializeFields() {
         this.incomingEdges = new ArrayList<>();
         this.outgoingEdges = new ArrayList<>();
         this.routeCandidate = null;
