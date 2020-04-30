@@ -79,12 +79,14 @@ public class ContactGraphRouter extends ActiveRouter {
 	@Override
 	public Message messageTransferred(String id, DTNHost from) {
 		Message m = super.messageTransferred(id, from);
+		List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
 		Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
-		if (!isStationary) {
-			if (routeIndex != null) {
-				m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
-			}
+		if (routeIndex != null && routeIndex < route.size() && route.get(routeIndex).getValue() == getHost().getAddress()) {
+			m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
+		} else if (routeIndex == null) {
+			replaceAssociatedRoute(m, getHost().getAddress());
 		}
+
 		return m;
 	}
 
@@ -127,69 +129,65 @@ public class ContactGraphRouter extends ActiveRouter {
 	@Override
 	public boolean createNewMessage(Message m) {
 		this.graph.calculateRoutesTo(m.getTo().getAddress());
+		replaceAssociatedRoute(m, getHost().getAddress());
 		return super.createNewMessage(m);
+	}
+
+	private boolean replaceAssociatedRoute(Message m, Integer startHost) {
+		List<Tuple<Double,Integer>> newRoute = findRoute(m, startHost);
+		Integer newIndex = 0;
+		if (newRoute != null) {
+			m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
+			m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
+			return true;
+		}
+		return false;
 	}
 
 	private List<Tuple<Message, Connection>> getSendableMessages() {
 		double cTime = SimClock.getTime();
-		// TODO check if this is really general applicable or rather specific to the schedule approach
-		if (isStationary) {
-			List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
-			for (Connection c : getConnections()) {
-				MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
-				if (otherRouter instanceof ContactGraphRouter) {
-					for (Message m : getMessageCollection()) {
-						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
-						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
-						if (route == null) {
+		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
+		for (Connection c : getConnections()) {
+			MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
+			if (otherRouter instanceof ContactGraphRouter) {
+				for (Message m : getMessageCollection()) {
+					List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
+					Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
+					if (route == null) {
+						if (replaceAssociatedRoute(m, c.getOtherNode(getHost()).getAddress())) {
+							route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
+							routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
+
+							if (route.get(routeIndex).getValue() != getHost().getAddress()) {
+								sendableMessages.add(new Tuple<>(m, c));
+							} else {
+								m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
+							}
+						} else if (isStationary && !((ContactGraphRouter) otherRouter).isStationary) {
 							sendableMessages.add(new Tuple<>(m, c));
 						}
-						if (routeIndex != null && routeIndex < route.size()) {
-							if (route != null && route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
-								sendableMessages.add(new Tuple<>(m, c));
-							} else if ( route != null && route.get(routeIndex).getKey() < SimClock.getTime()) {
-                                List<Tuple<Double,Integer>> newRoute = findRoute(m, getHost().getAddress());
-                                Integer newIndex = 0;
-                                if (newRoute != null) {
-                                    m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
-                                    m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
-                                }
-                            }
-						}
-					}
-				}
-			}
-			return sendableMessages;
-		} else {
-			List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
-			for (Connection c: getConnections()) {
-				MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
-				if (otherRouter instanceof ContactGraphRouter) {
-					for (Message m: getMessageCollection()) {
-						List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
-						Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
-						if (route == null || routeIndex < route.size()) {
-							if ((route == null || route.get(routeIndex).getKey() < cTime) && ((ContactGraphRouter) otherRouter).isStationary) {
-								List<Tuple<Double,Integer>> newRoute = findRoute(m, c.getOtherNode(getHost()).getAddress());
-								Integer newIndex = 0;
-								if (newRoute != null) {
-									m.updateProperty(MSG_ROUTE_PROPERTY, newRoute);
-									m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, newIndex);
-									if (newRoute.get(0).getValue() != getHost().getAddress()) {
-										sendableMessages.add(new Tuple<>(m, c));
-									} else {
-										m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++newIndex);
-									}
+					} else if (routeIndex < route.size()) {
+						if (route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
+							sendableMessages.add(new Tuple<>(m, c));
+						} else if (route.get(routeIndex).getKey() < cTime) {
+							if (replaceAssociatedRoute(m, c.getOtherNode(getHost()).getAddress())) {
+								route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
+								routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
+
+								if (route.get(routeIndex).getValue() != getHost().getAddress()) {
+									sendableMessages.add(new Tuple<>(m, c));
+								} else {
+									m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
 								}
-							} else if (route != null && route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
+							} else if (isStationary && !((ContactGraphRouter) otherRouter).isStationary) {
 								sendableMessages.add(new Tuple<>(m, c));
 							}
 						}
 					}
 				}
 			}
-			return  sendableMessages;
 		}
+		return  sendableMessages;
 	}
 
 	public boolean isStationary() {
