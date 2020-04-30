@@ -47,7 +47,10 @@ public class ContactGraphRouter extends ActiveRouter {
 	public ContactGraphRouter(Settings s) {
 		super(s);
 		Settings contactSettings = new Settings(CONTACT_GRAPH_NS);
-		this.graph = ContactGraph.instantiate(contactSettings);
+		String graphType = contactSettings.getSetting(CONTACT_GRAPH_TYPE);
+		if (graphType.equals("ScheduleGraph")) {
+			this.graph = ContactGraph.initializeScheduleGraph(contactSettings);
+		}
 	}
 
 	/**
