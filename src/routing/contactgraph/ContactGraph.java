@@ -28,54 +28,19 @@ public abstract class ContactGraph {
         return ContactGraph.scheduleGraph;
     }
 
-
-    protected Map<MapNode, ContactGraphNode> nodesByLocation;
-    protected Map<Integer, ContactGraphNode> nodesByAddress;
     protected Set<Integer> availableRoutes;
 
     protected ContactGraph() {
-        this.nodesByLocation = new HashMap<>();
-        this.nodesByAddress = new HashMap<>();
         this.availableRoutes = new HashSet<>();
     }
 
-    public ContactGraphNode addNode(ContactGraphNode node) {
-        MapNode location = node.getLocation();
-        Integer address = node.getAddress();
-        ContactGraphNode addressNode=null, locationNode=null;
-
-        if (address != null) {
-            addressNode = this.nodesByAddress.getOrDefault(address, null);
-        }
-        if (location != null) {
-            locationNode = this.nodesByLocation.getOrDefault(location, null);
-        }
-
-        if (addressNode == null && locationNode != null) {
-            if(address != null) {
-                locationNode.setAddress(address);
-                this.nodesByAddress.put(address,locationNode);
-            }
-            node = locationNode;
-        } else if(addressNode != null && locationNode == null) {
-            if (location != null) {
-                addressNode.setLocation(location);
-                this.nodesByLocation.put(location, addressNode);
-            }
-            node = addressNode;
-        } else if (addressNode == null && locationNode == null) {
-            if (location != null) { this.nodesByLocation.put(location, node);}
-            if (address != null) { this.nodesByAddress.put(address, node);}
-        } else if (addressNode != null && locationNode != null) {
-            node = addressNode;
-        }
-        return node;
-    }
-
+    public abstract void addNode(Integer address);
+    public abstract void addNode(Integer address, MapNode location);
     public abstract void calculateRoutesTo(Integer address);
+    protected abstract ContactGraphNode getNode(Integer address);
 
     public LinkedList<Tuple<Double, Integer>> getNearestRoute(int from, int to, double startTime) {
-        ContactGraphNode fromNode = this.nodesByAddress.getOrDefault(from, null);
+        ContactGraphNode fromNode = getNode(from);
         if (fromNode == null) {
             return null;
         }

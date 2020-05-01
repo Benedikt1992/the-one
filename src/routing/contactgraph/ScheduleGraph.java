@@ -19,9 +19,13 @@ public class ScheduleGraph extends ContactGraph{
     private String schedulePath;
     private Integer scheduleStartId;
     private boolean initialized;
+    protected Map<MapNode, ScheduleGraphNode> nodesByLocation;
+    protected Map<Integer, ScheduleGraphNode> nodesByAddress;
 
     protected ScheduleGraph(Settings contactSettings) {
         super();
+        this.nodesByLocation = new HashMap<>();
+        this.nodesByAddress = new HashMap<>();
         this.schedulePath = contactSettings.getSetting(CONTACT_GRAPH_SCHEDULE);
         this.scheduleStartId = contactSettings.getInt(CONTACT_GRAPH_START);
         this.initialized = false;
@@ -50,19 +54,46 @@ public class ScheduleGraph extends ContactGraph{
         }
     }
 
+    public void addNode(Integer address) {
+        ScheduleGraphNode addressNode = this.nodesByAddress.getOrDefault(address, null);
+
+        if(addressNode != null) {
+            nodesByAddress.put(address, new ScheduleGraphNode(address));
+        }
+    }
+
+    public void addNode(Integer address, MapNode location) {
+        ScheduleGraphNode addressNode, locationNode;
+
+        addressNode = this.nodesByAddress.getOrDefault(address, null);
+        locationNode = this.nodesByLocation.getOrDefault(location, null);
+
+        if (addressNode == null && locationNode != null) {
+            locationNode.setAddress(address);
+            this.nodesByAddress.put(address,locationNode);
+        } else if(addressNode != null && locationNode == null) {
+                addressNode.setLocation(location);
+                this.nodesByLocation.put(location, addressNode);
+        } else if (addressNode == null && locationNode == null) {
+            ScheduleGraphNode node = new ScheduleGraphNode(address, location);
+            this.nodesByLocation.put(location, node);
+            this.nodesByAddress.put(address, node);
+        }
+    }
+
     private void addEdge(ContactGraphEdge edge) {
         MapNode from = edge.getFrom();
-        ContactGraphNode fromNode = this.nodesByLocation.getOrDefault(from, null);
+        ScheduleGraphNode fromNode = this.nodesByLocation.getOrDefault(from, null);
         if (fromNode == null) {
-            fromNode = new ContactGraphNode(from);
+            fromNode = new ScheduleGraphNode(from);
             this.nodesByLocation.put(from, fromNode);
         }
         fromNode.addOutgoingEdge(edge);
 
         MapNode to = edge.getTo();
-        ContactGraphNode toNode = this.nodesByLocation.getOrDefault(to, null);
+        ScheduleGraphNode toNode = this.nodesByLocation.getOrDefault(to, null);
         if (toNode == null) {
-            toNode = new ContactGraphNode(to);
+            toNode = new ScheduleGraphNode(to);
             this.nodesByLocation.put(to, toNode);
         }
         toNode.addIncomingEdge(edge);
@@ -76,7 +107,7 @@ public class ScheduleGraph extends ContactGraph{
         if (!initialized) {
             initializeGraph();
         }
-        ContactGraphNode destination = this.nodesByAddress.getOrDefault(address, null);
+        ScheduleGraphNode destination = this.nodesByAddress.getOrDefault(address, null);
         if (destination == null) {
             throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
         }
@@ -90,8 +121,13 @@ public class ScheduleGraph extends ContactGraph{
         availableRoutes.add(address);
     }
 
+    @Override
+    protected ContactGraphNode getNode(Integer address) {
+        return this.nodesByAddress.getOrDefault(address, null);
+    }
+
     private void finalizeRoutes(Integer destination) {
-        for (Map.Entry<Integer, ContactGraphNode> entry :
+        for (Map.Entry<Integer, ScheduleGraphNode> entry :
                 nodesByAddress.entrySet()) {
             entry.getValue().persistRouteCandidate(destination);
         }
@@ -101,7 +137,7 @@ public class ScheduleGraph extends ContactGraph{
     private void deepSearch(ContactGraphEdge edge, LinkedList<Tuple<Double, Integer>> routeState) {
         if (visitedEdges.contains(edge)) { return; }
         routeState.push(new Tuple<>(edge.getDeparture(), edge.getAddress()));
-        ContactGraphNode node = nodesByLocation.get(edge.getFrom());
+        ScheduleGraphNode node = nodesByLocation.get(edge.getFrom());
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
         visitedEdges.add(edge);

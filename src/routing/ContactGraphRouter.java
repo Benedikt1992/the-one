@@ -68,12 +68,10 @@ public class ContactGraphRouter extends ActiveRouter {
 		MovementModel mModel = this.getHost().getMovement();
 		if (mModel instanceof MapScheduledMovement) {
 			this.isStationary = false;
-			ContactGraphNode newNode = new ContactGraphNode(host.getAddress());
-			this.graph.addNode(newNode);
+			this.graph.addNode(host.getAddress());
 		} else if (mModel instanceof StationaryListMovement) {
 			this.isStationary = true;
-			ContactGraphNode newNode = new ContactGraphNode(host.getAddress(), ((StationaryListMovement) mModel).getMapLocation());
-			this.graph.addNode(newNode);
+			this.graph.addNode(host.getAddress(), ((StationaryListMovement) mModel).getMapLocation());
 		} else {
 			throw new RuntimeException("The simulation scenario contains unsupported movement models for ContactGraphRouting.");
 		}
