@@ -42,30 +42,6 @@ public class ScheduleGraphNode  extends ContactGraphNode {
         this.outgoingSorted = false;
     }
 
-    public void setRouteCandidate(LinkedList<Tuple<Double, Integer>> routeCandidate) {
-        Double lastStart = getRouteCandidateStart();
-        if (lastStart == null || lastStart < routeCandidate.peek().getKey()) {
-            this.routeCandidate = routeCandidate;
-        }
-    }
-
-    public Double getRouteCandidateStart() {
-        if (routeCandidate == null) {
-            return null;
-        }
-
-        return routeCandidate.peek().getKey();
-    }
-
-    public void persistRouteCandidate(Integer destination) {
-        if (routeCandidate != null) {
-            LinkedList<LinkedList<Tuple<Double, Integer>>> availableRoutes = this.routes.getOrDefault(destination, new LinkedList<>());
-            availableRoutes.push(routeCandidate);
-            this.routes.put(destination, availableRoutes);
-            routeCandidate = null;
-        }
-    }
-
     public void setLocation(MapNode location) {
         if (this.location == null) {
             this.location = location;
@@ -137,45 +113,5 @@ public class ScheduleGraphNode  extends ContactGraphNode {
             }
         }
         return contacts;
-    }
-}
-
-class AscendingEdgeIterator<ContactGraphEdge> implements Iterator<ContactGraphEdge> {
-    private int index;
-    private List<ContactGraphEdge> list;
-
-    AscendingEdgeIterator(List<ContactGraphEdge> list) {
-        this.list = list;
-        index = 0;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return index < list.size();
-    }
-
-    @Override
-    public ContactGraphEdge next() {
-        return list.get(index++);
-    }
-}
-
-class DescendingEdgeIterator<ContactGraphEdge> implements Iterator<ContactGraphEdge> {
-    private int index;
-    private List<ContactGraphEdge> list;
-
-    DescendingEdgeIterator(List<ContactGraphEdge> list) {
-        this.list = list;
-        index = list.size() - 1;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return index >= 0;
-    }
-
-    @Override
-    public ContactGraphEdge next() {
-        return list.get(index--);
     }
 }

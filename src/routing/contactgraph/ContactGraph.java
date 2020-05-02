@@ -1,21 +1,18 @@
 package routing.contactgraph;
 
 import core.Settings;
-import core.SimScenario;
 import movement.map.MapNode;
-import movement.map.MapScheduledNode;
-import movement.map.MapScheduledRoute;
-import movement.map.SimMap;
 import util.Tuple;
 
 import java.util.*;
 
 public abstract class ContactGraph {
     private static ScheduleGraph scheduleGraph;
+    private static ContactPlanGraph contactPlanGraph;
 
     public static ScheduleGraph getScheduleGraph() {
         if (ContactGraph.scheduleGraph == null) {
-            throw new RuntimeException("ContactGraph has not yet been instantiated.");
+            throw new RuntimeException("ScheduleGraph has not yet been instantiated.");
         }
         return ContactGraph.scheduleGraph;
     }
@@ -26,6 +23,21 @@ public abstract class ContactGraph {
         }
         ContactGraph.scheduleGraph = new ScheduleGraph(s);
         return ContactGraph.scheduleGraph;
+    }
+
+    public static ContactPlanGraph getContactPlanGraph() {
+        if (ContactGraph.contactPlanGraph == null) {
+            throw new RuntimeException("ContactPlanGraph has not yet been instantiated.");
+        }
+        return ContactGraph.contactPlanGraph;
+    }
+
+    public static ContactPlanGraph initializeContactPlanGraph(Settings s) {
+        if (ContactGraph.contactPlanGraph != null) {
+            return ContactGraph.contactPlanGraph;
+        }
+        ContactGraph.contactPlanGraph = new ContactPlanGraph(s);
+        return ContactGraph.contactPlanGraph;
     }
 
     protected Set<Integer> availableRoutes;

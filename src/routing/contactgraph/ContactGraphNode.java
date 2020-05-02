@@ -67,3 +67,43 @@ public abstract class ContactGraphNode {
         }
     }
 }
+
+class AscendingEdgeIterator<T> implements Iterator<T> {
+    private int index;
+    private List<T> list;
+
+    AscendingEdgeIterator(List<T> list) {
+        this.list = list;
+        index = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index < list.size();
+    }
+
+    @Override
+    public T next() {
+        return list.get(index++);
+    }
+}
+
+class DescendingEdgeIterator<ContactGraphEdge> implements Iterator<ContactGraphEdge> {
+    private int index;
+    private List<ContactGraphEdge> list;
+
+    DescendingEdgeIterator(List<ContactGraphEdge> list) {
+        this.list = list;
+        index = list.size() - 1;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index >= 0;
+    }
+
+    @Override
+    public ContactGraphEdge next() {
+        return list.get(index--);
+    }
+}

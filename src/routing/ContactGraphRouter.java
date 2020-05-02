@@ -50,6 +50,10 @@ public class ContactGraphRouter extends ActiveRouter {
 		String graphType = contactSettings.getSetting(CONTACT_GRAPH_TYPE);
 		if (graphType.equals("ScheduleGraph")) {
 			this.graph = ContactGraph.initializeScheduleGraph(contactSettings);
+		} else if (graphType.equals("ContactPlanGraph")) {
+			this.graph = ContactGraph.initializeContactPlanGraph(contactSettings);
+		} else {
+			throw new SettingsError(graphType + " is not implemented.");
 		}
 	}
 
