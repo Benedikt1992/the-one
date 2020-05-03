@@ -103,7 +103,7 @@ public class ContactPlanGraph extends ContactGraph{
 
     private void deepSearch(ContactPlanEdge edge, LinkedList<Tuple<Double, Integer>> routeState, Set<Integer> carriers) {
         if (visitedEdges.contains(edge)) { return; }
-        if (carriers.contains(edge.getFrom().getAddress())) {
+        if (carriers.contains(edge.getTo().getAddress())) {
             return;
         }
         if (routeState.size() > 10) {
@@ -111,16 +111,26 @@ public class ContactPlanGraph extends ContactGraph{
             return;
         }
         visitedEdges.add(edge);
-        routeState.push(new Tuple<>(edge.getStart(), edge.getTo().getAddress()));
-        carriers.add(edge.getFrom().getAddress());
+        routeState.push(new Tuple<>(edge.getEnd(), edge.getTo().getAddress()));
+        carriers.add(edge.getTo().getAddress());
         ContactPlanNode node = edge.getFrom();
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
-        Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge);
+        double end = edge.getEnd();
+        for (Tuple<Double, Integer> entry: clone) {
+            // It can happen that a previous hop as alater end time than the successor.
+            if (entry.getKey() < end) {
+                end = entry.getKey();
+            }
+        }
+        Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, end);
         for (ContactPlanEdge contact : contacts) {
+//            if (contact.getTo().getAddress().equals(473) || contact.getFrom().getAddress().equals(473)) {
+//                System.out.println("Examine");
+//            }
             deepSearch(contact, routeState, carriers);
         }
         routeState.pop();
-        carriers.remove(edge.getFrom().getAddress());
+        carriers.remove(edge.getTo().getAddress());
     }
 }
