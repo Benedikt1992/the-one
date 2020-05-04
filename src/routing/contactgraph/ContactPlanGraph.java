@@ -80,12 +80,13 @@ public class ContactPlanGraph extends ContactGraph{
             throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
         }
 
-//        int i = 0;
-//        int max = destination.getSizeInEdges();
+        // TODO remove status prints
+        int i = 0;
+        int max = destination.getSizeInEdges();
         for (Iterator<ContactPlanEdge> it = destination.incomingEdges(false); it.hasNext(); ) {
-//            i++;
+            i++;
             ContactPlanEdge edge = it.next();
-//            System.out.println(i + "/" + max);
+            System.out.println(i + "/" + max);
             deepSearch(edge, new LinkedList<>(), new HashSet<>());
             finalizeRoutes(address);
         }
@@ -103,32 +104,25 @@ public class ContactPlanGraph extends ContactGraph{
 
     private void deepSearch(ContactPlanEdge edge, LinkedList<Tuple<Double, Integer>> routeState, Set<Integer> carriers) {
         if (visitedEdges.contains(edge)) { return; }
-        if (carriers.contains(edge.getTo().getAddress())) {
-            return;
-        }
-        if (routeState.size() > 10) {
-            // TODO introduce route length limit with disable option?
-            return;
-        }
         visitedEdges.add(edge);
         routeState.push(new Tuple<>(edge.getEnd(), edge.getTo().getAddress()));
         carriers.add(edge.getTo().getAddress());
         ContactPlanNode node = edge.getFrom();
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
-        double end = edge.getEnd();
-        for (Tuple<Double, Integer> entry: clone) {
-            // It can happen that a previous hop as alater end time than the successor.
-            if (entry.getKey() < end) {
-                end = entry.getKey();
+        // TODO introduce route length/hop limit with disable option
+        if (!carriers.contains(edge.getFrom().getAddress()) && routeState.size() < 10) {
+            double end = edge.getEnd();
+            for (Tuple<Double, Integer> entry: clone) {
+                // It can happen that a previous hop as a later end time than the successor.
+                if (entry.getKey() < end) {
+                    end = entry.getKey();
+                }
             }
-        }
-        Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, end);
-        for (ContactPlanEdge contact : contacts) {
-//            if (contact.getTo().getAddress().equals(473) || contact.getFrom().getAddress().equals(473)) {
-//                System.out.println("Examine");
-//            }
-            deepSearch(contact, routeState, carriers);
+            Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, end);
+            for (ContactPlanEdge contact : contacts) {
+                deepSearch(contact, routeState, carriers);
+            }
         }
         routeState.pop();
         carriers.remove(edge.getTo().getAddress());

@@ -1,7 +1,6 @@
 package routing.contactgraph;
 
 import core.SimClock;
-import movement.map.MapNode;
 import util.Tuple;
 
 import java.util.*;
@@ -9,10 +8,12 @@ import java.util.*;
 public abstract class ContactGraphNode {
     protected LinkedList<Tuple<Double, Integer>> routeCandidate;
     protected  Map<Integer, LinkedList<LinkedList<Tuple<Double, Integer>>>> routes;
+    protected boolean routesSorted;
 
     public ContactGraphNode() {
         this.routeCandidate = null;
         this.routes = new HashMap<>();
+        this.routesSorted = false;
 
     }
 
@@ -37,6 +38,22 @@ public abstract class ContactGraphNode {
             availableRoutes.push(routeCandidate);
             this.routes.put(destination, availableRoutes);
             routeCandidate = null;
+            routesSorted = false;
+        }
+    }
+
+    protected void sortRoutes() {
+        /**
+         * This will sort routes according to their latest delivery time (which is part of a route).
+         * By default the routes will be sorted by the earliest possible delivery (which is not part of the route itself).
+         */
+        if (!routesSorted) {
+            for (Map.Entry<Integer, LinkedList<LinkedList<Tuple<Double, Integer>>>> entry:
+                routes.entrySet()) {
+                Collections.sort(entry.getValue(), Comparator.comparingDouble(e -> e.get(e.size() - 1).getKey()));
+            }
+
+            routesSorted = true;
         }
     }
 
