@@ -2,17 +2,17 @@ package routing.contactgraph;
 
 import movement.map.MapNode;
 
-public class ContactGraphEdge {
+public class ScheduleGraphEdge {
     // TODO rename this. It only matches the schedule based graph
     private MapNode from;
     private MapNode to;
     private  Integer address;
     private double departure;
     private double arrival;
-    private ContactGraphEdge previousEdge;
-    private ContactGraphEdge nextEdge;
+    private ScheduleGraphEdge previousEdge;
+    private ScheduleGraphEdge nextEdge;
 
-    public ContactGraphEdge(MapNode from, double departure, MapNode to, double arrival, Integer address, ContactGraphEdge previousEdge) {
+    public ScheduleGraphEdge(MapNode from, double departure, MapNode to, double arrival, Integer address, ScheduleGraphEdge previousEdge) {
         this.from = from;
         this.to = to;
         this.address = address;
@@ -32,7 +32,7 @@ public class ContactGraphEdge {
         return previousEdge.getArrival();
     }
 
-    private void setNextEdge(ContactGraphEdge nextEdge) {
+    private void setNextEdge(ScheduleGraphEdge nextEdge) {
         this.nextEdge = nextEdge;
     }
 
@@ -63,7 +63,7 @@ public class ContactGraphEdge {
         return nextEdge.getDeparture();
     }
 
-    public ContactGraphEdge getPrevious() {
+    public ScheduleGraphEdge getPrevious() {
         return previousEdge;
     }
 }

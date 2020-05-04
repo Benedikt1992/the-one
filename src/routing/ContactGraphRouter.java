@@ -8,13 +8,7 @@ import core.*;
 import movement.MapScheduledMovement;
 import movement.MovementModel;
 import movement.StationaryListMovement;
-import movement.map.MapScheduledNode;
-import movement.map.MapScheduledRoute;
 import routing.contactgraph.ContactGraph;
-import routing.contactgraph.ContactGraphEdge;
-import routing.contactgraph.ContactGraphNode;
-import routing.mobyspace.ScheduledMapMobySpace;
-import util.Range;
 import util.Tuple;
 
 import java.util.*;

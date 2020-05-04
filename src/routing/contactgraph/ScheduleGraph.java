@@ -15,7 +15,7 @@ public class ScheduleGraph extends ContactGraph{
     public static final String CONTACT_GRAPH_SCHEDULE = "schedule";
     public static final String CONTACT_GRAPH_START = "scheduleStartId";
 
-    private Set<ContactGraphEdge> visitedEdges;
+    private Set<ScheduleGraphEdge> visitedEdges;
     private String schedulePath;
     private Integer scheduleStartId;
     private boolean initialized;
@@ -39,12 +39,12 @@ public class ScheduleGraph extends ContactGraph{
         Integer currentAddress = this.scheduleStartId;
         for (MapScheduledRoute route : schedule) {
             List<MapScheduledNode> stops = route.getStops();
-            ContactGraphEdge previousEdge = null;
+            ScheduleGraphEdge previousEdge = null;
             for (int i = 1; i < stops.size(); i++) {
                 MapScheduledNode prevEntry = stops.get(i-1);
                 MapScheduledNode cEntry = stops.get(i);
                 if (!prevEntry.getNode().equals(cEntry.getNode())) {
-                    ContactGraphEdge newEdge = new ContactGraphEdge(prevEntry.getNode(), prevEntry.getTime(),
+                    ScheduleGraphEdge newEdge = new ScheduleGraphEdge(prevEntry.getNode(), prevEntry.getTime(),
                             cEntry.getNode(), cEntry.getTime(), currentAddress, previousEdge);
                     addEdge(newEdge);
                     previousEdge = newEdge;
@@ -81,7 +81,7 @@ public class ScheduleGraph extends ContactGraph{
         }
     }
 
-    private void addEdge(ContactGraphEdge edge) {
+    private void addEdge(ScheduleGraphEdge edge) {
         MapNode from = edge.getFrom();
         ScheduleGraphNode fromNode = this.nodesByLocation.getOrDefault(from, null);
         if (fromNode == null) {
@@ -112,8 +112,8 @@ public class ScheduleGraph extends ContactGraph{
             throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
         }
 
-        for (Iterator<ContactGraphEdge> it = destination.incomingEdges(false); it.hasNext(); ) {
-            ContactGraphEdge edge = it.next();
+        for (Iterator<ScheduleGraphEdge> it = destination.incomingEdges(false); it.hasNext(); ) {
+            ScheduleGraphEdge edge = it.next();
             deepSearch(edge, new LinkedList<>());
             finalizeRoutes(address);
         }
@@ -134,15 +134,15 @@ public class ScheduleGraph extends ContactGraph{
         this.visitedEdges = new HashSet<>();
     }
 
-    private void deepSearch(ContactGraphEdge edge, LinkedList<Tuple<Double, Integer>> routeState) {
+    private void deepSearch(ScheduleGraphEdge edge, LinkedList<Tuple<Double, Integer>> routeState) {
         if (visitedEdges.contains(edge)) { return; }
         routeState.push(new Tuple<>(edge.getDeparture(), edge.getAddress()));
         ScheduleGraphNode node = nodesByLocation.get(edge.getFrom());
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
         visitedEdges.add(edge);
-        Set<ContactGraphEdge> contacts = node.getContacts(edge);
-        for (ContactGraphEdge contact : contacts) {
+        Set<ScheduleGraphEdge> contacts = node.getContacts(edge);
+        for (ScheduleGraphEdge contact : contacts) {
             deepSearch(contact, routeState);
         }
         routeState.pop();

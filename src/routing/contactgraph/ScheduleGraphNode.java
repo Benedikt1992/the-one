@@ -1,16 +1,14 @@
 package routing.contactgraph;
 
-import core.SimClock;
 import movement.map.MapNode;
-import util.Tuple;
 
 import java.util.*;
 
 public class ScheduleGraphNode  extends ContactGraphNode {
     private Integer address;
     private MapNode location;
-    private List<ContactGraphEdge> incomingEdges;
-    private List<ContactGraphEdge> outgoingEdges;
+    private List<ScheduleGraphEdge> incomingEdges;
+    private List<ScheduleGraphEdge> outgoingEdges;
     private boolean incomingSorted;
     private boolean outgoingSorted;
 
@@ -62,12 +60,12 @@ public class ScheduleGraphNode  extends ContactGraphNode {
         return location;
     }
 
-    public void addOutgoingEdge(ContactGraphEdge edge) {
+    public void addOutgoingEdge(ScheduleGraphEdge edge) {
         outgoingEdges.add(edge);
         outgoingSorted = false;
     }
 
-    public void addIncomingEdge(ContactGraphEdge edge) {
+    public void addIncomingEdge(ScheduleGraphEdge edge) {
         incomingEdges.add(edge);
         incomingSorted = false;
     }
@@ -86,7 +84,7 @@ public class ScheduleGraphNode  extends ContactGraphNode {
         }
     }
 
-    public Iterator<ContactGraphEdge> incomingEdges(boolean ascending) {
+    public Iterator<ScheduleGraphEdge> incomingEdges(boolean ascending) {
         sortIncomingEdges();
         if (ascending) {
             return new AscendingEdgeIterator<>(this.incomingEdges);
@@ -95,15 +93,15 @@ public class ScheduleGraphNode  extends ContactGraphNode {
         }
     }
 
-    public Set<ContactGraphEdge> getContacts(ContactGraphEdge edge) {
+    public Set<ScheduleGraphEdge> getContacts(ScheduleGraphEdge edge) {
         Double min = edge.getArrivalFromFrom();
         double max = edge.getDeparture();
         if (min == null) {
             min = max;
         }
-        Set<ContactGraphEdge> contacts = new HashSet<>();
+        Set<ScheduleGraphEdge> contacts = new HashSet<>();
         sortIncomingEdges();
-        for (ContactGraphEdge e : incomingEdges) {
+        for (ScheduleGraphEdge e : incomingEdges) {
             if (e.getArrival() > max) {
                 break;
             }
