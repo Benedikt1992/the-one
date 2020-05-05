@@ -112,14 +112,7 @@ public class ContactPlanGraph extends ContactGraph{
         node.setRouteCandidate(clone);
         // TODO introduce route length/hop limit with disable option
         if (!carriers.contains(edge.getFrom().getAddress()) && routeState.size() < 10) {
-            double end = edge.getEnd();
-            for (Tuple<Double, Integer> entry: clone) {
-                // It can happen that a previous hop as a later end time than the successor.
-                if (entry.getKey() < end) {
-                    end = entry.getKey();
-                }
-            }
-            Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, end);
+            Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, edge.getStart());
             for (ContactPlanEdge contact : contacts) {
                 deepSearch(contact, routeState, carriers);
             }
