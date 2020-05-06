@@ -14,14 +14,18 @@ import java.util.*;
 public class ContactPlanGraph extends ContactGraph{
 
     public static final String CONTACT_PLAN = "contactPlan";
+    public static final String HOP_LIMIT = "hopLimit";
 
     private Set<ContactPlanEdge> visitedEdges;
+    private Integer hopLimit;
     protected Map<Integer, ContactPlanNode> nodesByAddress;
+
 
     protected ContactPlanGraph(Settings contactSettings) {
         super();
         this.visitedEdges = new HashSet<>();
         nodesByAddress = new HashMap<>();
+        this.hopLimit = contactSettings.getInt(HOP_LIMIT);
         initializeGraph(contactSettings.getSetting(CONTACT_PLAN));
 
     }
@@ -80,13 +84,8 @@ public class ContactPlanGraph extends ContactGraph{
             throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
         }
 
-        // TODO remove status prints
-        int i = 0;
-        int max = destination.getSizeInEdges();
         for (Iterator<ContactPlanEdge> it = destination.incomingEdges(false); it.hasNext(); ) {
-            i++;
             ContactPlanEdge edge = it.next();
-            System.out.println(i + "/" + max);
             deepSearch(edge, new LinkedList<>(), new HashSet<>());
             finalizeRoutes(address);
         }
@@ -110,8 +109,7 @@ public class ContactPlanGraph extends ContactGraph{
         ContactPlanNode node = edge.getFrom();
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
-        // TODO introduce route length/hop limit with disable option
-        if (!carriers.contains(edge.getFrom().getAddress()) && routeState.size() < 10) {
+        if (!carriers.contains(edge.getFrom().getAddress()) && routeState.size() < this.hopLimit) {
             Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, edge.getStart());
             for (ContactPlanEdge contact : contacts) {
                 deepSearch(contact, routeState, carriers);

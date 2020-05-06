@@ -66,8 +66,4 @@ public class ContactPlanNode  extends ContactGraphNode {
         }
         return contacts;
     }
-
-    public int getSizeInEdges() {
-        return incomingEdges.size();
-    }
 }
