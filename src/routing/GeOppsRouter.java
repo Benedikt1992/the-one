@@ -76,7 +76,6 @@ public class GeOppsRouter extends ActiveRouter {
 		this.distanceCache = r.distanceCache;
         this.messageDeadlines = new HashMap<>();
         this.keepMessage = new HashSet<>();
-		//TODO: is there something we need to copy (global stuff)
 	}
 
 	@Override
