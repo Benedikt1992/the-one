@@ -136,7 +136,13 @@ public class CBRConnection extends Connection {
 		double time = SimClock.getTime();
 		ArrayList<Integer> removals = new ArrayList<>();
 		for (int i = 0; i < msgsOnFly.size(); i++) {
+			if (msgsOnFly.get(i).getId().equals("M80")) {
+				System.out.println("Transfering M80: Finish: " + transferDoneTimes.get(i) + ", cTime: " + time);
+			}
 			if (transferDoneTimes.get(i) <= time) {
+				if (msgsOnFly.get(i).getId().equals("M80")) {
+					System.out.println("M80 transfer completed");
+				}
 				removals.add(i);
 				this.bytesTransferred += msgsOnFly.get(i).getSize();
 				queuedCapacity -= msgsOnFly.get(i).getSize();
