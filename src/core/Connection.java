@@ -180,6 +180,9 @@ public abstract class Connection {
 	 * @return The message or null if no message is being transferred
 	 */
 	public List<Message> getMessage() {
+		if (this.msgOnFly == null) {
+			return null;
+		}
 		List<Message> msgs = new ArrayList<Message>();
 		msgs.add(this.msgOnFly);
 		return msgs;
