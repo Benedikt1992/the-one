@@ -55,8 +55,8 @@ public class ContactPlanNode  extends ContactGraphNode {
         }
     }
 
-    public Set<ContactPlanEdge> getPreviousContacts(ContactPlanEdge edge, Double end) {
-        Set<ContactPlanEdge> contacts = new HashSet<>();
+    public List<ContactPlanEdge> getPreviousContacts(ContactPlanEdge edge, Double end) {
+        List<ContactPlanEdge> contacts = new ArrayList<>();
         sortIncomingEdges();
         for (ContactPlanEdge e : incomingEdges) {
             if (e.getStart() > end) {

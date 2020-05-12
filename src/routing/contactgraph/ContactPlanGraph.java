@@ -110,7 +110,7 @@ public class ContactPlanGraph extends ContactGraph{
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
         if (!carriers.contains(edge.getFrom().getAddress()) && routeState.size() < this.hopLimit) {
-            Set<ContactPlanEdge> contacts = node.getPreviousContacts(edge, edge.getStart());
+            List<ContactPlanEdge> contacts = node.getPreviousContacts(edge, edge.getStart());
             for (ContactPlanEdge contact : contacts) {
                 deepSearch(contact, routeState, carriers);
             }
