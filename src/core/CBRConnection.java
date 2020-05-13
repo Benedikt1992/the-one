@@ -60,7 +60,7 @@ public class CBRConnection extends Connection {
 				"simulation updateInterval. Can't start transfer of " + m + " from " + from;
 		if (m.getId().equals("M361")) {
 			System.out.println("Trying to start transfer of M361 from " + from.getAddress() + " to " + getOtherNode(from).getAddress() + " at " + SimClock.getTime() + " with link load " + this.queuedCapacity + "/" + this.intervalCapacity);
-			Thread.dumpStack();
+//			Thread.dumpStack();
 		}
 		if (this.sentMessages.contains(m.getId())) {
 			return MessageRouter.DENIED_OLD;
