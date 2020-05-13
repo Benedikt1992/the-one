@@ -167,16 +167,16 @@ public class ContactGraphRouter extends ActiveRouter {
 						}
 					} else if (routeIndex < route.size()) {
 						if (route.get(routeIndex).getValue() == c.getOtherNode(getHost()).getAddress()) {
-                            if (m.getId().equals("M361")) {
-                                int from = this.getHost().getAddress();
-                                int to = c.getOtherNode(getHost()).getAddress();
-                                System.out.print("Found next hop for M361 from " + from + " to " + to + " at " + SimClock.getTime() + " with route ");
-                                for (Tuple<Double,Integer> hop: route) {
-                                    System.out.print(hop.getValue());
-                                    System.out.print("->");
-                                }
-                                System.out.print("finish\n");
-                            }
+//                            if (m.getId().equals("M361")) {
+//                                int from = this.getHost().getAddress();
+//                                int to = c.getOtherNode(getHost()).getAddress();
+//                                System.out.print("Found next hop for M361 from " + from + " to " + to + " at " + SimClock.getTime() + " with route ");
+//                                for (Tuple<Double,Integer> hop: route) {
+//                                    System.out.print(hop.getValue());
+//                                    System.out.print("->");
+//                                }
+//                                System.out.print("finish\n");
+//                            }
 							sendableMessages.add(new Tuple<>(m, c));
 						} else if (route.get(routeIndex).getKey() < cTime) {
 							if (replaceAssociatedRoute(m, c.getOtherNode(getHost()).getAddress())) {

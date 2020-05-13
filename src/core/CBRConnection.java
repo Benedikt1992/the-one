@@ -58,10 +58,10 @@ public class CBRConnection extends Connection {
 	public int startTransfer(DTNHost from, Message m) {
 		assert this.queuedCapacity < this.intervalCapacity: "Already transferring maximum capacity of data per " +
 				"simulation updateInterval. Can't start transfer of " + m + " from " + from;
-		if (m.getId().equals("M361")) {
-			System.out.println("Trying to start transfer of M361 from " + from.getAddress() + " to " + getOtherNode(from).getAddress() + " at " + SimClock.getTime() + " with link load " + this.queuedCapacity + "/" + this.intervalCapacity);
-			Thread.dumpStack();
-		}
+//		if (m.getId().equals("M361")) {
+//			System.out.println("Trying to start transfer of M361 from " + from.getAddress() + " to " + getOtherNode(from).getAddress() + " at " + SimClock.getTime() + " with link load " + this.queuedCapacity + "/" + this.intervalCapacity);
+//			Thread.dumpStack();
+//		}
 		if (this.sentMessages.contains(m.getId())) {
 			return MessageRouter.DENIED_OLD;
 		}
@@ -83,9 +83,9 @@ public class CBRConnection extends Connection {
 				this.transferDoneTimes.add( maxTime + (1.0*m.getSize()) / this.speed);
 			}
 			this.queuedCapacity += newMessage.getSize();
-			if (m.getId().equals("M361")) {
-				System.out.println("Started transfer of M361 from " + from.getAddress() + " to " + getOtherNode(from).getAddress() + " at " + SimClock.getTime() + " with link load " + this.queuedCapacity + "/" + this.intervalCapacity);
-			}
+//			if (m.getId().equals("M361")) {
+//				System.out.println("Started transfer of M361 from " + from.getAddress() + " to " + getOtherNode(from).getAddress() + " at " + SimClock.getTime() + " with link load " + this.queuedCapacity + "/" + this.intervalCapacity);
+//			}
 		} else if (retVal == MessageRouter.DENIED_OLD) {
 			sentMessages.add(m.getId());
 		}
@@ -117,9 +117,9 @@ public class CBRConnection extends Connection {
 	}
 
 	public void abortTransfer(String id) {
-		if (id.equals("M361")) {
-			System.out.println("Transfer of M361 aborted at " + SimClock.getTime());
-		}
+//		if (id.equals("M361")) {
+//			System.out.println("Transfer of M361 aborted at " + SimClock.getTime());
+//		}
 		assert !msgsOnFly.isEmpty() : "No messages to abort.";
 		List<Integer> removals = new ArrayList<>();
 		for (int i = 0; i < msgsOnFly.size(); i++) {
@@ -145,14 +145,14 @@ public class CBRConnection extends Connection {
 		double time = SimClock.getTime();
 		ArrayList<Integer> removals = new ArrayList<>();
 		for (int i = 0; i < msgsOnFly.size(); i++) {
-			if (msgsOnFly.get(i).getId().equals("M361")) {
-				Message m = msgsOnFly.get(i);
-				System.out.println("Transfering M361: Finish: " + transferDoneTimes.get(i) + ", cTime: " + time);
-			}
+//			if (msgsOnFly.get(i).getId().equals("M361")) {
+//				Message m = msgsOnFly.get(i);
+//				System.out.println("Transfering M361: Finish: " + transferDoneTimes.get(i) + ", cTime: " + time);
+//			}
 			if (transferDoneTimes.get(i) <= time) {
-				if (msgsOnFly.get(i).getId().equals("M361")) {
-					System.out.println("M361 transfer completed");
-				}
+//				if (msgsOnFly.get(i).getId().equals("M361")) {
+//					System.out.println("M361 transfer completed");
+//				}
 				removals.add(i);
 				this.bytesTransferred += msgsOnFly.get(i).getSize();
 				queuedCapacity -= msgsOnFly.get(i).getSize();
