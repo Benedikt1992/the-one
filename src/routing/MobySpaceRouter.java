@@ -190,6 +190,9 @@ public class MobySpaceRouter extends ActiveRouter {
 				if ( 	(int)m.getProperty(MSG_FORWARD_PROPERTY) > 0 ||
 						(keepMessage && space.getDeliveryTime(h.getAddress(), m.getTo().getAddress()) < (double)m.getProperty(MSG_DELIVERY_PROPERTY))
 				) {
+					if (m.getId().equals("M361")) {
+						System.out.println("Found hop candidate for M361  from " + getHost().getAddress() + " to " + h.getAddress() + " at " + SimClock.getTime());
+					}
 					sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
 				}
 			}
