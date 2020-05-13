@@ -93,13 +93,13 @@ public class ScheduleGraphNode  extends ContactGraphNode {
         }
     }
 
-    public Set<ScheduleGraphEdge> getContacts(ScheduleGraphEdge edge) {
+    public List<ScheduleGraphEdge> getContacts(ScheduleGraphEdge edge) {
         Double min = edge.getArrivalFromFrom();
         double max = edge.getDeparture();
         if (min == null) {
             min = max;
         }
-        Set<ScheduleGraphEdge> contacts = new HashSet<>();
+        List<ScheduleGraphEdge> contacts = new ArrayList<>();
         sortIncomingEdges();
         for (ScheduleGraphEdge e : incomingEdges) {
             if (e.getArrival() > max) {

@@ -141,7 +141,7 @@ public class ScheduleGraph extends ContactGraph{
         LinkedList<Tuple<Double, Integer>> clone = ( LinkedList<Tuple<Double, Integer>>) routeState.clone();
         node.setRouteCandidate(clone);
         visitedEdges.add(edge);
-        Set<ScheduleGraphEdge> contacts = node.getContacts(edge);
+        List<ScheduleGraphEdge> contacts = node.getContacts(edge);
         for (ScheduleGraphEdge contact : contacts) {
             deepSearch(contact, routeState);
         }
