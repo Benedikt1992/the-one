@@ -176,14 +176,6 @@ public abstract class ActiveRouter extends MessageRouter {
 		int retVal;
 
 		if (!con.isReadyForTransfer()) {
-			if (m.getId().equals("M361")) {
-				System.out.print("Can't start transfer of M361 from " + getHost().getAddress() + " to " + con.getOtherNode(getHost()).getAddress() + " at " + SimClock.getTime() + ". Connection is budy transfering:");
-
-				for(Message msg :con.getMsgsOnFly()) {
-					System.out.print(msg.getId() + ", ");
-				}
-				System.out.print("\n");
-			}
 			return TRY_LATER_BUSY;
 		}
 
@@ -394,17 +386,7 @@ public abstract class ActiveRouter extends MessageRouter {
 		for (Tuple<Message, Connection> t : tuples) {
 			Message m = t.getKey();
 			Connection con = t.getValue();
-//			if (m.getId().equals("M361")) {
-//				System.out.println("M361 is in queue together with:");
-//				for (Tuple<Message, Connection> tuple:
-//					 tuples) {
-//					System.out.println("\t" + tuple.toString());
-//				}
-//			}
 			if (transferingCon == null || con == transferingCon) {
-//				if (m.getId().equals("M361")) {
-//					System.out.println("About to start transfer for M361 at " + SimClock.getTime());
-//				}
 				if (startTransfer(m, con) == RCV_OK) {
 					messages.add(m);
 					transferingCon = con;
