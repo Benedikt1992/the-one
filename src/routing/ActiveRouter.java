@@ -394,13 +394,13 @@ public abstract class ActiveRouter extends MessageRouter {
 		for (Tuple<Message, Connection> t : tuples) {
 			Message m = t.getKey();
 			Connection con = t.getValue();
-			if (m.getId().equals("M361")) {
-				System.out.println("M361 is in queue together with:");
-				for (Tuple<Message, Connection> tuple:
-					 tuples) {
-					System.out.println("\t" + tuple.toString());
-				}
-			}
+//			if (m.getId().equals("M361")) {
+//				System.out.println("M361 is in queue together with:");
+//				for (Tuple<Message, Connection> tuple:
+//					 tuples) {
+//					System.out.println("\t" + tuple.toString());
+//				}
+//			}
 			if (transferingCon == null || con == transferingCon) {
 //				if (m.getId().equals("M361")) {
 //					System.out.println("About to start transfer for M361 at " + SimClock.getTime());
