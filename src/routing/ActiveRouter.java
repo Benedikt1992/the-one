@@ -395,8 +395,10 @@ public abstract class ActiveRouter extends MessageRouter {
 			Message m = t.getKey();
 			Connection con = t.getValue();
 			if (m.getId().equals("M361")) {
-				if(transferingCon != null && con != transferingCon) {
-					System.out.println("Won't try to start transfer of M361 from " + getHost().getAddress() + " to " + con.getOtherNode(getHost()).getAddress() + " at " + SimClock.getTime());
+				System.out.println("M361 is in queue together with:");
+				for (Tuple<Message, Connection> tuple:
+					 tuples) {
+					System.out.println("\t" + tuple.toString());
 				}
 			}
 			if (transferingCon == null || con == transferingCon) {
