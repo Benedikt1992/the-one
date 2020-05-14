@@ -386,6 +386,9 @@ public abstract class ActiveRouter extends MessageRouter {
 		for (Tuple<Message, Connection> t : tuples) {
 			Message m = t.getKey();
 			Connection con = t.getValue();
+			if (m.getId().equals("M361") && transferingCon != null && con != transferingCon) {
+				System.out.println("Won't try to start transfer of M361 from " + getHost().getAddress() + " to " + con.getOtherNode(getHost()).getAddress() + " at " + SimClock.getTime());
+			}
 			if (transferingCon == null || con == transferingCon) {
 				if (startTransfer(m, con) == RCV_OK) {
 					messages.add(m);
