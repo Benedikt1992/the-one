@@ -250,5 +250,8 @@ public abstract class Connection {
 				" from " + this.msgFromNode : "");
 	}
 
+	public List<Message> getMsgsOnFly() {
+		return null;
+	}
 }
 

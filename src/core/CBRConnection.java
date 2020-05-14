@@ -270,4 +270,8 @@ public class CBRConnection extends Connection {
 				" until " + String.format("%.2f", getMaxTime()) : "");
 	}
 
+	@Override
+	public List<Message> getMsgsOnFly() {
+		return msgsOnFly;
+	}
 }
