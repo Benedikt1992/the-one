@@ -159,6 +159,7 @@ public class MobySpaceRouter extends ActiveRouter {
 		Collection<Message> messages = getMessageCollection();
 		List<Connection> connections = getConnections();
 		HashMap<Message, Tuple<Double, Connection>> distances = new HashMap<>();
+		SortedSet<Message> distanceKeys = new TreeSet<>();
 
 		/* Find shortest possible delivery time for each message */
 		for (Message m : messages) {
@@ -176,24 +177,20 @@ public class MobySpaceRouter extends ActiveRouter {
 					}
 				}
 				distances.put(m, new Tuple<>(minDistance, minConnection));
+				distanceKeys.add(m);
 			}
 		}
 
 		/* check if shortest possible delivery times are shorter than the own estimation */
 		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
-		for (HashMap.Entry<Message, Tuple<Double, Connection>> entry :
-				distances.entrySet()) {
-			double distance = this.space.distance(getHost().getAddress(), entry.getKey().getTo().getAddress());
-			if (entry.getValue().getKey() < distance) {
-				Message m = entry.getKey();
-				DTNHost h = entry.getValue().getValue().getOtherNode(getHost());
+		for (Message m : distanceKeys) {
+			double distance = this.space.distance(getHost().getAddress(),m.getTo().getAddress());
+			if (distances.get(m).getKey() < distance) {
+				DTNHost h = distances.get(m).getValue().getOtherNode(getHost());
 				if ( 	(int)m.getProperty(MSG_FORWARD_PROPERTY) > 0 ||
 						(keepMessage && space.getDeliveryTime(h.getAddress(), m.getTo().getAddress()) < (double)m.getProperty(MSG_DELIVERY_PROPERTY))
 				) {
-					if (m.getId().equals("M361")) {
-						System.out.println("Found hop candidate for M361  from " + getHost().getAddress() + " to " + h.getAddress() + " at " + SimClock.getTime());
-					}
-					sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
+					sendableMessages.add(new Tuple<>(m, distances.get(m).getValue()));
 				}
 			}
 		}

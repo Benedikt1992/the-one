@@ -153,6 +153,7 @@ public class GeOppsRouter extends ActiveRouter {
 		Collection<Message> messages = getMessageCollection();
 		List<Connection> connections = getConnections();
 		HashMap<Message, Tuple<Double, Connection>> deliveryTimes = new HashMap<>();
+		SortedSet<Message> deliveryKeys = new TreeSet<>();
 
 		/* Find shortest possible delivery time for each message */
 		for (Message m : messages) {
@@ -167,16 +168,16 @@ public class GeOppsRouter extends ActiveRouter {
 				}
 				if (deliveryTime.getValue() < deliveryTimes.getOrDefault(m, new Tuple<>(Double.MAX_VALUE, null)).getKey()) {
 					deliveryTimes.put(m, new Tuple<>(deliveryTime.getValue(), c));
+					deliveryKeys.add(m);
 				}
 			}
 		}
 
 		/* check if shortest possible delivery times are shorter than the own estimation */
 		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
-		for (HashMap.Entry<Message, Tuple<Double, Connection>> entry :
-				deliveryTimes.entrySet()) {
-			if (entry.getValue().getKey() < estimatedDeliveryTimes.get(entry.getKey().getTo().toString())) {
-				sendableMessages.add(new Tuple<>(entry.getKey(), entry.getValue().getValue()));
+		for (Message m: deliveryKeys) {
+			if (deliveryTimes.get(m).getKey() < estimatedDeliveryTimes.get(m.getTo().toString())) {
+				sendableMessages.add(new Tuple<>(m, deliveryTimes.get(m).getValue()));
 			}
 		}
 
