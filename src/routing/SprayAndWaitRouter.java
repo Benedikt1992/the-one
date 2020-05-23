@@ -23,8 +23,10 @@ public class SprayAndWaitRouter extends ActiveRouter {
 	public static final String NROF_COPIES = "nrofCopies";
 	/** identifier for the binary-mode setting ({@value})*/
 	public static final String BINARY_MODE = "binaryMode";
-    /** identifier for the binary-mode setting ({@value})*/
+    /** identifier for the linear-mode setting ({@value})*/
     public static final String LINEAR_MODE = "linearMode";
+	/** identifier for the superlinear-mode setting ({@value})*/
+	public static final String SUPERLINEAR_MODE = "superlinearMode";
 	/** SprayAndWait router's settings name space ({@value})*/
 	public static final String SPRAYANDWAIT_NS = "SprayAndWaitRouter";
 	/** Message property key */
@@ -34,6 +36,7 @@ public class SprayAndWaitRouter extends ActiveRouter {
 	protected int initialNrofCopies;
 	protected boolean isBinary;
 	protected boolean isLinear;
+	protected boolean isSuperlinear;
 
 	public SprayAndWaitRouter(Settings s) {
 		super(s);
@@ -42,6 +45,7 @@ public class SprayAndWaitRouter extends ActiveRouter {
 		initialNrofCopies = snwSettings.getInt(NROF_COPIES);
 		isBinary = snwSettings.getBoolean(BINARY_MODE);
 		isLinear = snwSettings.getBoolean(LINEAR_MODE);
+		isSuperlinear = snwSettings.getBoolean(SUPERLINEAR_MODE);
 	}
 
 	/**
@@ -70,11 +74,16 @@ public class SprayAndWaitRouter extends ActiveRouter {
 		if (isBinary) {
 			/* in binary S'n'W the receiving node gets floor(n/2) copies */
 			nrofCopies = (int)Math.floor(nrofCopies/2.0);
-		}
-		if (isLinear) {
+		} else if (isLinear) {
 		    /* in linear S'n'W the receiving node gets all left copies */
 		    nrofCopies -= nrofCopies > 1 ? 1 : 0;
-        }
+        } else if (isSuperlinear) {
+			if (msg.getFrom().equals(from)) {
+				nrofCopies--;
+			} else {
+				nrofCopies = 1;
+			}
+		}
 		else {
 			/* in standard S'n'W the receiving node gets only single copy */
 			nrofCopies = 1;
@@ -165,7 +174,13 @@ public class SprayAndWaitRouter extends ActiveRouter {
 			} else if (isLinear) {
 			    /* in linear S'n'W the sending node is left with only one copy */
 			    nrofCopies = 1;
-            }
+            } else if (isSuperlinear) {
+				if (getHost().equals(m.getFrom())) {
+					nrofCopies = 1;
+				} else {
+					nrofCopies--;
+				}
+			}
 			else {
 				nrofCopies--;
 			}
