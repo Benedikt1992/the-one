@@ -87,6 +87,7 @@ class ScheduleConverter:
         trips = self.gtfs_parser.get_trips()
         max_time = trips[-1].end()
         routes = {}
+        print("Building trains based on {} trips.\n".format(len(trips)))
         for trip in trips:
             waiting_routes = routes.get(trip.first_stop(), [])
             if trip.end() > max_time:
