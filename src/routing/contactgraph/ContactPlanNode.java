@@ -7,6 +7,7 @@ public class ContactPlanNode  extends ContactGraphNode {
     private List<ContactPlanEdge> incomingEdges;
     private List<ContactPlanEdge> outgoingEdges;
     private boolean incomingSorted;
+    private boolean incomingSortedEnd;
     private boolean outgoingSorted;
 
     public ContactPlanNode(Integer address) {
@@ -15,6 +16,7 @@ public class ContactPlanNode  extends ContactGraphNode {
         this.incomingEdges = new ArrayList<>();
         this.outgoingEdges = new ArrayList<>();
         this.incomingSorted = false;
+        this.incomingSortedEnd = false;
         this.outgoingSorted = false;
     }
 
@@ -30,12 +32,22 @@ public class ContactPlanNode  extends ContactGraphNode {
     public void addIncomingEdge(ContactPlanEdge edge) {
         incomingEdges.add(edge);
         incomingSorted = false;
+        incomingSortedEnd = false;
     }
 
     private void sortIncomingEdges() {
         if (!incomingSorted) {
             Collections.sort(incomingEdges, Comparator.comparingDouble(ContactPlanEdge::getStart));
+            incomingSortedEnd = false;
             incomingSorted = true;
+        }
+    }
+
+    private void sortIncomingEdgesOnEnd() {
+        if (!incomingSortedEnd) {
+            Collections.sort(incomingEdges, Comparator.comparingDouble(ContactPlanEdge::getEnd));
+            incomingSortedEnd = true;
+            incomingSorted = false;
         }
     }
 
@@ -57,9 +69,9 @@ public class ContactPlanNode  extends ContactGraphNode {
 
     public List<ContactPlanEdge> getPreviousContacts(ContactPlanEdge edge, Double end) {
         List<ContactPlanEdge> contacts = new ArrayList<>();
-        sortIncomingEdges();
+        sortIncomingEdgesOnEnd();
         for (ContactPlanEdge e : incomingEdges) {
-            if (e.getStart() > end) {
+            if (e.getEnd() > end) {
                 break;
             }
             contacts.add(e);
