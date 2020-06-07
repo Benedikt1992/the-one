@@ -110,6 +110,10 @@ public class ScheduleGraphNode  extends ContactGraphNode {
                 contacts.add(e);
             }
         }
+        ScheduleGraphEdge e = edge.getPrevious();
+        if (e != null) {
+            contacts.add(edge.getPrevious());
+        }
         return contacts;
     }
 }
