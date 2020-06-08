@@ -145,6 +145,17 @@ public class ScheduleGraph extends ContactGraph{
         for (ScheduleGraphEdge contact : contacts) {
             deepSearch(contact, routeState);
         }
+
+        if(node.getAddress() == null) {
+            System.out.println("Have node without address!");
+        }
+        routeState.push(new Tuple<>(edge.getDeparture(), node.getAddress()));
+        contacts = node.getPreviousContacts(edge);
+        for (ScheduleGraphEdge contact : contacts) {
+            deepSearch(contact, routeState);
+        }
+        routeState.pop();
+
         routeState.pop();
     }
 }

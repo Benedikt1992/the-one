@@ -116,4 +116,20 @@ public class ScheduleGraphNode  extends ContactGraphNode {
         }
         return contacts;
     }
+
+    public List<ScheduleGraphEdge> getPreviousContacts(ScheduleGraphEdge edge) {
+        Double min = edge.getArrivalFromFrom();
+        if (min == null) {
+            min = edge.getDeparture();
+        }
+        List<ScheduleGraphEdge> contacts = new ArrayList<>();
+        sortIncomingEdges();
+        for (ScheduleGraphEdge e : incomingEdges) {
+            Double leaveTime = e.getDepartureToTo();
+            if (leaveTime != null && leaveTime < min) {
+                contacts.add(e);
+            }
+        }
+        return contacts;
+    }
 }
