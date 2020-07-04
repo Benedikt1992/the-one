@@ -34,9 +34,11 @@ public class GeOppsRouter extends ActiveRouter {
 	protected boolean stopsOnly;
 	protected boolean stopBuffer;
 
+	/** buffer of simulation time when each message reaches the destination*/
 	protected Map<String, Double> estimatedDeliveryTimes;
 	protected DijkstraPathFinder pathFinder;
 	protected Map<String, Double> distanceCache;
+	/** buffer of simulation time when each message reaches the nearest point to the destination on the route */
 	protected Map<String, Double> messageDeadlines;
 	protected Set<String> keepMessage;
 
