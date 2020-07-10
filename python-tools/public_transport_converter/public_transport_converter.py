@@ -20,7 +20,7 @@ class PublicTransportConverter:
         parser.add_argument('-f', '--filter', action=StoreKeyPair, nargs="?",
                             default=[('railway', 'stop'), ('railway', 'halt'), ('railway', 'station'), ('public_transport', 'stop_position')],
                             help="Add filter to search for nodes. Use list in form of KEY1=VAL1,KEY2=VAL2. Each entry is connected with logical or.")
-        parser.add_argument('-d', '--distance', nargs='?', type=int, default=1000, help="Maximum distance between gtfs station and osm stop positions.")
+        parser.add_argument('-d', '--distance', nargs='?', type=int, default=1000, help="Maximum distance between osm stop positions that belong to the same stop.")
         parser.add_argument('-o', '--output', nargs='?', default='', help="Output directory. The directory of the source OSM File is used by default.")
         parser.add_argument('-s', '--no-scale', action='store_true', default=False, help="Disable scaling of the map for simulation.")
         parser.add_argument('-x', '--max_x', nargs="?", default='4500', type=int, help="Maximum size of x dimension within simulation.")

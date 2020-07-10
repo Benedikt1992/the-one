@@ -38,7 +38,7 @@ class ScheduleConverter:
         osm_switches = self.osm_parser.get_nodes([('railway', 'switch')]).keys()
         switches = set()
         for node in osm_switches:
-            if len(graph[node]) > 2:  # switch nodes with <2 neighbors are not used as switches
+            if len(graph[node]) > 2:  # switch nodes with <=2 neighbors are not used as switches
                 switches.add(NodeList().find_by_osm_id(node))
 
         if country_filter:
