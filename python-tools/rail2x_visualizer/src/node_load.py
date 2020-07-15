@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 from src.reader.message_processing_report_reader import MessageProcessingReportReader
 from src.reader.message_snapshot_report_reader import MessageSnapshotReportReader
+from src.statistics import Statistics
 
 
 class NodeLoad:
@@ -24,11 +25,22 @@ class NodeLoad:
         groups = self.processing_report.get_host_groups()
         data = []
         tick_labels = []
+        incoming = 0
+        incoming_len = 0
+        outgoing = 0
+        outgoing_len = 0
         for group in groups:
             tick_labels.append(group + '_incoming')
             tick_labels.append(group + '_outgoing')
-            data.append(self.processing_report.get_incoming_distribution(group))
-            data.append(self.processing_report.get_outgoing_distribution(group))
+            in_dist = self.processing_report.get_incoming_distribution(group)
+            out_dist = self.processing_report.get_outgoing_distribution(group)
+            data.append(in_dist)
+            data.append(out_dist)
+            incoming += sum(in_dist)
+            incoming_len += len(in_dist)
+            outgoing += sum(out_dist)
+            outgoing_len += len(out_dist)
+        Statistics().set_processing_stats(incoming / incoming_len, outgoing / outgoing_len)
 
         boxplot_width = 1
         fig, axs = plt.subplots(figsize=(10, boxplot_width * len(data)))

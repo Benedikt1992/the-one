@@ -13,6 +13,7 @@ from src.reader.message_processing_report_reader import MessageProcessingReportR
 from src.reader.message_snapshot_report_reader import MessageSnapshotReportReader
 from src.reader.node_location_reader import NodeLocationReader
 from src.reader.one_settings_reader import ONESettingsReader
+from src.statistics import Statistics
 
 
 class Visualizer:
@@ -84,6 +85,7 @@ class Visualizer:
             duplicates = Duplicates(message_duplicates_reader, created_messages_reader)
             for prefix in self.args.heatmap:
                 duplicates.duplicates_heatmap(self.output, scenario, prefix)
+            Statistics().print_and_clear_stats(self.output, scenario)
 
     def update_report_locations(self, scenario):
         # DeliveredMessagesReport

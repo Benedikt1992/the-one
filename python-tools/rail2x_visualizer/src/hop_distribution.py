@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
+from src.statistics import Statistics
 
 
 class HopDistribution:
@@ -21,6 +22,11 @@ class HopDistribution:
         :return:
         """
         boxplot_distribution = self.delivered_messages_reader.get_hops()
+        mode = max(boxplot_distribution, key=boxplot_distribution.count)
+        minimum = min(boxplot_distribution)
+        maximum = max(boxplot_distribution)
+        avg = sum(boxplot_distribution) / len(boxplot_distribution)
+        Statistics().set_hop_stats(minimum, maximum, mode, avg)
         plt.hist(boxplot_distribution, bins=50)
         plt.title('Hop Distribution of all Messages')
         plt.ylabel('Occurences')

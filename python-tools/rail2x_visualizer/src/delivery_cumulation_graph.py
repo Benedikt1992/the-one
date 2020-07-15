@@ -9,6 +9,7 @@ from tqdm import tqdm
 from src.reader.created_messages_report_reader import CreatedMessagesReportReader
 from src.reader.delivered_messages_report_reader import DeliveredMessagesReportReader
 from src.reader.one_settings_reader import ONESettingsReader
+from src.statistics import Statistics
 
 
 class DeliveryCumulationGraph:
@@ -27,6 +28,7 @@ class DeliveryCumulationGraph:
         message_origin_map, messages, missing_msg = self.__calculate_missing_messages()
         with open(os.path.join(output_path, scenario + '_missing-messages.txt'), 'w') as file:
             file.write("# Missing {} messages out of {}:\n".format(len(missing_msg), len(messages)))
+            Statistics().add_delivery_summary(len(messages), len(messages) - len(missing_msg))
             for message in missing_msg:
                 file.write("{} {}\n".format(message, message_origin_map[message]))
 
@@ -97,6 +99,7 @@ class DeliveryCumulationGraph:
             if array[i] > 0.85 * maximum:
                 self.__add_to_toplist(destination, i, 'threshold')
         self.__add_to_toplist(destination, area, 'area')
+        Statistics().add_area_metric(destination, area)
 
         x_axis = [0] * len(array)
         for i in range(len(array)):
