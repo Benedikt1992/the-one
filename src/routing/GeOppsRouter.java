@@ -265,7 +265,14 @@ public class GeOppsRouter extends ActiveRouter {
         Tuple<Double, Double> estimatedTime = new Tuple<>(Double.MAX_VALUE, Double.MAX_VALUE);
 		List<MapScheduledNode> stops = schedule.getStops();
 		MapScheduledNode first = schedule.getStop(0);
-		MapScheduledNode second = schedule.getStop(1);
+		MapScheduledNode second = null;
+		for (int i = 1; i < stops.size(); i++) {
+			second = schedule.getStop(i);
+			if (second.getNode() != first.getNode()) {
+				break;
+			}
+			first = second;
+		}
 		double distance = mapDistance(second.getNode(), first.getNode());
 		double duration = second.getTime() - first.getTime();
 		double speed = distance / duration;
