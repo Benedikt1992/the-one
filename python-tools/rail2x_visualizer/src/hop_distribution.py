@@ -53,7 +53,7 @@ class HopDistribution:
             data.append(self.delivered_messages_reader.get_hops(destination))
 
         boxplot_width = 0.7
-        fig, axs = plt.subplots(figsize=(10, boxplot_width*len(destinations)))
+        fig, axs = plt.subplots(figsize=(10, boxplot_width*len(destinations)+1))
         axs.boxplot(data, vert=False)
         if not self.no_title:
             axs.set_title("Boxplots of all destinations")
