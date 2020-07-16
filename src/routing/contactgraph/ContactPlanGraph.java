@@ -81,7 +81,7 @@ public class ContactPlanGraph extends ContactGraph{
         }
         ContactPlanNode destination = this.nodesByAddress.getOrDefault(address, null);
         if (destination == null) {
-            throw new RuntimeException("Requested destination for routes is not part of the contact graph.");
+            return;
         }
 
         for (Iterator<ContactPlanEdge> it = destination.incomingEdges(false); it.hasNext(); ) {
