@@ -10,9 +10,11 @@ class HopDistribution:
     """
     This class visualizes the hops the messages needed in order to reach their destination.
     """
-    def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader):
+    def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader, no_title, format):
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader
+        self.no_title = no_title
+        self.format = format
 
     def create_histogram_from_scenario(self, output_path, scenario):
         """
@@ -29,9 +31,10 @@ class HopDistribution:
             avg = sum(boxplot_distribution) / len(boxplot_distribution)
             Statistics().set_hop_stats(minimum, maximum, mode, avg)
         plt.hist(boxplot_distribution, bins=50)
-        plt.title('Hop Distribution of all Messages')
-        plt.ylabel('Occurences')
-        plt.xlabel('Hops')
+        if not self.no_title:
+            plt.title('Hop Distribution of all Messages')
+        plt.ylabel('Occurences', fontsize=14)
+        plt.xlabel('Hops', fontsize=14)
         self.__store_figure(output_path, scenario, "hop-histogram", "all")
 
     def create_boxplots_from_scenario(self, output_path, scenario):
@@ -52,17 +55,18 @@ class HopDistribution:
         boxplot_width = 0.7
         fig, axs = plt.subplots(figsize=(10, boxplot_width*len(destinations)))
         axs.boxplot(data, vert=False)
-        axs.set_title("Boxplots of all destinations")
-        axs.set_ylabel('Destinations')
-        axs.set_xlabel('Hops')
+        if not self.no_title:
+            axs.set_title("Boxplots of all destinations")
+        axs.set_ylabel('Destinations', fontsize=14)
+        axs.set_xlabel('Hops', fontsize=14)
         axs.set_yticklabels(tick_labels)
 
         self.__store_figure(output_path, scenario, "hop-boxplots", "all")
 
-    @staticmethod
-    def __store_figure(output, scenario, type, destination, format='svg'):
-        outputpath = os.path.join(output, scenario + "_" + type + "_" + destination + '.' + format)
-        plt.savefig(outputpath, format=format)
+    def __store_figure(self, output, scenario, type, destination):
+        outputpath = os.path.join(output, scenario + "_" + type + "_" + destination + '.' + self.format)
+        plt.tight_layout()
+        plt.savefig(outputpath, format=self.format)
         plt.clf()  # clear plot window
         plt.close('all')
 

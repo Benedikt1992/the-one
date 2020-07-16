@@ -17,12 +17,14 @@ class DeliveryCumulationGraph:
     Show the cumulation of packages over time at the destination of the packages.
     Each destinantion is plotted in its own graph.
     """
-    def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader, settings: ONESettingsReader):
+    def __init__(self, delivery_reader: DeliveredMessagesReportReader, creation_reader: CreatedMessagesReportReader, settings: ONESettingsReader, no_title, format):
         self.delivered_messages_reader = delivery_reader
         self.created_messages_reader = creation_reader
         self.settings = settings
         self.threshold_toplist = {}
         self.area_toplist = {}
+        self.no_title = no_title
+        self.format = format
 
     def list_missing_messages(self, output_path, scenario):
         message_origin_map, messages, missing_msg = self.__calculate_missing_messages()
@@ -106,9 +108,10 @@ class DeliveryCumulationGraph:
             x_axis[i] = i / (60.0)
         plt.plot(x_axis, array)
 
-        plt.title('collected station data at {}'.format(destination))
-        plt.ylabel('Messages')
-        plt.xlabel('hours')
+        if not self.no_title:
+            plt.title('collected station data at {}'.format(destination))
+        plt.ylabel('Messages', fontsize=14)
+        plt.xlabel('hours', fontsize=14)
         axes = plt.gca()
         axes.set_ylim([0, maximum * 1.01])
         axes.set_yticks(list(plt.yticks()[0]) + [maximum])
@@ -134,10 +137,10 @@ class DeliveryCumulationGraph:
 
         return cumulative_array
 
-    @staticmethod
-    def __store_figure(output, scenario, destination, format='svg'):
-        outputpath = os.path.join(output, scenario + "_delivery-cumulation_" + destination + '.' + format)
-        plt.savefig(outputpath, format=format)
+    def __store_figure(self, output, scenario, destination):
+        outputpath = os.path.join(output, scenario + "_delivery-cumulation_" + destination + '.' + self.format)
+        plt.tight_layout()
+        plt.savefig(outputpath, format=self.format)
         plt.clf()  # clear plot window
         plt.close('all')
 

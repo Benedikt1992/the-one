@@ -10,9 +10,11 @@ class Duplicates:
     """
     Show how often a message was processed by a node in a heatmap.
     """
-    def __init__(self, duplicates_reader: MessageDuplicatesReportReader, creation_reader: CreatedMessagesReportReader):
+    def __init__(self, duplicates_reader: MessageDuplicatesReportReader, creation_reader: CreatedMessagesReportReader, no_title, format):
         self.duplicates_reader = duplicates_reader
         self.created_messages_reader = creation_reader
+        self.no_title = no_title
+        self.format = format
 
     def duplicates_heatmap(self, output_path, scenario, node_prefix=""):
         """
@@ -46,20 +48,24 @@ class Duplicates:
         fig, ax = plt.subplots()
         c = ax.pcolormesh(data, cmap='Reds')
         cbar = fig.colorbar(c, ax=ax)  # need a colorbar to show the intensity scale
-        ax.set_title('Duplicates per Message on each {}'.format(node_prefix))
-        ax.set_xlabel(node_prefix + 's')
-        ax.set_ylabel('Messages')
-        cbar.ax.set_ylabel("Duplicates")
+        if not self.no_title:
+            ax.set_title('Duplicates per Message on each {}'.format(node_prefix))
+        ax.set_xlabel(node_prefix + 's', fontsize=14)
+        ax.set_ylabel('Messages', fontsize=14)
+        cbar.ax.set_ylabel("Duplicates", fontsize=14)
         if len(messages) > 1000:
             print("Too many messages. Store heatmap in pixel format.")
             self.__store_figure(output_path, scenario, node_prefix, 'png')
         else:
             self.__store_figure(output_path, scenario, node_prefix)
 
-    @staticmethod
-    def __store_figure(output, scenario, prefix, format='svg'):
-        outputpath = os.path.join(output, scenario + "_duplicates_heatmap_" + prefix + '.' + format)
-        plt.savefig(outputpath, format=format)
+    def __store_figure(self, output, scenario, prefix, format=None):
+        file_format = self.format
+        if format:
+            file_format = format
+        outputpath = os.path.join(output, scenario + "_duplicates_heatmap_" + prefix + '.' + file_format)
+        plt.tight_layout()
+        plt.savefig(outputpath, format=file_format)
         plt.clf()  # clear plot window
         plt.close('all')
 

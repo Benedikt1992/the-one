@@ -12,9 +12,11 @@ class DistanceDeliverytimeGraph:
     Show a correlation of the distance between the source and destination of a message
     and the time the message was delivered.
     """
-    def __init__(self, delivered_messages: DeliveredMessagesReportReader, node_locations: NodeLocationReader):
+    def __init__(self, delivered_messages: DeliveredMessagesReportReader, node_locations: NodeLocationReader, no_title,format):
         self.delivered_messages = delivered_messages
         self.locations = node_locations
+        self.no_title = no_title
+        self.format = format
 
     def create_scatter_plot(self, output_path, scenario):
         x = []
@@ -28,19 +30,20 @@ class DistanceDeliverytimeGraph:
             y.append(delivery['time'])
 
         fig, ax = plt.subplots()
-        ax.scatter(x, y)
-        ax.set_title("Delivery time / Distance Correlation")
-        ax.set_ylabel("time in s")
-        ax.set_xlabel("distance in m")
+        ax.scatter(x, y, c='black')
+        if not self.no_title:
+            ax.set_title("Delivery time / Distance Correlation")
+        ax.set_ylabel("time in s", fontsize=14)
+        ax.set_xlabel("distance in m", fontsize=14)
         self.__store_figure(output_path, scenario)
 
     @staticmethod
     def _linear_distance(coord1, coord2):
         return math.sqrt((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2)
 
-    @staticmethod
-    def __store_figure(output, scenario, format='svg'):
-        outputpath = os.path.join(output, scenario + "_delivery_distance_graph." + format)
-        plt.savefig(outputpath, format=format)
+    def __store_figure(self, output, scenario):
+        outputpath = os.path.join(output, scenario + "_delivery_distance_graph." + self.format)
+        plt.tight_layout()
+        plt.savefig(outputpath, format=self.format)
         plt.clf()  # clear plot window
         plt.close('all')

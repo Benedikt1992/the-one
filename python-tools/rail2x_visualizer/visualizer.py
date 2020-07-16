@@ -29,6 +29,11 @@ class Visualizer:
                             help="Path of the directory containing all files referenced by the settings (flat hierarchy). "
                                  "This is used read files referenced within the simulation configuration.")
         parser.add_argument('-a', '--analyze', action='store_true', help="Analyze if missed messages are theoretically deliverable.")
+        parser.add_argument('--no-title', action='store_true',
+                            help="remove titles from visualizations")
+        parser.add_argument('-f', '--format', nargs='?', default='pdf',
+                            help="Format of output files. Need to be supported by matplotlib.")
+
         self.args = parser.parse_args()
 
         if not os.path.isdir(self.args.reports):
@@ -69,20 +74,20 @@ class Visualizer:
             message_processing_reader = MessageProcessingReportReader(self.message_processing_report)
             message_snapshot_reader = MessageSnapshotReportReader(self.message_snapshot_report)
 
-            load = NodeLoad(message_processing_reader, message_snapshot_reader)
+            load = NodeLoad(message_processing_reader, message_snapshot_reader, self.args.no_title, self.args.format)
             load.load_timeline(self.output, scenario)
             load.load_distribution_by_hostgroup(self.output, scenario)
-            DistanceDeliverytimeGraph(delivered_messages_reader, node_location_reader).create_scatter_plot(self.output, scenario)
-            delivery = DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader)
+            DistanceDeliverytimeGraph(delivered_messages_reader, node_location_reader, self.args.no_title, self.args.format).create_scatter_plot(self.output, scenario)
+            delivery = DeliveryCumulationGraph(delivered_messages_reader, created_messages_reader, settings_reader, self.args.no_title, self.args.format)
             delivery.create_all_from_scenario(self.output, scenario)
             delivery.list_missing_messages(self.output, scenario)
             if self.args.analyze:
                 delivery.analyze_missing_messages()
-            hops = HopDistribution(delivered_messages_reader, created_messages_reader)
+            hops = HopDistribution(delivered_messages_reader, created_messages_reader, self.args.no_title, self.args.format)
             hops.create_histogram_from_scenario(self.output, scenario)
             hops.create_boxplots_from_scenario(self.output, scenario)
 
-            duplicates = Duplicates(message_duplicates_reader, created_messages_reader)
+            duplicates = Duplicates(message_duplicates_reader, created_messages_reader, self.args.no_title, self.args.format)
             for prefix in self.args.heatmap:
                 duplicates.duplicates_heatmap(self.output, scenario, prefix)
             Statistics().print_and_clear_stats(self.output, scenario)

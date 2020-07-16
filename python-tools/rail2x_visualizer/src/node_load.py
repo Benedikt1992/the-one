@@ -11,9 +11,11 @@ class NodeLoad:
     """
     Show the load on nodes.
     """
-    def __init__(self, processing_report: MessageProcessingReportReader, snapshot_report: MessageSnapshotReportReader):
+    def __init__(self, processing_report: MessageProcessingReportReader, snapshot_report: MessageSnapshotReportReader, no_title, format):
         self.processing_report = processing_report
         self.snapshot_report = snapshot_report
+        self.no_title = no_title
+        self.format = format
 
     def load_distribution_by_hostgroup(self, output_path, scenario):
         """
@@ -42,12 +44,14 @@ class NodeLoad:
             outgoing_len += len(out_dist)
         Statistics().set_processing_stats(incoming / incoming_len, outgoing / outgoing_len)
 
-        boxplot_width = 1
+        boxplot_width = 0.8
         fig, axs = plt.subplots(figsize=(10, boxplot_width * len(data)))
         axs.boxplot(data, vert=False)
-        axs.set_title("Distribution of transferred messages")
-        axs.set_xlabel('transferred messages')
-        axs.set_yticklabels(tick_labels)
+        # axs.set_aspect(1.5)
+        if not self.no_title:
+            axs.set_title("Distribution of transferred messages")
+        axs.set_xlabel('transferred messages', fontsize=14)
+        axs.set_yticklabels(tick_labels, fontsize=14)
 
         self.__store_figure(output_path, scenario, 'processed-messages')
 
@@ -70,15 +74,16 @@ class NodeLoad:
         for line in lines:
             plt.plot(intervals, line, color='black', linewidth=0.5,)
 
-        plt.title("Load within host group " + group)
-        plt.xlabel("time in minutes")
-        plt.ylabel("carried messages")
+        if not self.no_title:
+            plt.title("Load within host group " + group)
+        plt.xlabel("time in minutes", fontsize=14)
+        plt.ylabel("carried messages", fontsize=14)
         self.__store_figure(output_path, scenario, "load_timeline_" + group)
 
-    @staticmethod
-    def __store_figure(output, scenario, type, format='svg'):
-        outputpath = os.path.join(output, scenario + "_" + type + "." + format)
-        plt.savefig(outputpath, format=format)
+    def __store_figure(self, output, scenario, type):
+        outputpath = os.path.join(output, scenario + "_" + type + "." + self.format)
+        plt.tight_layout()
+        plt.savefig(outputpath, format=self.format)
         plt.clf()  # clear plot window
         plt.close('all')
 
