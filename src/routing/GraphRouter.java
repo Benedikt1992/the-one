@@ -18,9 +18,9 @@ import java.util.*;
  * This implementation of MobySpace is designed to run with the {@link MapScheduledMovement}
  * and {@link StationaryListMovement} model.
  */
-public class ContactGraphRouter extends ActiveRouter {
+public class GraphRouter extends ActiveRouter {
 	/** CGR router's settings name space ({@value})*/
-	public static final String CONTACT_GRAPH_NS = "ContactGraphRouter";
+	public static final String CONTACT_GRAPH_NS = "GraphRouter";
 	/** which graph type should be used for calculating routes */
 	public static final String CONTACT_GRAPH_TYPE = "graph";
 
@@ -38,7 +38,7 @@ public class ContactGraphRouter extends ActiveRouter {
 	 * the given Settings object.
 	 * @param s The settings object
 	 */
-	public ContactGraphRouter(Settings s) {
+	public GraphRouter(Settings s) {
 		super(s);
 		Settings contactSettings = new Settings(CONTACT_GRAPH_NS);
 		String graphType = contactSettings.getSetting(CONTACT_GRAPH_TYPE);
@@ -55,7 +55,7 @@ public class ContactGraphRouter extends ActiveRouter {
 	 * Copy constructor.
 	 * @param r The router prototype where setting values are copied from
 	 */
-	protected ContactGraphRouter(ContactGraphRouter r) {
+	protected GraphRouter(GraphRouter r) {
 		super(r);
 		this.graph = r.graph;
 	}
@@ -148,7 +148,7 @@ public class ContactGraphRouter extends ActiveRouter {
 		List<Tuple<Message, Connection>> sendableMessages = new ArrayList<>();
 		for (Connection c : getConnections()) {
 			MessageRouter otherRouter = c.getOtherNode(getHost()).getRouter();
-			if (otherRouter instanceof ContactGraphRouter) {
+			if (otherRouter instanceof GraphRouter) {
 				for (Message m : getMessageCollection()) {
 					List<Tuple<Double,Integer>> route = (List<Tuple<Double,Integer>>) m.getProperty(MSG_ROUTE_PROPERTY);
 					Integer routeIndex = (Integer) m.getProperty(MSG_ROUTE_INDEX_PROPERTY);
@@ -162,7 +162,7 @@ public class ContactGraphRouter extends ActiveRouter {
 							} else {
 								m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
 							}
-						} else if (isStationary && !((ContactGraphRouter) otherRouter).isStationary) {
+						} else if (isStationary && !((GraphRouter) otherRouter).isStationary) {
 							sendableMessages.add(new Tuple<>(m, c));
 						}
 					} else if (routeIndex < route.size()) {
@@ -178,7 +178,7 @@ public class ContactGraphRouter extends ActiveRouter {
 								} else {
 									m.updateProperty(MSG_ROUTE_INDEX_PROPERTY, ++routeIndex);
 								}
-							} else if (isStationary && !((ContactGraphRouter) otherRouter).isStationary) {
+							} else if (isStationary && !((GraphRouter) otherRouter).isStationary) {
 								sendableMessages.add(new Tuple<>(m, c));
 							}
 						}
@@ -202,8 +202,8 @@ public class ContactGraphRouter extends ActiveRouter {
 	}
 
 	@Override
-	public ContactGraphRouter replicate() {
-		return new ContactGraphRouter(this);
+	public GraphRouter replicate() {
+		return new GraphRouter(this);
 	}
 
 }

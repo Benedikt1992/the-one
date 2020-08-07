@@ -1,6 +1,6 @@
 """
 This script transforms a report from the ConnectivityONEReport module into a
-contact plan required by the ContactGraphRouter.
+contact plan required by the GraphRouter.
 If  the simulation settings are provided the script will recognize one way connections
 specified with a MessageTransferAcceptPolicy '.toReceivePolicy = -1'.
 Important Note: The contact plan will not support to find path to these nodes!

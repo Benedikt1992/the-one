@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Class for reading a contact plan for ContactGraphRouter with the ContactPlanGraph.
+ * Class for reading a contact plan for GraphRouter with the ContactPlanGraph.
  * Each line represents one host and its contact list during the simulation. A contact list consists of a
  * list of tuples of address of the meeting partner, start and end time (e.g. 1 (123 22.09 23.45, 321 134.00 134.23)).
  * The contact list is not ordered and each entry in the contact list means the host can send messages to the partner
